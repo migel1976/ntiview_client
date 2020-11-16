@@ -6,7 +6,8 @@ import "@devexpress/dx-react-grid";
 import {Grid,
 		Table,
 		TableHeaderRow,
-		TableSelection
+		TableSelection,
+		VirtualTable,
 
 } from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
@@ -47,38 +48,24 @@ export class AlgoOrdersPanel extends React.Component {
 
 	async cancelOrders(){
 		var elements=this.state.selection;
-		// debugger;
 		var count=0;
+		var ret;
 		for(const el in elements){
-			debugger;
-			// var id=el[count];
 			var id=elements[count];
 			var objectID=this.state.rows[id].aoid;
 			var rop=await this.props.comm.get_rop(NTIAlgo.AlgoOrder,this.props.ws_url,objectID);
-			rop.cancelAlgoOrder();
+			ret=rop.cancelAlgoOrder();
+			console.log('ret is',ret);
 			count++;
 		};
 		this.setState({selection:[]});
+		this.setState({flagSelection:false});
 	};
 
 	cancelOrder=()=>{
 		this.cancelOrders();
 	};
 			
-
-	// cancelOrders=()=>{
-	// 	var index=this.state.selection;
-	// 	debugger;
-	// 	index.forEach((el)=>{
-	// 		var objectID=this.state.rows[el].aoid;
-	// 		this.props.comm.get_rop(NTIAlgo.AlgoOrder,this.props.ws_url,objectID)
-	// 			.then(rop=>{
-	// 				rop.cancelAlgoOrder();
-	// 				this.setState({selection:[]});
-	// 			});
-	// 	});
-	// };
-
 	//работает с одни заказом
 	// cancelOrder=()=>{
 	// 	var index=this.state.selection;
@@ -116,6 +103,7 @@ export class AlgoOrdersPanel extends React.Component {
 		  />
 		<IntegratedSelection />
 		<Table />
+		<VirtualTable />
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
 		</Grid>
