@@ -10,8 +10,6 @@ const App=()=>{
 					<Row>
 						<Col>
 							<MainNavbar />
-						</Col>
-						<Col>
 							<Routes />
 						</Col>
 					</Row>

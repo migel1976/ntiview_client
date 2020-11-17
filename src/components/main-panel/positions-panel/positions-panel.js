@@ -23,7 +23,7 @@ export class PositionsPanel extends React.Component {
     render() {
 	return (
 		<div>
-		<h2>{this.state.ts}</h2>
+		{/*<h2>{this.state.ts}</h2>*/}
 		<Grid rows={this.state.rows} columns={this.state.columns}>
 		<Table />
 		<TableHeaderRow />

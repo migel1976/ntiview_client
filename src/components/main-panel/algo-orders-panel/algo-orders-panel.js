@@ -8,26 +8,44 @@ import {Grid,
 		TableHeaderRow,
 		TableSelection,
 		VirtualTable,
+		PagingPanel
 
 } from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import {
 	IntegratedSelection,
 	SelectionState,
+	PagingState,
+	IntegratedPaging
 } from '@devexpress/dx-react-grid';
 // import * as NTIAlgo from './gen-js/NTIAlgo.js';
 import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
+const TableRowStyle = ({ row, ...restProps }) => (
+  <Table.Row
+    {...restProps}
+    style={{
+      cursor: "pointer",
+      background: "#ABC3CF",
+      height: 60,
+      border: "1px solid black"
+    }}
+  />
+);
 
 export class AlgoOrdersPanel extends React.Component {
     constructor(props) {
 	super(props);
 	this.state={flagSelection:false};
-	this.state = {selection: []};
+	this.state = {selection: [],pageSize:5};
+	this.state={pageSizes:[5,10,0]};
 	this.state = {columns: [], rows: []};
 	this.place_test_orders = this.place_test_orders.bind(this);
     }
-
-    
+	// state={pageSize:5};
+	setPageSize=(e)=>{
+		debugger;
+		console.log(e);
+	};    
 	setSelection=(sel)=>{
 		// debugger;
 		console.log('rows',this.state.rows);
@@ -97,12 +115,21 @@ export class AlgoOrdersPanel extends React.Component {
 	return (
 	    <div>
 		<Grid rows={this.state.rows} columns={this.state.columns}>
+		{/*<PagingPanel pageSizes={this.state.pageSizes} />*/}
 		 <SelectionState
 			selection={this.state.selection}
 			onSelectionChange={this.setSelection}
 		  />
 		<IntegratedSelection />
-		<Table />
+		<PagingState 
+			defaultCurrentPage={0}
+			 pageSize={this.state.pageSize}
+		/>
+		<IntegratedPaging />
+		<Table rowComponent={TableRowStyle} />
+		{/*<PagingPanel pageSizes={this.state.pageSizes} />*/}
+		<PagingPanel pageSizes={[5,10,0]} />
+		{/*<Table />*/}
 		<VirtualTable />
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
