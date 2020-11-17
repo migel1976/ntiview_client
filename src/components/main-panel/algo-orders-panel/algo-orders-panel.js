@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+import {Button} from 'react-bootstrap';
 import "@devexpress/dx-react-grid";
 // import {Grid, Table, TableHeaderRow} from "@devexpress/dx-react-grid-bootstrap4";
 import {Grid,
@@ -107,10 +107,13 @@ export class AlgoOrdersPanel extends React.Component {
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
 		</Grid>
-		  <button onClick={this.place_test_orders}>PLACE TEST ORDERS</button>
-		  {this.state.flagSelection?
-			  <button onClick={this.cancelOrder}>Cancel Order(s)</button>
-			  :<div></div>
+		  {/*<button onClick={this.place_test_orders}>PLACE TEST ORDERS</button>*/}
+		  <Button variant='primary' onClick={this.place_test_orders}>PLACE TEST ORDERS</Button>{' '}
+		  <Button variant='danger' onClick={this.cancelOrder} disabled={!this.state.flagSelection}>Cancel Order(s)</Button>
+		  {
+			  // this.state.flagSelection?
+			  // <button onClick={this.cancelOrder}>Cancel Order(s)</button>
+			  // :<div></div>
 		  }
 	    </div>
 	);

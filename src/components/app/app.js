@@ -6,9 +6,9 @@ import Routes from '../routes/routes';
 const App=()=>{
 		return(
 			<div>
-				<Container>
+				<Container fluid>
 					<Row>
-						<Col sm={12}>
+						<Col>
 							<MainNavbar />
 						</Col>
 						<Col>

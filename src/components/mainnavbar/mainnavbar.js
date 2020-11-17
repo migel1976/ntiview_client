@@ -13,7 +13,7 @@ const MainNavbar=()=>{
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
 				  <Nav.Link>
-					  <NavLink to='/'>Real Time  Data</NavLink>
+					  <NavLink to='/'></NavLink>
 		          </Nav.Link>
               </Nav>
           </Navbar.Collapse>
