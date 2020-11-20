@@ -45,7 +45,7 @@ export class AlgoOrdersPanel extends React.Component {
     }
 	// state={pageSize:5};
 	setPageSize=(e)=>{
-		debugger;
+		// debugger;
 		console.log(e);
 	};    
 	setSelection=(sel)=>{

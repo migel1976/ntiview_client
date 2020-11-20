@@ -12,15 +12,39 @@ const FormModal=(props)=>{
 	return(
 			<Form>
 			  <div class="form-group">
-				<label for="exampleFormControlInput1">Algoritm</label>
-				<input type="email" class="form-control" id="exampleFormControlInput1" text={props.algo}/>
-			  </div>
-			  <div class="form-group">
-				<label for="exampleFormControlSelect1">Example select</label>
+				<label>Ticker</label>
 				<SelectTicker
-					value='apl'
+					value={props.ticker_value}
 					options={props.ticker_options}
 				    changeSelectTicker={props.changeSelectTicker}	
+				/>
+
+				<label>Algoritm</label>
+				<SelectTicker
+					value={props.algo_value}
+					options={props.algo_options}
+				    changeSelectTicker={props.changeSelectAlgo}	
+				/>
+
+				<label>Type of order</label>
+				<SelectTicker
+					value={props.buysell_value}
+					options={props.buysell_options}
+				    changeSelectTicker={props.changeSelectBuysell}	
+				/>
+				<label>Algoritm</label>
+				<input 
+						type="text"
+						class="form-control"
+						value={props.algosize_value}
+					    onChange={props.changeInputAlgosize}	
+				/>
+				<label>Account</label>
+				<input 
+						type="text"
+						class="form-control"
+						value={props.account_value}
+					    onChange={props.changeInputAccount}	
 				/>
 			  </div>
 			</Form>
