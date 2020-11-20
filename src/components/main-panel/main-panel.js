@@ -1,10 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as AlgoOrdersPanel from './algo-orders-panel/algo-orders-panel';
+// import * as AlgoOrdersPanelContainer  from './algo-orders-panel/algo-orders-panel-container';
+import AlgoOrdersPanelContainer  from './algo-orders-panel/algo-orders-panel-container';
 import * as PositionsPanel from './positions-panel/positions-panel';
 
 import * as libpybx from 'libpybx-js';
 import * as NTIAlgo from '../../gen-js/NTIAlgo.js';
+
 
 class SnapshotObserverI extends NTIAlgo.SnapshotObserver
 {
@@ -17,7 +20,8 @@ class SnapshotObserverI extends NTIAlgo.SnapshotObserver
 	//console.log("df:", df)
 	//this.app.timestamp.refresh(snapshot.timestamp);
 	this.app.position_panel.refresh(snapshot.timestamp, snapshot.position);
-	this.app.algo_orders_panel.refresh(snapshot.algo_orders);
+	// this.app.algo_orders_panel.refresh(snapshot.algo_orders);
+	// this.app.algo_orders_panel_container.refresh(snapshot.algo_orders);
     }
 };
 
@@ -57,7 +61,9 @@ class MainPanel extends React.Component {
 	          ref={r => this.position_panel = r}
 		/>
 		<hr/>
-		<AlgoOrdersPanel.AlgoOrdersPanel comm={this.comm}
+		{/*<AlgoOrdersPanel.AlgoOrdersPanel*/}
+		<AlgoOrdersPanelContainer
+			  comm={this.comm}
 	          algoman_rop={this.state.algoman_rop}
 	          ref={r => this.algo_orders_panel = r}
 			  ws_url={this.ws_url}

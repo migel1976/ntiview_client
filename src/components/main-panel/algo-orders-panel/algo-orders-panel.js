@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import OrderModalContainer from './order-modal/order-modal-container';
 import {Button} from 'react-bootstrap';
 import "@devexpress/dx-react-grid";
 // import {Grid, Table, TableHeaderRow} from "@devexpress/dx-react-grid-bootstrap4";
@@ -35,6 +36,7 @@ const TableRowStyle = ({ row, ...restProps }) => (
 export class AlgoOrdersPanel extends React.Component {
     constructor(props) {
 	super(props);
+	this.state={isOpen:false};
 	this.state={flagSelection:false};
 	this.state = {selection: [],pageSize:5};
 	this.state={pageSizes:[5,10,0]};
@@ -110,10 +112,22 @@ export class AlgoOrdersPanel extends React.Component {
 	    console.log("order was placed");
 	});
     }
+
+	openModal=()=>{
+		this.props.setOrderShowModal(true);
+			// this.setState({isOpen:true})
+			// this.
+	};
+
     
     render() {
 	return (
 	    <div>
+		<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}
+
+		{/*<Button variant='primary' onClick={this.place_test_orders}>PLACE TEST ORDERS</Button>{' '}*/}
+		<Button variant='danger' onClick={this.cancelOrder} disabled={!this.state.flagSelection}>Cancel Order(s)</Button>
+		<OrderModalContainer />
 		<Grid rows={this.state.rows} columns={this.state.columns}>
 		{/*<PagingPanel pageSizes={this.state.pageSizes} />*/}
 		 <SelectionState
@@ -121,27 +135,26 @@ export class AlgoOrdersPanel extends React.Component {
 			onSelectionChange={this.setSelection}
 		  />
 		<IntegratedSelection />
-		<PagingState 
-			defaultCurrentPage={0}
-			 pageSize={this.state.pageSize}
-		/>
-		<IntegratedPaging />
+		{/*<PagingState */}
+			{/*defaultCurrentPage={0}*/}
+			 {/*pageSize={this.state.pageSize}*/}
+		{/*/>*/}
+		{/*<IntegratedPaging />*/}
 		<Table rowComponent={TableRowStyle} />
 		{/*<PagingPanel pageSizes={this.state.pageSizes} />*/}
-		<PagingPanel pageSizes={[5,10,0]} />
+		{/*<PagingPanel pageSizes={[5,10,0]} />*/}
 		{/*<Table />*/}
 		<VirtualTable />
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
 		</Grid>
 		  {/*<button onClick={this.place_test_orders}>PLACE TEST ORDERS</button>*/}
-		  <Button variant='primary' onClick={this.place_test_orders}>PLACE TEST ORDERS</Button>{' '}
-		  <Button variant='danger' onClick={this.cancelOrder} disabled={!this.state.flagSelection}>Cancel Order(s)</Button>
 		  {
 			  // this.state.flagSelection?
 			  // <button onClick={this.cancelOrder}>Cancel Order(s)</button>
 			  // :<div></div>
 		  }
+		   
 	    </div>
 	);
     }
