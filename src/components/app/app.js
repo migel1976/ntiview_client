@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
-import MainNavbar from '../mainnavbar/mainnavbar';
+import MainNavbarContainer from '../mainnavbar/mainnavbar-container';
 import Routes from '../routes/routes';
 
 const App=()=>{
@@ -9,7 +9,7 @@ const App=()=>{
 				<Container fluid>
 					<Row>
 						<Col>
-							<MainNavbar />
+							<MainNavbarContainer />
 							<Routes />
 						</Col>
 					</Row>

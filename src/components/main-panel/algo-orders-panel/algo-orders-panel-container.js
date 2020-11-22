@@ -7,11 +7,8 @@ import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
 
 class AlgoOrdersPanelContainer extends React.Component{
 	constructor(props){
-		// debugger;
 		super(props);
 	    this.state = {columns: [], rows: [], flagSelection:false, selection:[]};
-		// this.state={flagSelection:false};
-		// this.state = {selection: []};
 	}
 
 	setSelection=(sel)=>{
