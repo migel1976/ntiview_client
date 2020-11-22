@@ -14,14 +14,23 @@ class OrderModalContainer extends React.Component{
 		this.state={account:''}
 		// this.state={item:null}
 	};
-	
-	componentDidMount=()=>{
+    initStateValue(){
 		var ticker=this.props.ticker[0];
 		var buysell=this.props.buysell[0];
 		var algo=this.props.algo[0];
 		var algosize=this.props.algosize;
 		var account=this.props.account;
 		this.setState({ticker,buysell,algo,algosize,account});
+	};
+
+	componentDidMount=()=>{
+		this.initStateValue();
+		// var ticker=this.props.ticker[0];
+		// var buysell=this.props.buysell[0];
+		// var algo=this.props.algo[0];
+		// var algosize=this.props.algosize;
+		// var account=this.props.account;
+		// this.setState({ticker,buysell,algo,algosize,account});
 	};
 
 	changeInputAccount=(e)=>{
@@ -58,9 +67,9 @@ class OrderModalContainer extends React.Component{
 					algosize:this.state.algosize,
 					account:this.state.account
 		};
-		debugger;
+		// debugger;
 		// this.setState({item:lclitem});
-		this.props.setOrderItem(item);
+		// this.props.setOrderItem(item);
 		this.place_test_orders(item);
 		this.props.setOrderShowModal(false);
 		// console.log('saveForm is: ',this.props.orderitem);
@@ -99,8 +108,10 @@ class OrderModalContainer extends React.Component{
 	debugger;
 	this.props.algoman_rop.placeAlgoOrder(oa).then(() => {
 	    console.log("order was placed");
+		
 	});
     }
+		this.initStateValue();
 	};
 
 	render(){
