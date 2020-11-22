@@ -79,9 +79,8 @@ class OrderModalContainer extends React.Component{
 		const item=null;
 		this.props.setOrderItem(item);
 		this.props.setOrderShowModal(false);
-		// debugger;
-		this.setState({item});
-		console.log(this.props.orderitem);
+		// this.setState({item});
+		this.initStateValue();
 	};
 
     place_test_orders=(item)=>{
