@@ -8,6 +8,7 @@ class MainNavbarContainer extends React.Component{
 			return(
 				<MainNavbar 
 				     setOrderShowModal={this.props.setOrderShowModal}
+					 algoman_rop={this.props.algoman_rop}
 				/>
 			)
 		}
@@ -15,6 +16,7 @@ class MainNavbarContainer extends React.Component{
 
 const mapStateToProps=(state)=>({
 	// ordershowmodal:state.orderPage.ordershowmodal
+	algoman_rop:state.orderPage.algoman_rop
 });
 
 const mapActionsToProps=({

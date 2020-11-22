@@ -2,12 +2,12 @@ import React from 'react';
 // import StatContainer from '../statistic/stat-container';
 // import Pybx from '../pybx/pybx';
 // import PybxContainer from '../pybx/pybx-container';
-import MainPanel from '../main-panel/main-panel';
+import MainPanelContainer from '../main-panel/main-panel-container';
 
 const MainRoutes=()=>{
 	return(
 		<div>
-			<MainPanel />
+			<MainPanelContainer />
 			{/*<Pybx />*/}
 			{/*<PybxContainer />*/}
 			{/*<StatContainer city={'Albany'} />*/}

@@ -1,5 +1,6 @@
 const initialState={
 	algoman_rop:null,
+
 	account:'X',
 	ticker:['AAPL','MSFT'],
 	buysell:['SELL','BUY'],
@@ -11,9 +12,12 @@ const initialState={
 
 const SET_ORDER_ITEM='SET_ORDER_ITEM';
 const SET_ORDER_SHOW_MODAL='SET_ORDER_SHOW_MODAL';
+const SET_ALGOMAN_ROP='SET_ALGOMAN_ROP';
 
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
+		case SET_ALGOMAN_ROP:
+			return {...state,algoman_rop:action.rop}
 		case SET_ORDER_ITEM:
 			return {...state,orderitem:action.item}
 		case SET_ORDER_SHOW_MODAL:
@@ -22,6 +26,10 @@ const orderReducer=(state=initialState,action)=>{
 			return state;
 	}
 };
+
+export const setAlgomanRop=(rop)=>({
+				type:SET_ALGOMAN_ROP,
+				rop});
 
 export const setOrderItem=(item)=>({
 				type:SET_ORDER_ITEM,

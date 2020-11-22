@@ -24,7 +24,6 @@ class SnapshotObserverI extends NTIAlgo.SnapshotObserver
 	//this.app.timestamp.refresh(snapshot.timestamp);
 	this.app.position_panel.refresh(snapshot.timestamp, snapshot.position);
 	this.app.algo_orders_panel.refresh(snapshot.algo_orders);
-	// this.app.algo_orders_panel_container .refresh(snapshot.algo_orders);
     }
 };
 
@@ -32,7 +31,7 @@ class MainPanel extends React.Component {
     constructor() {
 	super();
 	this.comm = new libpybx.Communicator();
-	this.state = {algoman_rop: null};
+	// this.state = {algoman_rop: null};
 	this.ws_url = "ws://localhost:3005/";
     }
 
@@ -48,7 +47,8 @@ class MainPanel extends React.Component {
 	}).then(() => {
 	    return this.comm.get_rop(NTIAlgo.AlgoOrderManager,this.ws_url,"algoman");
 	}).then ((algoman_rop) => {
-	    this.setState({algoman_rop: algoman_rop});
+	    // this.setState({algoman_rop: algoman_rop});
+		this.props.setAlgomanRop(algoman_rop);
 	}).then(() => {
 	    console.log("connection setup is done");
 	});
@@ -59,17 +59,14 @@ class MainPanel extends React.Component {
 	return (
 		<div>
 		<PositionsPanel
-		// {/*<PositionsPanel.PositionsPanel*/}
 				comm={this.comm}
 	            ref={r => this.position_panel = r}
 		/>
 		<hr/>
 		<AlgoOrdersPanelContainer 
-		// <AlgoOrdersPanel
-		// <AlgoOrdersPanel.AlgoOrdersPanel
-		// {/*<AlgoOrdersPanelContainer*/}
 			  comm={this.comm}
-	          algoman_rop={this.state.algoman_rop}
+	          // algoman_rop={this.state.algoman_rop}
+	          algoman_rop={this.props.algoman_rop}
 	          ref={r => this.algo_orders_panel = r}
 			  ws_url={this.ws_url}
 		/>
