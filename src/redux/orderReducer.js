@@ -1,7 +1,8 @@
 const initialState={
-	account:'x',
-	ticker:['apl','msft'],
-	buysell:['sell','buy'],
+	algoman_rop:null,
+	account:'X',
+	ticker:['AAPL','MSFT'],
+	buysell:['SELL','BUY'],
 	algo:['TWAP'],
 	algosize:15000,
 	orderitem:{},

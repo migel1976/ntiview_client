@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {OrderModal} from './order-modal';
 import {setOrderItem,setOrderShowModal} from '../../../../redux/orderReducer';
+import * as NTIAlgo from '../../../../gen-js/NTIAlgo.js';
 
 class OrderModalContainer extends React.Component{
 	constructor(props){
@@ -11,6 +12,7 @@ class OrderModalContainer extends React.Component{
 		this.state={algo:''}
 		this.state={algosize:''}
 		this.state={account:''}
+		// this.state={item:null}
 	};
 	
 	componentDidMount=()=>{
@@ -53,20 +55,52 @@ class OrderModalContainer extends React.Component{
 					ticker:this.state.ticker,
 					buysell:this.state.buysell,
 					algo:this.state.algo,
-					algosize:this.state.algosize
+					algosize:this.state.algosize,
+					account:this.state.account
 		};
 		debugger;
+		// this.setState({item:lclitem});
 		this.props.setOrderItem(item);
+		this.place_test_orders(item);
 		this.props.setOrderShowModal(false);
 		// console.log('saveForm is: ',this.props.orderitem);
 	};
 
 	closeForm=()=>{
-		const item={ticker:''};
+		const item=null;
 		this.props.setOrderItem(item);
 		this.props.setOrderShowModal(false);
-		debugger;
+		// debugger;
+		this.setState({item});
 		console.log(this.props.orderitem);
+	};
+
+    place_test_orders=(item)=>{
+    if(item!==null){	
+	const ticker=item.ticker;
+	const buysell=item.buysell;
+	const algo=item.algo;
+	const algosize=parseInt(item.algosize);
+	const account=item.account;
+    // if(this.state.item!==null){	
+	// const ticker=this.state.item.ticker;
+	// const buysell=this.state.item.buysell;
+	// const algo=this.state.item.algo;
+	// const algosize=this.state.item.algosize;
+	// const account=this.state.item.account;
+	// let oa = new NTIAlgo.AlgoOrderAttributes("TWAP", "AAPL", "X",
+	// 					 'SELL',//NTIAlgo.OrderSide.SELL
+	// 					 15000,
+	// 					 0, 0, 0, 0, 0);
+	let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
+						 buysell,//NTIAlgo.OrderSide.SELL
+						 algosize,
+						 0, 0, 0, 0, 0);
+	debugger;
+	this.props.algoman_rop.placeAlgoOrder(oa).then(() => {
+	    console.log("order was placed");
+	});
+    }
 	};
 
 	render(){
@@ -113,4 +147,4 @@ const mapActionsToProps=({
 	setOrderShowModal
 });
 
-export default connect(mapStateToProps,mapActionsToProps)(OrderModalContainer);
+export default connect(mapStateToProps,mapActionsToProps,null,{forwardRef:true})(OrderModalContainer);
