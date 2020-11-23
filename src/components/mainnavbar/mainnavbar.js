@@ -7,6 +7,7 @@ import OrderModalContainer from '../main-panel/algo-orders-panel/order-modal/ord
 
 const MainNavbar=(props)=>{
 
+	debugger;
 	const openModal=()=>{
 		props.setOrderShowModal(true);
 	};
@@ -34,7 +35,7 @@ const MainNavbar=(props)=>{
 				  </NavDropdown>
                 </Nav>
 		  </Navbar.Collapse>
-			{props.ts}
+			<span style={{color:'white'}}>{props.ts}</span>
         </Navbar>
       </header>
 	</div>

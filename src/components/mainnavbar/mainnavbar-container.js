@@ -2,14 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {setOrderShowModal} from '../../redux/orderReducer';
 import MainNavbar from './mainnavbar';
+import moment from 'moment';
 
 class MainNavbarContainer extends React.Component{
+		
 		render(){
 			return(
 				<MainNavbar 
 				     setOrderShowModal={this.props.setOrderShowModal}
 					 algoman_rop={this.props.algoman_rop}
-					 ts={this.props.ts}
+				     // var date=moment(item.date).format('YYYY/MM/HH hh:mm:ss');
+					 // ts={moment(this.props.ts).format('MM/DD/YYYY hh:mm:ss')}
+					 ts={moment(this.props.ts,'YYYYMMDD hh:mm:ss').format('YYYY/MM/DD hh:mm:ss')}
 				/>
 			)
 		}

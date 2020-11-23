@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {setTS} from '../../../redux/orderReducer';
-
 import {PositionsPanel} from './positions-panel';
+import moment from 'moment';
 
 class PositionsPanelContainer extends React.Component{
 	constructor(props){
@@ -12,6 +12,9 @@ class PositionsPanelContainer extends React.Component{
 
     // refresh=(ts, df)=>{
     refresh(ts, df){
+	debugger;
+	// var date=moment(ts,'YYYYMMDD hh:mm:ss').format('YYYY/MM/DD hh:mm:ss');
+	// this.props.setTS(ts);
 	this.props.setTS(ts);
 	this.setState({
 	    // ts: ts,
