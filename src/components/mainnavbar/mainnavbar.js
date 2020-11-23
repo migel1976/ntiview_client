@@ -34,6 +34,7 @@ const MainNavbar=(props)=>{
 				  </NavDropdown>
                 </Nav>
 		  </Navbar.Collapse>
+		  Aloha
         </Navbar>
       </header>
 	</div>
