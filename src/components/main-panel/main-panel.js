@@ -1,15 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// import {AlgoOrdersPanel} from './algo-orders-panel/algo-orders-panel';
-// import * as AlgoOrdersPanel from './algo-orders-panel/algo-orders-panel';
-// import * as AlgoOrdersPanelContainer  from './algo-orders-panel/algo-orders-panel-container';
 import AlgoOrdersPanelContainer from './algo-orders-panel/algo-orders-panel-container';
 // import * as PositionsPanel from './positions-panel/positions-panel';
-import {PositionsPanel} from './positions-panel/positions-panel';
+// import {PositionsPanel} from './positions-panel/positions-panel';
+import PositionsPanelContainer from './positions-panel/positions-panel-container';
 
 import * as libpybx from 'libpybx-js';
 import * as NTIAlgo from '../../gen-js/NTIAlgo.js';
-
 
 class SnapshotObserverI extends NTIAlgo.SnapshotObserver
 {
@@ -58,7 +55,8 @@ class MainPanel extends React.Component {
     render() {
 	return (
 		<div>
-		<PositionsPanel
+		{/*<PositionsPanel*/}
+		<PositionsPanelContainer
 				comm={this.comm}
 	            ref={r => this.position_panel = r}
 		/>
