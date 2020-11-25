@@ -1,11 +1,12 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
+import React,{Component} from 'react';
 
 import "@devexpress/dx-react-grid";
 import {Grid, Table, TableHeaderRow} from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 
-export class PositionsPanel extends React.Component {
+export class PositionsPanel extends Component {
     constructor(props) {
 	super(props);
 	// this.state = {ts: null, columns: [], rows: []};

@@ -1,18 +1,28 @@
-import React from 'react';
+// import React from 'react';
+import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {OrderModal} from './order-modal';
 import {setOrderItem,setOrderShowModal} from '../../../../redux/orderReducer';
 import * as NTIAlgo from '../../../../gen-js/NTIAlgo.js';
 
-class OrderModalContainer extends React.Component{
+class OrderModalContainer extends Component{
 	constructor(props){
 		super(props);
+
 		this.state={ticker:''}
 		this.state={buysell:''}
 		this.state={algo:''}
 		this.state={algosize:''}
 		this.state={account:''}
 		// this.state={item:null}
+		// this.place_test_orders = this.place_test_orders.bind(this);
+		this.changeInputAccount=this.changeInputAccount.bind(this);
+		this.changeInputAlgosize=this.changeInputAlgosize.bind(this);
+		this.changeSelectTicker=this.changeSelectTicker.bind(this);
+		this.changeSelectBuysell=this.changeSelectBuysell.bind(this);
+		this.changeSelectAlgo=this.changeSelectAlgo.bind(this);
+		this.saveForm=this.saveForm.bind(this);
+		this.closeForm=this.closeForm.bind(this);
 	};
     initStateValue(){
 		var ticker=this.props.ticker[0];
@@ -23,43 +33,43 @@ class OrderModalContainer extends React.Component{
 		this.setState({ticker,buysell,algo,algosize,account});
 	};
 
-	componentDidMount=()=>{
+	componentDidMount(){
 		this.initStateValue();
-		// var ticker=this.props.ticker[0];
-		// var buysell=this.props.buysell[0];
-		// var algo=this.props.algo[0];
-		// var algosize=this.props.algosize;
-		// var account=this.props.account;
-		// this.setState({ticker,buysell,algo,algosize,account});
 	};
 
-	changeInputAccount=(e)=>{
+	// changeInputAccount=(e)=>{
+	changeInputAccount(e){
 		var account=e.target.value;
 		console.log('algosize is:',account);
 		this.setState({account});
 	};
 
-	changeInputAlgosize=(e)=>{
+	// changeInputAlgosize=(e)=>{
+	changeInputAlgosize(e){
 		var algosize=e.target.value;
 		console.log('algosize is:',algosize);
 		this.setState({algosize});
 	};
 
-	changeSelectTicker=(e)=>{
+	// changeSelectTicker=(e)=>{
+	changeSelectTicker(e){
 		var ticker=e.target.value;
 		this.setState({ticker});
 	};
 
-	changeSelectBuysell=(e)=>{
+	// changeSelectBuysell=(e)=>{
+	changeSelectBuysell(e){
 		var buysell=e.target.value;
 		this.setState({buysell});
 	};
 	
-	changeSelectAlgo=(e)=>{
+	// changeSelectAlgo=(e)=>{
+	changeSelectAlgo(e){
 		var algo=e.target.value;
 		this.setState({algo});
 	};
-	saveForm=(e)=>{
+	// saveForm=(e)=>{
+	saveForm(e){
 		const item={
 					ticker:this.state.ticker,
 					buysell:this.state.buysell,
@@ -67,15 +77,12 @@ class OrderModalContainer extends React.Component{
 					algosize:this.state.algosize,
 					account:this.state.account
 		};
-		// debugger;
-		// this.setState({item:lclitem});
-		// this.props.setOrderItem(item);
 		this.place_test_orders(item);
 		this.props.setOrderShowModal(false);
-		// console.log('saveForm is: ',this.props.orderitem);
 	};
 
-	closeForm=()=>{
+	// closeForm=(e)=>{
+	closeForm(e){
 		const item=null;
 		this.props.setOrderItem(item);
 		this.props.setOrderShowModal(false);
@@ -83,23 +90,14 @@ class OrderModalContainer extends React.Component{
 		this.initStateValue();
 	};
 
-    place_test_orders=(item)=>{
+    // place_test_orders=(item)=>{
+    place_test_orders(item){
     if(item!==null){	
 	const ticker=item.ticker;
 	const buysell=item.buysell;
 	const algo=item.algo;
 	const algosize=parseInt(item.algosize);
 	const account=item.account;
-    // if(this.state.item!==null){	
-	// const ticker=this.state.item.ticker;
-	// const buysell=this.state.item.buysell;
-	// const algo=this.state.item.algo;
-	// const algosize=this.state.item.algosize;
-	// const account=this.state.item.account;
-	// let oa = new NTIAlgo.AlgoOrderAttributes("TWAP", "AAPL", "X",
-	// 					 'SELL',//NTIAlgo.OrderSide.SELL
-	// 					 15000,
-	// 					 0, 0, 0, 0, 0);
 	let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
 						 buysell,//NTIAlgo.OrderSide.SELL
 						 algosize,

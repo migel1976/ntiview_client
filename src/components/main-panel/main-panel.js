@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
+import React,{Component} from 'react';
 import AlgoOrdersPanelContainer from './algo-orders-panel/algo-orders-panel-container';
 // import * as PositionsPanel from './positions-panel/positions-panel';
 // import {PositionsPanel} from './positions-panel/positions-panel';
@@ -24,7 +25,7 @@ class SnapshotObserverI extends NTIAlgo.SnapshotObserver
     }
 };
 
-class MainPanel extends React.Component {
+class MainPanel extends Component {
     constructor() {
 	super();
 	this.comm = new libpybx.Communicator();

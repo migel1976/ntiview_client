@@ -3,11 +3,6 @@ import {Form} from 'react-bootstrap';
 import SelectTicker from './select-ticker';
 
 const FormModal=(props)=>{
-	// const changeSelectTicker=(e)=>{
-	// 	var ticker=e.target.value;
-	// 	debugger;
-	// 	alert('ticker value is'+ticker);
-	// };
 	console.log('props is ', props);
 	return(
 			<Form>

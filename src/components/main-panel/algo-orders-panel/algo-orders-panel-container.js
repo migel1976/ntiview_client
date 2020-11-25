@@ -1,17 +1,20 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {connect} from 'react-redux';
 
 import {AlgoOrdersPanel} from './algo-orders-panel';
 import {setOrderShowModal} from '../../../redux/orderReducer';
 import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
 
-class AlgoOrdersPanelContainer extends React.Component{
+class AlgoOrdersPanelContainer extends Component{
 	constructor(props){
 		super(props);
 	    this.state = {columns: [], rows: [], flagSelection:false, selection:[]};
+		this.setSelection=this.setSelection.bind(this);
+		this.cancelOrder=this.cancelOrder.bind(this);
 	}
 
-	setSelection=(sel)=>{
+	// setSelection=(sel)=>{
+	setSelection(sel){
 		this.setState({selection:sel});		
 		if(sel.length>0){
 			this.setState({flagSelection:true});
@@ -37,7 +40,8 @@ class AlgoOrdersPanelContainer extends React.Component{
 		this.setState({flagSelection:false});
 	};
 
-	cancelOrder=()=>{
+	// cancelOrder=()=>{
+	cancelOrder(){
 		this.cancelOrders();
 	};
 	

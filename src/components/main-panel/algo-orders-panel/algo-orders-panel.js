@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
+import React,{Component} from 'react';
 import OrderModalContainer from './order-modal/order-modal-container';
 import {Button} from 'react-bootstrap';
 import "@devexpress/dx-react-grid";
@@ -19,12 +20,14 @@ import {
 	IntegratedPaging
 } from '@devexpress/dx-react-grid';
 // import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
-export class AlgoOrdersPanel extends React.Component {
+export class AlgoOrdersPanel extends Component {
     constructor(props) {
 	super(props);
+		this.openModal=this.openModal.bind(this);
     }
 
-	openModal=()=>{
+	// openModal=()=>{
+	openModal(){
 		this.props.setOrderShowModal(true);
 	};
     

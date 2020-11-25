@@ -1,10 +1,11 @@
-import React from 'react';
+// import React from 'react';
+import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {setTS} from '../../../redux/orderReducer';
 import {PositionsPanel} from './positions-panel';
 import moment from 'moment';
 
-class PositionsPanelContainer extends React.Component{
+class PositionsPanelContainer extends Component{
 	constructor(props){
 		super(props);
 	    this.state = {columns: [], rows: []};

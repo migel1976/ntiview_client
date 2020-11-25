@@ -1,9 +1,10 @@
-import React from 'react';
+// import React from 'react';
+import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {setAlgomanRop} from '../../redux/orderReducer';
 import MainPanel from './main-panel';
 
-class MainPanelContainer extends React.Component{
+class MainPanelContainer extends Component{
 	render(){
 		return(
 			<MainPanel 

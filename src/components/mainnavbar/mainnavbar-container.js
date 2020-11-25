@@ -1,10 +1,11 @@
-import React from 'react';
+import React,{Component} from 'react';
+// import React from 'react';
 import {connect} from 'react-redux';
 import {setOrderShowModal} from '../../redux/orderReducer';
 import MainNavbar from './mainnavbar';
 import moment from 'moment';
 
-class MainNavbarContainer extends React.Component{
+class MainNavbarContainer extends Component{
 		
 		render(){
 			return(
