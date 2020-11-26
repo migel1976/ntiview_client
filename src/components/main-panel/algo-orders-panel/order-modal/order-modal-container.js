@@ -2,7 +2,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {OrderModal} from './order-modal';
-import {setOrderItem,setOrderShowModal} from '../../../../redux/orderReducer';
+import {setOrderItem,setOrderShowModal,setSelectionOrder} from '../../../../redux/orderReducer';
 import * as NTIAlgo from '../../../../gen-js/NTIAlgo.js';
 
 class OrderModalContainer extends Component{
