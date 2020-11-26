@@ -3,15 +3,20 @@ import {connect} from 'react-redux';
 import {Alert} from 'reactstrap';
 
 import {AlgoOrdersPanel} from './algo-orders-panel';
-import {setGraphShowModal,setOrderShowModal,setSelectionOrder} from '../../../redux/orderReducer';
+import {setGraphShowModal,
+		setOrderShowModal,
+	    setSelectionOrder,
+	    setRowsOrder,
+		setColumnsOrder
+		} from '../../../redux/orderReducer';
 import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
 
 class AlgoOrdersPanelContainer extends Component{
 	constructor(props){
 		super(props);
 	    this.state = {
-			columns: [],//массив заголовков данных получаемых от сервера
-			rows: [],//массив данных получаемых от сервера
+			// columns: [],//массив заголовков данных получаемых от сервера
+			// rows: [],//массив данных получаемых от сервера
 			flagSelection:false,//флаг disabled кнопки Cancel Orders
 			// selection:[],//массив в котором хранится выбранные элементы из таблицы
 			toggleSelectionGraph:false,//флаг определения режим, false-отображение диалога с графиком
@@ -50,7 +55,8 @@ class AlgoOrdersPanelContainer extends Component{
 		var ret;
 		for(const el in elements){
 			var id=elements[count];
-			var objectID=this.state.rows[id].aoid;
+			// var objectID=this.state.rows[id].aoid;
+			var objectID=this.props.rowsorder[id].aoid;
 			var rop=await this.props.comm.get_rop(NTIAlgo.AlgoOrder,this.props.ws_url,objectID);
 			ret=rop.cancelAlgoOrder();
 			console.log('ret is',ret);
@@ -73,8 +79,10 @@ class AlgoOrdersPanelContainer extends Component{
 	};
 
     refresh(df) {
-	this.setState({columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
-		       rows: JSON.parse(df.dataframeJSON)});
+		this.props.setColumnsOrder(df.columns.map(x => {return {name: x, title:x.toUpperCase()};}));
+	    this.props.setRowsOrder(JSON.parse(df.dataframeJSON));
+		// this.setState({columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
+		//        rows: JSON.parse(df.dataframeJSON)});
     }
 
 	render(){
@@ -82,8 +90,12 @@ class AlgoOrdersPanelContainer extends Component{
 			<AlgoOrdersPanel 
 			    algoman_rop={this.props.algoman_rop}	
 				setOrderShowModal={this.props.setOrderShowModal}
-				columns={this.state.columns}
-				rows={this.state.rows}
+
+				columns={this.props.columnsorder}
+				rows={this.props.rowsorder}
+			
+				// columns={this.state.columns}
+				// rows={this.state.rows}
 				flagSelection={this.state.flagSelection}
 				// selection={this.state.selection}
 				selectionorder={this.props.selectionorder}
@@ -100,13 +112,17 @@ class AlgoOrdersPanelContainer extends Component{
 const mapStateToProps=(state)=>({
 	ordershowmodal:state.orderPage.ordershowmodal,
 	graphshowmodal:state.orderPage.graphshowmodal,
-	selectionorder:state.orderPage.selectionorder
+	selectionorder:state.orderPage.selectionorder,
+	rowsorder:state.orderPage.rowsorder,
+	columnsorder:state.orderPage.columnsorder
 });
 
 const mapActionsToProps=({
 	setOrderShowModal,
 	setGraphShowModal,
-	setSelectionOrder
+	setSelectionOrder,
+	setRowsOrder,
+	setColumnsOrder
 });
 // export default AlgoOrdersPanelContainer;
 export default connect(mapStateToProps,mapActionsToProps,null,{forwardRef:true})(AlgoOrdersPanelContainer);

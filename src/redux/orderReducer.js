@@ -9,8 +9,13 @@ const initialState={
 	ordershowmodal:false,//флаг для отображения модального окна формирования заказов 
 	graphshowmodal:false,//флаг для отображения модального окна графика статистики
 	ts:null,//timestamp получаемое от сервера
-	selectionorder:[]
+	selectionorder:[],//массив выбранных строк из таблицы order
+	rowsorder:[],
+	columnsorder:[]
 };
+
+const SET_ROWS_ORDER='SET_ROWS_ORDER';
+const SET_COLUMNS_ORDER='SET_COLUMNS_ORDER';
 
 const SET_ORDER_ITEM='SET_ORDER_ITEM';
 const SET_ORDER_SHOW_MODAL='SET_ORDER_SHOW_MODAL';
@@ -21,6 +26,10 @@ const SET_SELECTION_ORDER='SET_SELECTION_ORDER';
 
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
+		case SET_ROWS_ORDER:
+			return {...state,rowsorder:[...action.rows]}
+		case SET_COLUMNS_ORDER:
+			return {...state,columnsorder:[...action.columns]}
 		case SET_SELECTION_ORDER:
 			return {...state,selectionorder:[...action.items]}
 		case SET_TS:
@@ -60,5 +69,13 @@ export const setGraphShowModal=(flag)=>({
 export const setSelectionOrder=(items)=>({
 				type:SET_SELECTION_ORDER,
 				items});
+
+export const setRowsOrder=(rows)=>({
+				type:SET_ROWS_ORDER,
+				rows});
+
+export const setColumnsOrder=(columns)=>({
+				type:SET_COLUMNS_ORDER,
+				columns});
 
 export default orderReducer;
