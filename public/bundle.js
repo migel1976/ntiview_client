@@ -59015,17 +59015,12 @@
 
 
 	  setSelection(sel) {
-	    this.setState({
-	      selection: sel
-	    });
-
+	    // this.setState({selection:sel});		
 	    if (sel.length > 0) {
 	      this.setState({
 	        flagSelection: true
 	      });
-	      this.setState({
-	        showPopup: true
-	      });
+	      this.props.setOrderShowModal(true); // this.setState({showPopup:true});
 	    } else {
 	      this.setState({
 	        flagSelection: false
@@ -62312,6 +62307,9 @@
 	    fluid: true
 	  }, /*#__PURE__*/react.createElement(Row, null, /*#__PURE__*/react.createElement(Col, null, /*#__PURE__*/react.createElement(MainNavbarContainer$1, null), /*#__PURE__*/react.createElement(Routes, null)))));
 	};
+
+	var css_248z$3 = "@import url('https://fonts.googleapis.com/css?family=Open+Sans');\nbody {\n    font-family: 'Open Sans', sans-serif;\n}\n";
+	styleInject(css_248z$3);
 
 	reactDom.render( /*#__PURE__*/react.createElement(Provider, {
 	  store: store

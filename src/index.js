@@ -10,6 +10,7 @@ import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 
 // import App from './App.js';
 import App from './components/app/app.js';
+import './index.css';
 
 ReactDOM.render( <Provider store={store}>
 					<BrowserRouter>

@@ -58,6 +58,7 @@ export class AlgoOrdersPanel extends Component {
 		<OrderModalContainer 
 			algoman_rop={this.props.algoman_rop}	
 		/>
+
 		{/*<OverlayTrigger */}
 			{/*overlay={popover}*/}
 			{/*placement="bottom"*/}

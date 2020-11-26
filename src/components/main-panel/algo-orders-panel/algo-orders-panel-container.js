@@ -16,10 +16,11 @@ class AlgoOrdersPanelContainer extends Component{
 
 	// setSelection=(sel)=>{
 	setSelection(sel){
-		this.setState({selection:sel});		
+		// this.setState({selection:sel});		
 		if(sel.length>0){
 			this.setState({flagSelection:true});
-			this.setState({showPopup:true});
+			this.props.setOrderShowModal(true);
+			// this.setState({showPopup:true});
 		}else
 		{
 			this.setState({flagSelection:false});
