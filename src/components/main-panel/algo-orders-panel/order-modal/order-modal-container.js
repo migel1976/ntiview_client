@@ -102,7 +102,7 @@ class OrderModalContainer extends Component{
 						 buysell,//NTIAlgo.OrderSide.SELL
 						 algosize,
 						 0, 0, 0, 0, 0);
-	debugger;
+	// debugger;
 	this.props.algoman_rop.placeAlgoOrder(oa).then(() => {
 	    console.log("order was placed");
 		

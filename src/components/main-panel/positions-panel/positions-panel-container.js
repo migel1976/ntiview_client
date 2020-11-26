@@ -13,13 +13,13 @@ class PositionsPanelContainer extends Component{
 
     // refresh=(ts, df)=>{
     refresh(ts, df){
-	debugger;
+	// debugger;
 	// var date=moment(ts,'YYYYMMDD hh:mm:ss').format('YYYY/MM/DD hh:mm:ss');
 	// this.props.setTS(ts);
 	this.props.setTS(ts);
 	this.setState({
 	    // ts: ts,
-	    columns: df.columns.map(x => {return {name: x};}),
+		columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
 	    rows: JSON.parse(df.dataframeJSON)
 	});
     }

@@ -8,9 +8,10 @@ import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
 class AlgoOrdersPanelContainer extends Component{
 	constructor(props){
 		super(props);
-	    this.state = {columns: [], rows: [], flagSelection:false, selection:[]};
+	    this.state = {columns: [], rows: [], flagSelection:false, selection:[], showPopup:false};
 		this.setSelection=this.setSelection.bind(this);
 		this.cancelOrder=this.cancelOrder.bind(this);
+		
 	}
 
 	// setSelection=(sel)=>{
@@ -18,10 +19,12 @@ class AlgoOrdersPanelContainer extends Component{
 		this.setState({selection:sel});		
 		if(sel.length>0){
 			this.setState({flagSelection:true});
+			this.setState({showPopup:true});
 		}else
 		{
 			this.setState({flagSelection:false});
 		}
+		
 	};
 
 	async cancelOrders(){
@@ -46,13 +49,14 @@ class AlgoOrdersPanelContainer extends Component{
 	};
 	
     refresh(df) {
-	this.setState({columns: df.columns.map(x => {return {name: x};}),
+	this.setState({columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
 		       rows: JSON.parse(df.dataframeJSON)});
     }
 
 	render(){
 		return(
 			<AlgoOrdersPanel 
+				showPopup={this.props.showPopup}
 			    algoman_rop={this.props.algoman_rop}	
 				setOrderShowModal={this.props.setOrderShowModal}
 				columns={this.state.columns}

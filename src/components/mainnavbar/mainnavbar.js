@@ -7,7 +7,7 @@ import OrderModalContainer from '../main-panel/algo-orders-panel/order-modal/ord
 
 const MainNavbar=(props)=>{
 
-	debugger;
+	// debugger;
 	const openModal=()=>{
 		props.setOrderShowModal(true);
 	};
