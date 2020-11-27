@@ -12544,8 +12544,15 @@
 	  //флаг для отображения модального окна графика статистики
 	  ts: null,
 	  //timestamp получаемое от сервера
-	  selectionorder: []
+	  selectionorder: [],
+	  //массив выбранных строк из таблицы order
+	  rowsorder: [],
+	  columnsorder: [],
+	  rowcurrentorder: {}
 	};
+	const SET_ROW_CURRENT_ORDER = 'SET_ROW_CURRENT_ORDER';
+	const SET_ROWS_ORDER = 'SET_ROWS_ORDER';
+	const SET_COLUMNS_ORDER = 'SET_COLUMNS_ORDER';
 	const SET_ORDER_ITEM = 'SET_ORDER_ITEM';
 	const SET_ORDER_SHOW_MODAL = 'SET_ORDER_SHOW_MODAL';
 	const SET_GRAPH_SHOW_MODAL = 'SET_GRAPH_SHOW_MODAL';
@@ -12555,6 +12562,21 @@
 
 	const orderReducer = (state = initialState, action) => {
 	  switch (action.type) {
+	    case SET_ROW_CURRENT_ORDER:
+	      return { ...state,
+	        rowcurrentorder: action.row
+	      };
+
+	    case SET_ROWS_ORDER:
+	      return { ...state,
+	        rowsorder: [...action.rows]
+	      };
+
+	    case SET_COLUMNS_ORDER:
+	      return { ...state,
+	        columnsorder: [...action.columns]
+	      };
+
 	    case SET_SELECTION_ORDER:
 	      return { ...state,
 	        selectionorder: [...action.items]
@@ -12613,6 +12635,18 @@
 	const setSelectionOrder = items => ({
 	  type: SET_SELECTION_ORDER,
 	  items
+	});
+	const setRowsOrder = rows => ({
+	  type: SET_ROWS_ORDER,
+	  rows
+	});
+	const setColumnsOrder = columns => ({
+	  type: SET_COLUMNS_ORDER,
+	  columns
+	});
+	const setRowCurrentOrder = row => ({
+	  type: SET_ROW_CURRENT_ORDER,
+	  row
 	});
 
 	const rootReducer = combineReducers({
@@ -46229,10 +46263,17 @@
 	InputGroupAddon.defaultProps = defaultProps$m;
 
 	const GraphModal = props => {
+	  debugger;
+	  var row = props.row; // debugger;
+	  // var elements=props.selectionorder;
+	  // var id=elements[0];
+	  // var objectID=props.rowsorder[id];
+	  // console.log('ObjectID',objectID);
+
 	  return /*#__PURE__*/react.createElement(Modal$1, {
 	    show: props.show,
 	    onHide: props.show
-	  }, /*#__PURE__*/react.createElement(Modal$1.Header, null, /*#__PURE__*/react.createElement(Modal$1.Title, null, "Graph current row")), /*#__PURE__*/react.createElement(Modal$1.Body, null, "Hello from row number xxx"), /*#__PURE__*/react.createElement(Modal$1.Footer, null, /*#__PURE__*/react.createElement(Button, {
+	  }, /*#__PURE__*/react.createElement(Modal$1.Header, null, /*#__PURE__*/react.createElement(Modal$1.Title, null, "Graph current row")), /*#__PURE__*/react.createElement(Modal$1.Body, null, "Hello from row number // ", props.row), /*#__PURE__*/react.createElement(Modal$1.Footer, null, /*#__PURE__*/react.createElement(Button, {
 	    variant: "secondary",
 	    onClick: props.closeForm
 	  }, "Close")));
@@ -46240,10 +46281,23 @@
 
 	class GraphModalContainer extends react_6 {
 	  constructor(props) {
-	    debugger;
+	    // debugger;
 	    super(props); // this.saveForm=this.saveForm.bind(this);
 
-	    this.closeForm = this.closeForm.bind(this);
+	    this.closeForm = this.closeForm.bind(this); // this.findRow();
+	  }
+
+	  // componentDidUpdate(prevProps){
+	  // 	if(prevProps.rowsorder!==this.props.rowsorder){
+	  // 		this.findRow();
+	  // 	}
+	  // };
+	  findRow() {
+	    debugger;
+	    var elements = this.props.selectionorder;
+	    var id = elements[0];
+	    var objectID = this.props.rowsorder[id];
+	    console.log('ObjectID', objectID); // var objectID=this.props.rowsorder[id].aoid;
 	  }
 
 	  // saveForm(e){
@@ -46258,21 +46312,27 @@
 	    return /*#__PURE__*/react.createElement(GraphModal, {
 	      show: this.props.graphshowmodal // saveForm={this.saveForm}
 	      ,
-	      closeForm: this.closeForm
+	      closeForm: this.closeForm,
+	      row: this.props.rowcurrentorder // selectionorder={this.props.selectionorder}
+	      // rowsorder={this.props.rowsorder}
+
 	    });
 	  }
 
 	}
 
 	const mapStateToProps$2 = state => ({
-	  graphshowmodal: state.orderPage.graphshowmodal
+	  graphshowmodal: state.orderPage.graphshowmodal,
+	  rowsorder: state.orderPage.rowsorder,
+	  selectionorder: state.orderPage.selectionorder,
+	  rowcurrentorder: state.orderPage.rowcurrentorder
 	});
 
 	const mapActionsToProps$2 = {
 	  setGraphShowModal,
 	  setSelectionOrder
 	};
-	var GraphModalContainer$1 = connect(mapStateToProps$2, mapActionsToProps$2, null, {
+	connect(mapStateToProps$2, mapActionsToProps$2, null, {
 	  forwardRef: true
 	})(GraphModalContainer);
 
@@ -58749,7 +58809,7 @@
 	    }))), /*#__PURE__*/react.createElement(Input, {
 	      placeholder: "show graph",
 	      disabled: true
-	    }))), /*#__PURE__*/react.createElement(GraphModalContainer$1, null), /*#__PURE__*/react.createElement(Grid$1, {
+	    }))), /*#__PURE__*/react.createElement(Grid$1, {
 	      rows: this.props.rows,
 	      columns: this.props.columns
 	    }, /*#__PURE__*/react.createElement(SelectionState // selection={this.props.selection}
@@ -58768,10 +58828,8 @@
 	  constructor(props) {
 	    super(props);
 	    this.state = {
-	      columns: [],
-	      //массив заголовков данных получаемых от сервера
-	      rows: [],
-	      //массив данных получаемых от сервера
+	      // columns: [],//массив заголовков данных получаемых от сервера
+	      // rows: [],//массив данных получаемых от сервера
 	      flagSelection: false,
 	      //флаг disabled кнопки Cancel Orders
 	      // selection:[],//массив в котором хранится выбранные элементы из таблицы
@@ -58785,8 +58843,7 @@
 
 
 	  setSelection(sel) {
-	    debugger;
-
+	    // debugger;
 	    if (this.state.toggleSelectionGraph === false) {
 	      // this.setState({selection:sel});		
 	      this.props.setSelectionOrder(sel);
@@ -58802,6 +58859,12 @@
 	      }
 	    } else {
 	      // this.setState({selection:sel});		
+	      debugger; // var elements=sel;
+	      // var id=elements[0];
+
+	      var id = sel[0];
+	      var currrow = this.props.rowsorder[id];
+	      this.props.setRowCurrentOrder(currrow);
 	      this.props.setSelectionOrder(sel);
 	      this.props.setGraphShowModal(true);
 	    }
@@ -58814,8 +58877,9 @@
 	    var ret;
 
 	    for (const el in elements) {
-	      var id = elements[count];
-	      var objectID = this.state.rows[id].aoid;
+	      var id = elements[count]; // var objectID=this.state.rows[id].aoid;
+
+	      var objectID = this.props.rowsorder[id].aoid;
 	      var rop = await this.props.comm.get_rop(AlgoOrder, this.props.ws_url, objectID);
 	      ret = rop.cancelAlgoOrder();
 	      console.log('ret is', ret);
@@ -58840,23 +58904,24 @@
 	  }
 
 	  refresh(df) {
-	    this.setState({
-	      columns: df.columns.map(x => {
-	        return {
-	          name: x,
-	          title: x.toUpperCase()
-	        };
-	      }),
-	      rows: JSON.parse(df.dataframeJSON)
-	    });
+	    this.props.setColumnsOrder(df.columns.map(x => {
+	      return {
+	        name: x,
+	        title: x.toUpperCase()
+	      };
+	    }));
+	    this.props.setRowsOrder(JSON.parse(df.dataframeJSON)); // this.setState({columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
+	    //        rows: JSON.parse(df.dataframeJSON)});
 	  }
 
 	  render() {
 	    return /*#__PURE__*/react.createElement(AlgoOrdersPanel, {
 	      algoman_rop: this.props.algoman_rop,
 	      setOrderShowModal: this.props.setOrderShowModal,
-	      columns: this.state.columns,
-	      rows: this.state.rows,
+	      columns: this.props.columnsorder,
+	      rows: this.props.rowsorder // columns={this.state.columns}
+	      // rows={this.state.rows}
+	      ,
 	      flagSelection: this.state.flagSelection // selection={this.state.selection}
 	      ,
 	      selectionorder: this.props.selectionorder,
@@ -58872,13 +58937,18 @@
 	const mapStateToProps$3 = state => ({
 	  ordershowmodal: state.orderPage.ordershowmodal,
 	  graphshowmodal: state.orderPage.graphshowmodal,
-	  selectionorder: state.orderPage.selectionorder
+	  selectionorder: state.orderPage.selectionorder,
+	  rowsorder: state.orderPage.rowsorder,
+	  columnsorder: state.orderPage.columnsorder
 	});
 
 	const mapActionsToProps$3 = {
 	  setOrderShowModal,
 	  setGraphShowModal,
-	  setSelectionOrder
+	  setSelectionOrder,
+	  setRowsOrder,
+	  setColumnsOrder,
+	  setRowCurrentOrder
 	}; // export default AlgoOrdersPanelContainer;
 
 	var AlgoOrdersPanelContainer$1 = connect(mapStateToProps$3, mapActionsToProps$3, null, {

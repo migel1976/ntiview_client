@@ -11,9 +11,11 @@ const initialState={
 	ts:null,//timestamp получаемое от сервера
 	selectionorder:[],//массив выбранных строк из таблицы order
 	rowsorder:[],
-	columnsorder:[]
+	columnsorder:[],
+	rowcurrentorder:{}
 };
 
+const SET_ROW_CURRENT_ORDER='SET_ROW_CURRENT_ORDER';
 const SET_ROWS_ORDER='SET_ROWS_ORDER';
 const SET_COLUMNS_ORDER='SET_COLUMNS_ORDER';
 
@@ -26,6 +28,8 @@ const SET_SELECTION_ORDER='SET_SELECTION_ORDER';
 
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
+		case SET_ROW_CURRENT_ORDER:
+			return {...state,rowcurrentorder:action.row}
 		case SET_ROWS_ORDER:
 			return {...state,rowsorder:[...action.rows]}
 		case SET_COLUMNS_ORDER:
@@ -77,5 +81,9 @@ export const setRowsOrder=(rows)=>({
 export const setColumnsOrder=(columns)=>({
 				type:SET_COLUMNS_ORDER,
 				columns});
+
+export const setRowCurrentOrder=(row)=>({
+				type:SET_ROW_CURRENT_ORDER,
+				row});
 
 export default orderReducer;

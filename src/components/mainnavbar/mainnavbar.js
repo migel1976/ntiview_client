@@ -4,6 +4,7 @@ import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import {Form,FormControl,Button} from 'react-bootstrap';
 
 import OrderModalContainer from '../main-panel/algo-orders-panel/order-modal/order-modal-container';
+import GraphModalContainer from '../main-panel/algo-orders-panel/graph-modal/graph-modal-container';
 
 const MainNavbar=(props)=>{
 
@@ -17,6 +18,7 @@ const MainNavbar=(props)=>{
 		<OrderModalContainer 
 			algoman_rop={props.algoman_rop}	
 		/>
+		<GraphModalContainer />
       <header>
 		<Navbar variant="dark" bg="primary" expand='lg'>
           <Navbar.Brand href="#home">NTIView</Navbar.Brand>

@@ -6,10 +6,29 @@ import {GraphModal} from './graph-modal';
 
 class GraphModalContainer extends Component{
 	constructor(props){
-		debugger;
+		// debugger;
 		super(props);
 		// this.saveForm=this.saveForm.bind(this);
 		this.closeForm=this.closeForm.bind(this);
+		// this.findRow();
+
+	};
+
+	// componentDidUpdate(prevProps){
+	// 	if(prevProps.rowsorder!==this.props.rowsorder){
+	// 		this.findRow();
+	// 	}
+	// };
+		
+
+	findRow(){
+		debugger;
+		var elements=this.props.selectionorder;
+		var id=elements[0];
+		var objectID=this.props.rowsorder[id];
+		console.log('ObjectID',objectID);
+		// var objectID=this.props.rowsorder[id].aoid;
+
 	};
 
 	// saveForm(e){
@@ -26,6 +45,9 @@ class GraphModalContainer extends Component{
 				show={this.props.graphshowmodal}
 				// saveForm={this.saveForm}
 				closeForm={this.closeForm}
+				row={this.props.rowcurrentorder}
+				// selectionorder={this.props.selectionorder}
+				// rowsorder={this.props.rowsorder}
 			/>
 		)
 	}
@@ -33,7 +55,9 @@ class GraphModalContainer extends Component{
 
 const mapStateToProps=(state)=>({
 	graphshowmodal:state.orderPage.graphshowmodal,
-
+	rowsorder:state.orderPage.rowsorder,
+	selectionorder:state.orderPage.selectionorder,
+	rowcurrentorder:state.orderPage.rowcurrentorder
 });
 
 const mapActionsToProps=({

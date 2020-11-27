@@ -59,12 +59,12 @@ export class AlgoOrdersPanel extends Component {
 			{/*algoman_rop={this.props.algoman_rop}	*/}
 		{/*/>*/}
 
-		<GraphModalContainer />
+		{/*<GraphModalContainer />*/}
 
 		<Grid rows={this.props.rows} columns={this.props.columns}>
 		 <SelectionState
-			// selection={this.props.selection}
-			selection={this.props.selectionorder}
+			selection={this.props.selection}
+			// selection={this.props.selectionorder}
 			onSelectionChange={this.props.setSelection}
 		  />
 		<IntegratedSelection />
