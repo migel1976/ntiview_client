@@ -1,3 +1,6 @@
+import OrdersApi from '../api/orders';
+import moment from 'moment'
+
 const initialState={
 	algoman_rop:null,
 	account:'X',
@@ -12,9 +15,12 @@ const initialState={
 	selectionorder:[],//массив выбранных строк из таблицы order
 	rowsorder:[],
 	columnsorder:[],
-	rowcurrentorder:{}
+	rowcurrentorder:{},//объект в котором хранится выбраная строка из таблицы orders
+
+    graphorders:[],//объекты которые
 };
 
+const SET_GRAPH_ORDERS='SET_GRAPH_ORDERS';
 const SET_ROW_CURRENT_ORDER='SET_ROW_CURRENT_ORDER';
 const SET_ROWS_ORDER='SET_ROWS_ORDER';
 const SET_COLUMNS_ORDER='SET_COLUMNS_ORDER';
@@ -28,6 +34,22 @@ const SET_SELECTION_ORDER='SET_SELECTION_ORDER';
 
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
+
+		case SET_GRAPH_ORDERS:
+			debugger;
+			let arrObj=[];
+			action.items.forEach(function(item,i,arr){
+				var date=moment(item.date).format('YYYY/MM/HH hh:mm:ss');
+				var date=new Date(date);
+				const obj={
+					     'date':date,
+						 'aoid':item.aoid,
+						 'avg_price':item.avg_price,
+						 };
+				arrObj.push(obj);
+			})
+			return {...state,graphorders:[...arrObj]}
+
 		case SET_ROW_CURRENT_ORDER:
 			return {...state,rowcurrentorder:action.row}
 		case SET_ROWS_ORDER:
@@ -50,6 +72,21 @@ const orderReducer=(state=initialState,action)=>{
 			return state;
 	}
 };
+
+const setGraphOrders=(items)=>({
+					type:SET_GRAPH_ORDERS,
+					items});
+
+export const getGraphOrdersByAOID=(aoid)=>{
+		return (dispatch)=>{
+			OrdersApi.getItemsByAOID(aoid)
+				.then(res=>{
+					dispatch(setGraphOrders(res));
+				})
+		}
+};
+
+
 export const setTS=(ts)=>({
 				type:SET_TS,
 				ts});

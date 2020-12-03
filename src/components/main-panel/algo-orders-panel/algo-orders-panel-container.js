@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {Alert} from 'reactstrap';
+import * as axios from 'axios';
 
 import {AlgoOrdersPanel} from './algo-orders-panel';
 import {setGraphShowModal,
@@ -8,7 +9,8 @@ import {setGraphShowModal,
 	    setSelectionOrder,
 	    setRowsOrder,
 		setColumnsOrder,
-	    setRowCurrentOrder
+	    setRowCurrentOrder,
+		getGraphOrdersByAOID
 		} from '../../../redux/orderReducer';
 import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
 
@@ -21,6 +23,7 @@ class AlgoOrdersPanelContainer extends Component{
 			flagSelection:false,//флаг disabled кнопки Cancel Orders
 			selection:[],//массив в котором хранится выбранные элементы из таблицы
 			toggleSelectionGraph:false,//флаг определения режим, false-отображение диалога с графиком
+			idsel:-1
 		};
 
 		this.setSelection=this.setSelection.bind(this);
@@ -44,15 +47,17 @@ class AlgoOrdersPanelContainer extends Component{
 	 }
 	 else{
 		// this.setState({selection:sel});		
-		debugger;
+		// debugger;
 		// var elements=sel;
 		// var id=elements[0];
 		var id=sel[0];
+		this.setState({idsel:id});
 		// var currrow=this.props.rowsorder[id];
 		var currrow=this.state.rows[id];
 		this.props.setRowCurrentOrder(currrow);
 		// this.props.setSelectionOrder(sel);
 		this.props.setGraphShowModal(true);
+		this.props.getGraphOrdersByAOID(this.state.rows[id].aoid);
 	 }
 	};
 
@@ -86,11 +91,63 @@ class AlgoOrdersPanelContainer extends Component{
 		// alert(e.target.checked);
 	};
 
+	// setData=async()=> {
+	async setData(){
+		try {
+			// debugger;
+			// console.log(props);
+			let arrObj=[];
+			this.state.rows.forEach(function(item, i, arr) {
+			  // console.log( i + ": " + item + " (массив:" + arr + ")" );
+			  if(item.aostate==='WORKING'){
+			  var now=new Date();	
+			  console.log('дата',now);
+			  console.log('aoid',item.aoid);
+			  console.log('avg_price',item.avg_price);
+			  const obj={
+						 'date':now,
+						 'aoid':item.aoid,
+				         'avg_price':item.avg_price
+						 };
+			  arrObj.push(obj);
+			  }
+			});
+			console.log(arrObj);
+			if(arrObj.length>0){
+			const res = await axios.post('http://localhost:5000/orders/add',arrObj);
+			const data= await res.json();
+				if(!res.ok){
+				   throw new Error(data.message);
+			    }
+				if(res.ok){console.log('save data to db was success');
+				}
+				console.log('save data was success in db');
+		    }	
+			else{
+				console.log('no data to save in db');
+			 }
+		    }
+			catch (e) {
+			console.log(e.message)
+			}
+	}
+
     refresh(df) {
 		// this.props.setColumnsOrder(df.columns.map(x => {return {name: x, title:x.toUpperCase()};}));
 	    // this.props.setRowsOrder(JSON.parse(df.dataframeJSON));
 		this.setState({columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
 		       rows: JSON.parse(df.dataframeJSON)});
+		this.setData();
+
+	    if(this.state.toggleSelectionGraph===true){
+				  debugger;
+			// if(this.state.selection.length>0){
+				  // var id=this.state.selection[0];
+			if(this.state.idsel>0){
+				  const id=this.state.idsel;
+				  this.props.getGraphOrdersByAOID(this.state.rows[id].aoid);
+			}
+		}
     }
 
 	render(){
@@ -131,7 +188,8 @@ const mapActionsToProps=({
 	setSelectionOrder,
 	setRowsOrder,
 	setColumnsOrder,
-	setRowCurrentOrder
+	setRowCurrentOrder,
+	getGraphOrdersByAOID
 });
 // export default AlgoOrdersPanelContainer;
 export default connect(mapStateToProps,mapActionsToProps,null,{forwardRef:true})(AlgoOrdersPanelContainer);

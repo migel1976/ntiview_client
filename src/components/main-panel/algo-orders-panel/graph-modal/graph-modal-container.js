@@ -1,39 +1,30 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 
-import {setGraphShowModal,setSelectionOrder} from '../../../../redux/orderReducer';
-import {GraphModal} from './graph-modal';
+import {setGraphShowModal, setSelectionOrder, getGraphOrdersByAOID} from '../../../../redux/orderReducer';
+import GraphModal from './graph-modal';
 
 class GraphModalContainer extends Component{
 	constructor(props){
 		// debugger;
 		super(props);
-		// this.saveForm=this.saveForm.bind(this);
 		this.closeForm=this.closeForm.bind(this);
-		// this.findRow();
-
+		// const aoid=this.props.rowcurrentorder.aoid;
+		// this.props.getGraphOrdersByAOID(aoid);
 	};
 
-	// componentDidUpdate(prevProps){
-	// 	if(prevProps.rowsorder!==this.props.rowsorder){
-	// 		this.findRow();
-	// 	}
-	// };
+	componentDidUpdate(prevProps){
+		// debugger;
+		// if(this.props.graphorders!=prevProps.graphorders){
 		
-
-	findRow(){
-		debugger;
-		var elements=this.props.selectionorder;
-		var id=elements[0];
-		var objectID=this.props.rowsorder[id];
-		console.log('ObjectID',objectID);
-		// var objectID=this.props.rowsorder[id].aoid;
-
+		// const aoid=this.props.rowcurrentorder.aoid;
+		// const aoidPrev=prevProps.rowcurrentorder.aoid;
+		// if(this.props.rowcurrentorder.aoid=prevProps.rowcurrentorder.aoid){
+		// 	const aoid=this.props.rowcurrentorder.aoid;
+		// 	debugger;
+		// 	this.props.getGraphOrdersByAOID(aoid);
+		// }
 	};
-
-	// saveForm(e){
-	// 	this.props.setGraphShowModal(false);
-	// };
 
 	closeForm(e){
 		this.props.setGraphShowModal(false);
@@ -43,11 +34,10 @@ class GraphModalContainer extends Component{
 		return(
 			<GraphModal
 				show={this.props.graphshowmodal}
-				// saveForm={this.saveForm}
 				closeForm={this.closeForm}
 				row={this.props.rowcurrentorder}
-				// selectionorder={this.props.selectionorder}
-				// rowsorder={this.props.rowsorder}
+			    graphorders={this.props.graphorders}	
+				getGraphOrdersByAOID={this.props.getGraphOrdersByAOID}
 			/>
 		)
 	}
@@ -57,12 +47,14 @@ const mapStateToProps=(state)=>({
 	graphshowmodal:state.orderPage.graphshowmodal,
 	rowsorder:state.orderPage.rowsorder,
 	selectionorder:state.orderPage.selectionorder,
-	rowcurrentorder:state.orderPage.rowcurrentorder
+	rowcurrentorder:state.orderPage.rowcurrentorder,
+	graphorders:state.orderPage.graphorders
 });
 
 const mapActionsToProps=({
    setGraphShowModal,
-   setSelectionOrder
+   setSelectionOrder,
+   getGraphOrdersByAOID
 });
 
 export default connect(mapStateToProps,mapActionsToProps,null,{forwardRef:true})(GraphModalContainer);
