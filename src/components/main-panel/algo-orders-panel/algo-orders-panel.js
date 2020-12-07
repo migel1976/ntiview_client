@@ -4,7 +4,7 @@ import React,{Component} from 'react';
 import OrderModalContainer from './order-modal/order-modal-container';
 import GraphModalContainer from './graph-modal/graph-modal-container'; 
 import {Button, Form} from 'react-bootstrap';
-
+import style from './algo-orders-panel.module.css';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import "@devexpress/dx-react-grid";
 import {Grid,
@@ -41,7 +41,7 @@ export class AlgoOrdersPanel extends Component {
     
     render() {
 	return (
-	    <div>
+	    <div className={style.main}>
 		<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}
 		<Button variant='danger' onClick={this.props.cancelOrder} disabled={!this.props.flagSelection}>Cancel Order(s)</Button>{' '}
 		 <div style={{float:"right"}}> 

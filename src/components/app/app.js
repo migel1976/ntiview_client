@@ -5,7 +5,7 @@ import Routes from '../routes/routes';
 
 const App=()=>{
 		return(
-			<div>
+			<div style={{height:"300px"}}>
 				<Container fluid>
 					<Row>
 						<Col>
@@ -13,6 +13,16 @@ const App=()=>{
 							<Routes />
 						</Col>
 					</Row>
+					{/*<Row>*/}
+						{/*<Col>*/}
+							{/*<Routes />*/}
+						{/*</Col>*/}
+					{/*</Row>*/}
+					{/*<Row>*/}
+						{/*<Col>*/}
+							{/*hi*/}
+						{/*</Col>*/}
+					{/*</Row>*/}
 				</Container>
 			</div>
 		)

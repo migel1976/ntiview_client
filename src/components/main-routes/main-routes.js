@@ -3,10 +3,11 @@ import React from 'react';
 // import Pybx from '../pybx/pybx';
 // import PybxContainer from '../pybx/pybx-container';
 import MainPanelContainer from '../main-panel/main-panel-container';
+import style from './main-routes.module.css';
 
 const MainRoutes=()=>{
 	return(
-		<div>
+		<div className={style.main}>
 			<MainPanelContainer />
 			{/*<Pybx />*/}
 			{/*<PybxContainer />*/}
