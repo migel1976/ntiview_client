@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import React,{Component} from 'react';
 import {Button, Modal, InputGroup, FormControl} from 'react-bootstrap';
-import PlotChart from './plot-chart';
+import DxChart from './dx-chart';
+// import PlotChart from './plot-chart';
 // import FormModal from './form-modal';
 
 // export const GraphModal=(props)=>{
@@ -22,9 +23,12 @@ export default class GraphModal extends Component{
 				<Modal.Title>Graph current row</Modal.Title>
 			  </Modal.Header>
 			  <Modal.Body>
-				<PlotChart
+				{/*<PlotChart*/}
+						{/*graphorders={this.props.graphorders}*/}
+				{/*/>*/}
+				<DxChart
 						graphorders={this.props.graphorders}
-		        />
+				/>
 
 				{/*Hello from row number*/}
 				{/*{row}*/}

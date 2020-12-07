@@ -140,7 +140,7 @@ class AlgoOrdersPanelContainer extends Component{
 		this.setData();
 
 	    if(this.state.toggleSelectionGraph===true){
-				  debugger;
+				  // debugger;
 			// if(this.state.selection.length>0){
 				  // var id=this.state.selection[0];
 			if(this.state.idsel>0){
