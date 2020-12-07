@@ -2,9 +2,20 @@ import React,{Component} from 'react';
 // import { EditingState } from '@devexpress/dx-react-grid';
 // import "@devexpress/dx-react-grid";
 // import {Grid, Table, TableHeaderRow,TableEditColumn} from "@devexpress/dx-react-grid-bootstrap4";
-import {Grid, Table , TableHeaderRow} from "@devexpress/dx-react-grid-bootstrap4";
+import {Grid,
+		Table,
+		TableHeaderRow,
+		VirtualTable} from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import style from './positions-panel.module.css';
+import {
+	IntegratedSelection,
+	SelectionState,
+	PagingState,
+	IntegratedPaging,
+	VirtualTableState,
+	DataTypeProvider
+} from '@devexpress/dx-react-grid';
 // import {
 //   Button, Modal, ModalHeader, ModalBody, ModalFooter,
 //   Container, Row, Col, Label, FormGroup, Input,
@@ -18,6 +29,19 @@ import {
 //     }
     
 //     render() {
+//
+const CurrencyFormatter = ({ value }) => (
+  <b style={{ color: 'darkblue' }}>
+    {value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+  </b>
+);
+
+const CurrencyTypeProvider = props => (
+  <DataTypeProvider
+    formatterComponent={CurrencyFormatter}
+    {...props}
+  />
+);
 export const PositionsPanel=(props)=>{
 			  // <TemplateConnector>
 				// {(
@@ -118,12 +142,15 @@ export const PositionsPanel=(props)=>{
 		{/*<EditingState*/}
           {/*onCommitChanges={commitChanges}*/}
         {/*/>*/}
+		<CurrencyTypeProvider for={['avg_price','sod_price','last_price']} />
 		<Table />
+		<VirtualTable />
+		<TableHeaderRow />
 		{/*<TableEditColumn*/}
           {/*showAddCommand*/}
           {/*showEditCommand*/}
         {/*/>*/}
-		<TableHeaderRow />
+		{/*<TableHeaderRow />*/}
 		{/*<PopupEditing popupComponent={Popup} />*/}
 		</Grid>
 		</div>

@@ -1,6 +1,4 @@
-// import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
-import React,{Component} from 'react';
+import React,{useState} from 'react';
 import OrderModalContainer from './order-modal/order-modal-container';
 import GraphModalContainer from './graph-modal/graph-modal-container'; 
 import {Button, Form} from 'react-bootstrap';
@@ -22,13 +20,14 @@ import {
 	PagingState,
 	IntegratedPaging,
 	VirtualTableState,
-	DataTypeProvider
+	DataTypeProvider,
+	TableColumnResizing,
+	TableColumnWidthInfo
 } from '@devexpress/dx-react-grid';
-// import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
-//
+
 const CurrencyFormatter = ({ value }) => (
   <b style={{ color: 'darkblue' }}>
-    {value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+    {value?value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }):value}
   </b>
 );
 
@@ -39,59 +38,75 @@ const CurrencyTypeProvider = props => (
   />
 );
 
-export class AlgoOrdersPanel extends Component {
-    constructor(props) {
-	super(props);
-		this.openModal=this.openModal.bind(this);
-		// this.openGraphModal=this.openGraphModal.bind(this);
-    };
+export const AlgoOrdersPanel=(props)=>{
 
-	// openModal=()=>{
-	openModal(){
-		this.props.setOrderShowModal(true);
-	};
-
-	// openGraphModal(e){
-	// 	this.props.setToggleSelectionGraph(e);
+	// openModal(){
+	// 	this.props.setOrderShowModal(true);
 	// };
-    
-    render() {
+	const [columns] = useState([
+		{name: 'aoid', title:'aoid'},
+		{name: 'ticker', title:'ticker'},
+		{name: 'account', title:'account'},
+		{name: 'aotype', title:'aotype'},
+		{name: 'aostate', title:'aostate'},
+		{name: 'start_time', title:'start_time'},
+		{name: 'end_time', title:'end_time'},
+		{name: 'aosize', title:'aosize'},
+		{name: 'entry_price', title:'entry_price'},
+		{name: 'avg_price', title:'avg_price'},
+		{name: 'qty_done', title:'qty_done'}
+	  ]);
+	 // const [defaultColumnWidths] = useState([
+	const [columnWidths, setColumnWidths] = useState([
+		{ columnName: 'aoid', width:70},
+		{ columnName: 'ticker', width:100},
+		{ columnName: 'account', width:100},
+		{ columnName: 'aotype', width: 100},
+		{ columnName: 'aostate', width: 100},
+		{ columnName: 'start_time', width:100},
+		{ columnName: 'end_time', width:100},
+		{ columnName: 'aosize', width:100},
+		{ columnName: 'entry_price', width:200},
+		{ columnName: 'avg_price', width:200},
+		{ columnName: 'qty_done', width:200}
+	  ]);
 	return (
 	    <div className={style.main}>
-		<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}
-		<Button variant='danger' onClick={this.props.cancelOrder} disabled={!this.props.flagSelection}>Cancel Order(s)</Button>{' '}
+		{/*<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}*/}
+		<Button variant='primary' onClick={()=>props.setOrderShowModal(true)}>PLACE TEST ORDERS</Button>{' '}
+		<Button variant='danger' onClick={props.cancelOrder} disabled={!props.flagSelection}>Cancel Order(s)</Button>{' '}
 		 <div style={{float:"right"}}> 
 		 <InputGroup>
 			<InputGroupAddon addonType="prepend">
 			  <InputGroupText>
-				<Input addon type="checkbox" onChange={this.props.setToggleSelectionGraph} />
+				<Input addon type="checkbox" onChange={props.setToggleSelectionGraph} />
 				{/*<Input addon type="checkbox" onChange={this.openGraphModal} />*/}
 			  </InputGroupText>
 			</InputGroupAddon>
 			<Input placeholder="show graph" disabled />
 		  </InputGroup>
 		</div>
-		{/*<OrderModalContainer */}
-			{/*algoman_rop={this.props.algoman_rop}	*/}
-		{/*/>*/}
 
-		{/*<GraphModalContainer />*/}
-
-		<Grid rows={this.props.rows} columns={this.props.columns}>
+		{/*<Grid rows={props.rows} columns={props.columns}>*/}
+		<Grid rows={props.rows} columns={columns}>
 		 <SelectionState
-			selection={this.props.selection}
-			// selection={this.props.selectionorder}
-			onSelectionChange={this.props.setSelection}
+			selection={props.selection}
+			onSelectionChange={props.setSelection}
 		  />
 		<CurrencyTypeProvider for={['avg_price']} />
 		<IntegratedSelection />
 		<Table />
-		<VirtualTable />
+		{/*<VirtualTable />*/}
+		{/*<TableColumnResizing defaultColumnWidths={defaultColumnWidths} />*/}
+		<TableColumnResizing
+				  columnWidths={columnWidths}
+				  onColumnWidthsChange={setColumnWidths}
+				  resizingMode={'nextColumn'}
+				/>
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
 		</Grid>
 	    </div>
 	);
-    }
 };
 

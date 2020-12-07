@@ -1,0 +1,103 @@
+
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
+import React,{Component} from 'react';
+import OrderModalContainer from './order-modal/order-modal-container';
+import GraphModalContainer from './graph-modal/graph-modal-container'; 
+import {Button, Form} from 'react-bootstrap';
+import style from './algo-orders-panel.module.css';
+import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
+import "@devexpress/dx-react-grid";
+import {Grid,
+		Table,
+		TableHeaderRow,
+		TableSelection,
+		VirtualTable,
+		PagingPanel
+
+} from "@devexpress/dx-react-grid-bootstrap4";
+import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import {
+	IntegratedSelection,
+	SelectionState,
+	PagingState,
+	IntegratedPaging,
+	VirtualTableState,
+	DataTypeProvider,
+	TableColumnResizing,
+	TableColumnWidthInfo
+} from '@devexpress/dx-react-grid';
+// import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
+//
+const CurrencyFormatter = ({ value }) => (
+  <b style={{ color: 'darkblue' }}>
+    {value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+  </b>
+);
+
+const CurrencyTypeProvider = props => (
+  <DataTypeProvider
+    formatterComponent={CurrencyFormatter}
+    {...props}
+  />
+);
+
+export class AlgoOrdersPanel extends Component {
+    constructor(props) {
+	super(props);
+		this.openModal=this.openModal.bind(this);
+		// this.openGraphModal=this.openGraphModal.bind(this);
+    };
+
+	// openModal=()=>{
+	openModal(){
+		this.props.setOrderShowModal(true);
+	};
+
+	// openGraphModal(e){
+	// 	this.props.setToggleSelectionGraph(e);
+	// };
+    
+    render() {
+	return (
+	    <div className={style.main}>
+		<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}
+		<Button variant='danger' onClick={this.props.cancelOrder} disabled={!this.props.flagSelection}>Cancel Order(s)</Button>{' '}
+		 <div style={{float:"right"}}> 
+		 <InputGroup>
+			<InputGroupAddon addonType="prepend">
+			  <InputGroupText>
+				<Input addon type="checkbox" onChange={this.props.setToggleSelectionGraph} />
+				{/*<Input addon type="checkbox" onChange={this.openGraphModal} />*/}
+			  </InputGroupText>
+			</InputGroupAddon>
+			<Input placeholder="show graph" disabled />
+		  </InputGroup>
+		</div>
+		{/*<OrderModalContainer */}
+			{/*algoman_rop={this.props.algoman_rop}	*/}
+		{/*/>*/}
+
+		{/*<GraphModalContainer />*/}
+
+		<Grid rows={this.props.rows} columns={this.props.columns}>
+		 <SelectionState
+			selection={this.props.selection}
+			// selection={this.props.selectionorder}
+			onSelectionChange={this.props.setSelection}
+		  />
+		<CurrencyTypeProvider for={['avg_price']} />
+		<IntegratedSelection />
+		<Table />
+		<VirtualTable />
+		{/*<TableColumnResizing columnWidths={myWidth}/>*/}
+		{/*<TableColumnResizing defaultColumnWidths/>*/}
+		{/*<TableHeaderRow />*/}
+		<TableHeaderRow resizingEnabled />
+		<TableSelection showSelectAll selectByRowClick />
+		</Grid>
+	    </div>
+	);
+    }
+};
+
