@@ -20,9 +20,25 @@ import {
 	IntegratedSelection,
 	SelectionState,
 	PagingState,
-	IntegratedPaging
+	IntegratedPaging,
+	VirtualTableState,
+	DataTypeProvider
 } from '@devexpress/dx-react-grid';
 // import * as NTIAlgo from '../../../gen-js/NTIAlgo.js';
+//
+const CurrencyFormatter = ({ value }) => (
+  <b style={{ color: 'darkblue' }}>
+    {value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+  </b>
+);
+
+const CurrencyTypeProvider = props => (
+  <DataTypeProvider
+    formatterComponent={CurrencyFormatter}
+    {...props}
+  />
+);
+
 export class AlgoOrdersPanel extends Component {
     constructor(props) {
 	super(props);
@@ -67,6 +83,7 @@ export class AlgoOrdersPanel extends Component {
 			// selection={this.props.selectionorder}
 			onSelectionChange={this.props.setSelection}
 		  />
+		<CurrencyTypeProvider for={['avg_price']} />
 		<IntegratedSelection />
 		<Table />
 		<VirtualTable />
