@@ -56990,6 +56990,10 @@
 	InputGroupAddon.propTypes = propTypes$b;
 	InputGroupAddon.defaultProps = defaultProps$n;
 
+	var css_248z$3 = ".algo-orders-panel-module_main__iUh3L{\n /* height: 100%; */\n /* width:100%; */\n height: 300px;\n /* background-color:red; */\n}\n\n";
+	var style$1 = {"main":"algo-orders-panel-module_main__iUh3L"};
+	styleInject(css_248z$3);
+
 	/**
 	 * Bundle of @devexpress/dx-grid-core
 	 * Generated: 2020-11-03
@@ -57378,6 +57382,74 @@
 	  return result;
 	};
 
+	var getColumnWidth = function (columnWidths, name, _a) {
+	  var columnName = _a.columnName,
+	      cachedWidths = _a.cachedWidths,
+	      shift = _a.shift,
+	      minColumnWidth = _a.minColumnWidth,
+	      maxColumnWidth = _a.maxColumnWidth,
+	      _b = _a.columnExtensions,
+	      columnExtensions = _b === void 0 ? [] : _b;
+	  var change = name === columnName ? shift : -shift;
+	  var column = columnWidths.find(function (elem) {
+	    return elem.columnName === name;
+	  });
+	  var extension = columnExtensions.find(function (elem) {
+	    return elem.columnName === name;
+	  });
+	  var width = typeof column.width === 'number' ? column.width : cachedWidths[name];
+	  var minWidth = extension && extension.minWidth >= 0 ? extension.minWidth : minColumnWidth;
+	  var maxWidth = extension && extension.maxWidth >= 0 ? extension.maxWidth : maxColumnWidth;
+	  var size = Math.max(minWidth, Math.min(width + change, maxWidth));
+	  return {
+	    width: width,
+	    size: size
+	  };
+	};
+
+	var getColumnSizes = function (columnWidths, payload) {
+	  var columnName = payload.columnName,
+	      nextColumnName = payload.nextColumnName,
+	      resizingMode = payload.resizingMode,
+	      shift = payload.shift;
+
+	  var _a = getColumnWidth(columnWidths, columnName, payload),
+	      width = _a.width,
+	      size = _a.size;
+
+	  if (resizingMode === 'nextColumn') {
+	    var _b = getColumnWidth(columnWidths, nextColumnName, payload),
+	        nextWidth = _b.width,
+	        nextSize = _b.size;
+
+	    if (size + nextSize !== width + nextWidth) {
+	      var moreThanLimit = size + nextSize > width + nextWidth;
+	      var columnExpand = shift > 0;
+
+	      if (moreThanLimit !== columnExpand) {
+	        return {
+	          size: size,
+	          nextSize: width + nextWidth - size
+	        };
+	      }
+
+	      return {
+	        size: width + nextWidth - nextSize,
+	        nextSize: nextSize
+	      };
+	    }
+
+	    return {
+	      size: size,
+	      nextSize: nextSize
+	    };
+	  }
+
+	  return {
+	    size: size
+	  };
+	};
+
 	var isValidValue = function (value, validUnits) {
 	  var numb = parseInt(value, 10);
 	  var unit = numb ? value.substr(numb.toString().length) : value;
@@ -57400,6 +57472,135 @@
 	  }
 
 	  return value;
+	};
+
+	var VALID_UNITS = ['px', '%', 'em', 'rem', 'vm', 'vh', 'vmin', 'vmax', ''];
+	var NOT_FOR_WIDGET_UNITS = ['%'];
+	/* tslint:disable max-line-length */
+
+	var COLUMN_RESIZING_ERROR = 'The columnWidths property of the TableColumnResizing plugin is given an invalid value.';
+
+	var specifyWidths = function (tableColumns, widths, resizingMode, onError) {
+	  if (resizingMode !== 'widget' && resizingMode !== 'nextColumn') {
+	    onError();
+	  }
+
+	  if (!widths.length) return tableColumns;
+	  return tableColumns.reduce(function (acc, tableColumn) {
+	    if (tableColumn.type === TABLE_DATA_TYPE) {
+	      var columnName_1 = tableColumn.column.name;
+	      var column = widths.find(function (el) {
+	        return el.columnName === columnName_1;
+	      });
+	      var width = column && column.width;
+
+	      if (typeof width !== 'number') {
+	        if (width === undefined) {
+	          onError();
+	        } else if (!isValidValue(width, VALID_UNITS)) {
+	          onError();
+	        } else if (resizingMode === 'widget' && isValidValue(width, NOT_FOR_WIDGET_UNITS)) {
+	          onError();
+	        }
+	      } else if (width < 0) {
+	        onError();
+	      }
+
+	      if (width === undefined) {
+	        acc.push(tableColumn);
+	      } else {
+	        acc.push(__assign$3(__assign$3({}, tableColumn), {
+	          width: convertWidth(width)
+	        }));
+	      }
+	    } else {
+	      acc.push(tableColumn);
+	    }
+
+	    return acc;
+	  }, []);
+	};
+
+	var tableColumnsWithWidths = function (tableColumns, columnWidths, resizingMode) {
+	  return specifyWidths(tableColumns, columnWidths, resizingMode, throwError);
+	};
+
+	var tableColumnsWithDraftWidths = function (tableColumns, draftColumnWidths, resizingMode) {
+	  return specifyWidths(tableColumns, draftColumnWidths, resizingMode, function () {});
+	};
+
+	var throwError = function () {
+	  throw new Error(COLUMN_RESIZING_ERROR);
+	};
+
+	var changeTableColumnWidth = function (state, payload) {
+	  var columnWidths = state.columnWidths;
+	  var columnName = payload.columnName,
+	      nextColumnName = payload.nextColumnName,
+	      resizingMode = payload.resizingMode;
+	  var nextColumnWidth = slice(columnWidths);
+	  var index = nextColumnWidth.findIndex(function (elem) {
+	    return elem.columnName === columnName;
+	  });
+	  var nextIndex = nextColumnWidth.findIndex(function (elem) {
+	    return elem.columnName === nextColumnName;
+	  });
+
+	  var _a = getColumnSizes(columnWidths, payload),
+	      size = _a.size,
+	      nextSize = _a.nextSize;
+
+	  nextColumnWidth.splice(index, 1, {
+	    columnName: columnName,
+	    width: size
+	  });
+
+	  if (resizingMode === 'nextColumn') {
+	    nextColumnWidth.splice(nextIndex, 1, {
+	      columnName: nextColumnName,
+	      width: nextSize
+	    });
+	  }
+
+	  return {
+	    columnWidths: nextColumnWidth
+	  };
+	};
+
+	var draftTableColumnWidth = function (state, payload) {
+	  var columnWidths = state.columnWidths;
+	  var columnName = payload.columnName,
+	      nextColumnName = payload.nextColumnName,
+	      resizingMode = payload.resizingMode;
+
+	  var _a = getColumnSizes(columnWidths, payload),
+	      size = _a.size,
+	      nextSize = _a.nextSize;
+
+	  if (resizingMode === 'nextColumn') {
+	    return {
+	      draftColumnWidths: [{
+	        columnName: columnName,
+	        width: size
+	      }, {
+	        columnName: nextColumnName,
+	        width: nextSize
+	      }]
+	    };
+	  }
+
+	  return {
+	    draftColumnWidths: [{
+	      columnName: columnName,
+	      width: size
+	    }]
+	  };
+	};
+
+	var cancelTableColumnWidthDraft = function () {
+	  return {
+	    draftColumnWidths: []
+	  };
 	};
 
 	var TABLE_EDIT_COMMAND_TYPE = Symbol('editCommand');
@@ -58322,6 +58523,13 @@
 
 	var isTreeTableCell = function (tableRow, tableColumn, forColumnName) {
 	  return tableRow.type === TABLE_DATA_TYPE && tableColumn.type === TABLE_DATA_TYPE && tableColumn.column.name === forColumnName;
+	};
+
+	var getAvailableFilterOperationsGetter = function (getAvailableFilterOperations, availableFilterOperations, columnNames) {
+	  return function (columnName) {
+	    return columnNames.indexOf(columnName) > -1 && availableFilterOperations || // tslint:disable-next-line: max-line-length
+	    typeof getAvailableFilterOperations === 'function' && getAvailableFilterOperations(columnName) || undefined;
+	  };
 	};
 
 	var FIXED_COLUMN_LEFT_SIDE = 'left';
@@ -61848,6 +62056,184 @@
 
 
 	var TableEditColumn = TableEditColumnBase;
+	var pluginDependencies$e = [{
+	  name: 'Table'
+	}]; // tslint:disable-next-line: max-line-length
+
+	var TableColumnResizingBase = /*#__PURE__*/function (_super) {
+	  __extends$2(TableColumnResizingBase, _super);
+
+	  function TableColumnResizingBase(props) {
+	    var _this = _super.call(this, props) || this;
+
+	    _this.widthGetters = {};
+	    _this.cachedWidths = {};
+	    _this.state = {
+	      columnWidths: props.columnWidths || props.defaultColumnWidths,
+	      draftColumnWidths: []
+	    };
+	    var stateHelper = createStateHelper(_this, {
+	      columnWidths: function () {
+	        var onColumnWidthsChange = _this.props.onColumnWidthsChange;
+	        return onColumnWidthsChange;
+	      }
+	    });
+	    _this.tableColumnsComputed = memoize(function (columnWidths) {
+	      return function (_a) {
+	        var tableColumns = _a.tableColumns;
+	        return tableColumnsWithWidths(tableColumns, columnWidths, _this.props.resizingMode);
+	      };
+	    });
+	    _this.tableColumnsDraftComputed = memoize(function (draftColumnWidths) {
+	      return function (_a) {
+	        var tableColumns = _a.tableColumns;
+	        return tableColumnsWithDraftWidths(tableColumns, draftColumnWidths, _this.props.resizingMode);
+	      };
+	    });
+	    _this.changeTableColumnWidth = stateHelper.applyReducer.bind(stateHelper, function (prevState, payload) {
+	      var cachedWidths = __assign$4({}, _this.cachedWidths);
+
+	      var _a = _this.props,
+	          minColumnWidth = _a.minColumnWidth,
+	          maxColumnWidth = _a.maxColumnWidth,
+	          columnExtensions = _a.columnExtensions,
+	          resizingMode = _a.resizingMode;
+	      return changeTableColumnWidth(prevState, __assign$4(__assign$4({}, payload), {
+	        cachedWidths: cachedWidths,
+	        resizingMode: resizingMode,
+	        minColumnWidth: minColumnWidth,
+	        maxColumnWidth: maxColumnWidth,
+	        columnExtensions: columnExtensions
+	      }));
+	    });
+	    _this.draftTableColumnWidth = stateHelper.applyReducer.bind(stateHelper, function (prevState, payload) {
+	      _this.storeCache(payload);
+
+	      var cachedWidths = _this.cachedWidths;
+	      var _a = _this.props,
+	          minColumnWidth = _a.minColumnWidth,
+	          maxColumnWidth = _a.maxColumnWidth,
+	          columnExtensions = _a.columnExtensions,
+	          resizingMode = _a.resizingMode;
+	      return draftTableColumnWidth(prevState, __assign$4(__assign$4({}, payload), {
+	        cachedWidths: cachedWidths,
+	        resizingMode: resizingMode,
+	        minColumnWidth: minColumnWidth,
+	        maxColumnWidth: maxColumnWidth,
+	        columnExtensions: columnExtensions
+	      }));
+	    });
+	    _this.cancelTableColumnWidthDraft = stateHelper.applyReducer.bind(stateHelper, cancelTableColumnWidthDraft);
+
+	    _this.storeCache = function (_a) {
+	      var columnName = _a.columnName,
+	          nextColumnName = _a.nextColumnName;
+
+	      if (Object.keys(_this.cachedWidths).length === 0) {
+	        _this.cachedWidths[columnName] = _this.widthGetters[columnName]();
+
+	        if (nextColumnName) {
+	          _this.cachedWidths[nextColumnName] = _this.widthGetters[nextColumnName]();
+	        }
+	      }
+	    };
+
+	    _this.clearCache = function () {
+	      Object.keys(_this.cachedWidths).forEach(function (columnName) {
+	        return delete _this.cachedWidths[columnName];
+	      });
+	    };
+
+	    _this.storeWidthGetters = memoize(function (_a) {
+	      var tableColumn = _a.tableColumn,
+	          getter = _a.getter,
+	          tableColumns = _a.tableColumns;
+
+	      if (tableColumn.type === TABLE_DATA_TYPE) {
+	        _this.widthGetters[tableColumn.column.name] = getter;
+	      }
+
+	      Object.keys(_this.widthGetters).forEach(function (columnName) {
+	        var columnIndex = tableColumns.findIndex(function (_a) {
+	          var type = _a.type,
+	              column = _a.column;
+	          return type === TABLE_DATA_TYPE && column.name === columnName;
+	        });
+
+	        if (columnIndex === -1) {
+	          delete _this.widthGetters[columnName];
+	        }
+	      });
+	    });
+	    return _this;
+	  }
+
+	  TableColumnResizingBase.getDerivedStateFromProps = function (nextProps, prevState) {
+	    var _a = nextProps.columnWidths,
+	        columnWidths = _a === void 0 ? prevState.columnWidths : _a;
+	    return {
+	      columnWidths: columnWidths
+	    };
+	  };
+
+	  TableColumnResizingBase.prototype.componentDidUpdate = function (_, prevState) {
+	    var currentWidths = this.state.columnWidths;
+	    var prevWidths = prevState.columnWidths;
+
+	    if (currentWidths !== prevWidths) {
+	      this.clearCache();
+	    }
+	  };
+
+	  TableColumnResizingBase.prototype.render = function () {
+	    var _a = this.state,
+	        columnWidths = _a.columnWidths,
+	        draftColumnWidths = _a.draftColumnWidths;
+	    var resizingMode = this.props.resizingMode;
+	    var tableColumnsComputed = this.tableColumnsComputed(columnWidths);
+	    var tableColumnsDraftComputed = this.tableColumnsDraftComputed(draftColumnWidths);
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "TableColumnResizing",
+	      dependencies: pluginDependencies$e
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "tableColumnResizingEnabled",
+	      value: true
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "tableColumns",
+	      computed: tableColumnsComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "tableColumns",
+	      computed: tableColumnsDraftComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "columnResizingMode",
+	      value: resizingMode
+	    }), /*#__PURE__*/react_11(Action, {
+	      name: "changeTableColumnWidth",
+	      action: this.changeTableColumnWidth
+	    }), /*#__PURE__*/react_11(Action, {
+	      name: "draftTableColumnWidth",
+	      action: this.draftTableColumnWidth
+	    }), /*#__PURE__*/react_11(Action, {
+	      name: "cancelTableColumnWidthDraft",
+	      action: this.cancelTableColumnWidthDraft
+	    }), /*#__PURE__*/react_11(Action, {
+	      name: "storeWidthGetters",
+	      action: this.storeWidthGetters
+	    }));
+	  };
+
+	  TableColumnResizingBase.defaultProps = {
+	    defaultColumnWidths: [],
+	    resizingMode: 'widget'
+	  };
+	  return TableColumnResizingBase;
+	}(react_7);
+	/* tslint:disable: max-line-length */
+
+	/** A plugin that manages table column widths. */
+
+
+	var TableColumnResizing = TableColumnResizingBase;
 	/* tslint:enable: max-line-length */
 
 	var pluginDependencies$f = [{
@@ -62296,6 +62682,58 @@
 	var GroupingPanel = withComponents({
 	  Layout: GroupPanelLayout
 	})(GroupingPanelRaw);
+
+	var DataTypeProviderBase = /*#__PURE__*/function (_super) {
+	  __extends$2(DataTypeProviderBase, _super);
+
+	  function DataTypeProviderBase() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  }
+
+	  DataTypeProviderBase.prototype.render = function () {
+	    var _a = this.props,
+	        columnNames = _a.for,
+	        Formatter = _a.formatterComponent,
+	        Editor = _a.editorComponent,
+	        availableFilterOperations = _a.availableFilterOperations;
+
+	    var getAvailableFilterOperationsComputed = function (_a) {
+	      var getAvailableFilterOperations = _a.getAvailableFilterOperations;
+	      return getAvailableFilterOperationsGetter(getAvailableFilterOperations, availableFilterOperations, columnNames);
+	    };
+
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "DataTypeProvider",
+	      key: columnNames.join('_')
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "getAvailableFilterOperations",
+	      computed: getAvailableFilterOperationsComputed
+	    }), Formatter ? /*#__PURE__*/react_11(Template, {
+	      name: "valueFormatter",
+	      predicate: function (_a) {
+	        var column = _a.column;
+	        return columnNames.includes(column.name);
+	      }
+	    }, function (params) {
+	      return /*#__PURE__*/react_11(Formatter, __assign$4({}, params));
+	    }) : null, Editor ? /*#__PURE__*/react_11(Template, {
+	      name: "valueEditor",
+	      predicate: function (_a) {
+	        var column = _a.column;
+	        return columnNames.includes(column.name);
+	      }
+	    }, function (params) {
+	      return /*#__PURE__*/react_11(Editor, __assign$4({}, params));
+	    }) : null);
+	  };
+
+	  return DataTypeProviderBase;
+	}(react_7); // tslint:disable-next-line: max-line-length
+
+	/** A plugin that allows you to customize formatting options and editors depending on the data type. */
+
+
+	var DataTypeProvider = DataTypeProviderBase;
 	var pluginDependencies$g = [{
 	  name: 'Table'
 	}];
@@ -67302,57 +67740,133 @@
 	  MenuItem: MenuItem
 	})(ExportPanel);
 
-	// import * as React from 'react';
-
-	class AlgoOrdersPanel extends react_6 {
-	  constructor(props) {
-	    super(props);
-	    this.openModal = this.openModal.bind(this); // this.openGraphModal=this.openGraphModal.bind(this);
+	const CurrencyFormatter = ({
+	  value
+	}) => /*#__PURE__*/react.createElement("b", {
+	  style: {
+	    color: 'darkblue'
 	  }
+	}, value ? value.toLocaleString('en-US', {
+	  style: 'currency',
+	  currency: 'USD'
+	}) : value);
 
-	  // openModal=()=>{
-	  openModal() {
-	    this.props.setOrderShowModal(true);
-	  }
+	const CurrencyTypeProvider = props => /*#__PURE__*/react.createElement(DataTypeProvider, _extends$1({
+	  formatterComponent: CurrencyFormatter
+	}, props));
 
-	  // openGraphModal(e){
-	  // 	this.props.setToggleSelectionGraph(e);
+	const AlgoOrdersPanel = props => {
+	  // openModal(){
+	  // 	this.props.setOrderShowModal(true);
 	  // };
-	  render() {
-	    return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Button, {
-	      variant: "primary",
-	      onClick: this.openModal
-	    }, "PLACE TEST ORDERS"), ' ', /*#__PURE__*/react.createElement(Button, {
-	      variant: "danger",
-	      onClick: this.props.cancelOrder,
-	      disabled: !this.props.flagSelection
-	    }, "Cancel Order(s)"), ' ', /*#__PURE__*/react.createElement("div", {
-	      style: {
-	        float: "right"
-	      }
-	    }, /*#__PURE__*/react.createElement(InputGroup, null, /*#__PURE__*/react.createElement(InputGroupAddon, {
-	      addonType: "prepend"
-	    }, /*#__PURE__*/react.createElement(InputGroupText, null, /*#__PURE__*/react.createElement(Input, {
-	      addon: true,
-	      type: "checkbox",
-	      onChange: this.props.setToggleSelectionGraph
-	    }))), /*#__PURE__*/react.createElement(Input, {
-	      placeholder: "show graph",
-	      disabled: true
-	    }))), /*#__PURE__*/react.createElement(Grid$2, {
-	      rows: this.props.rows,
-	      columns: this.props.columns
-	    }, /*#__PURE__*/react.createElement(SelectionState, {
-	      selection: this.props.selection // selection={this.props.selectionorder}
-	      ,
-	      onSelectionChange: this.props.setSelection
-	    }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(Table$1$1, null), /*#__PURE__*/react.createElement(VirtualTable, null), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableSelection$1, {
-	      showSelectAll: true,
-	      selectByRowClick: true
-	    })));
-	  }
+	  const [columns] = react_27([{
+	    name: 'aoid',
+	    title: 'aoid'
+	  }, {
+	    name: 'ticker',
+	    title: 'ticker'
+	  }, {
+	    name: 'account',
+	    title: 'account'
+	  }, {
+	    name: 'aotype',
+	    title: 'aotype'
+	  }, {
+	    name: 'aostate',
+	    title: 'aostate'
+	  }, {
+	    name: 'start_time',
+	    title: 'start_time'
+	  }, {
+	    name: 'end_time',
+	    title: 'end_time'
+	  }, {
+	    name: 'aosize',
+	    title: 'aosize'
+	  }, {
+	    name: 'entry_price',
+	    title: 'entry_price'
+	  }, {
+	    name: 'avg_price',
+	    title: 'avg_price'
+	  }, {
+	    name: 'qty_done',
+	    title: 'qty_done'
+	  }]); // const [defaultColumnWidths] = useState([
 
-	}
+	  const [columnWidths, setColumnWidths] = react_27([{
+	    columnName: 'aoid',
+	    width: 70
+	  }, {
+	    columnName: 'ticker',
+	    width: 100
+	  }, {
+	    columnName: 'account',
+	    width: 100
+	  }, {
+	    columnName: 'aotype',
+	    width: 100
+	  }, {
+	    columnName: 'aostate',
+	    width: 100
+	  }, {
+	    columnName: 'start_time',
+	    width: 100
+	  }, {
+	    columnName: 'end_time',
+	    width: 100
+	  }, {
+	    columnName: 'aosize',
+	    width: 100
+	  }, {
+	    columnName: 'entry_price',
+	    width: 200
+	  }, {
+	    columnName: 'avg_price',
+	    width: 200
+	  }, {
+	    columnName: 'qty_done',
+	    width: 200
+	  }]);
+	  return /*#__PURE__*/react.createElement("div", {
+	    className: style$1.main
+	  }, /*#__PURE__*/react.createElement(Button, {
+	    variant: "primary",
+	    onClick: () => props.setOrderShowModal(true)
+	  }, "PLACE TEST ORDERS"), ' ', /*#__PURE__*/react.createElement(Button, {
+	    variant: "danger",
+	    onClick: props.cancelOrder,
+	    disabled: !props.flagSelection
+	  }, "Cancel Order(s)"), ' ', /*#__PURE__*/react.createElement("div", {
+	    style: {
+	      float: "right"
+	    }
+	  }, /*#__PURE__*/react.createElement(InputGroup, null, /*#__PURE__*/react.createElement(InputGroupAddon, {
+	    addonType: "prepend"
+	  }, /*#__PURE__*/react.createElement(InputGroupText, null, /*#__PURE__*/react.createElement(Input, {
+	    addon: true,
+	    type: "checkbox",
+	    onChange: props.setToggleSelectionGraph
+	  }))), /*#__PURE__*/react.createElement(Input, {
+	    placeholder: "show graph",
+	    disabled: true
+	  }))), /*#__PURE__*/react.createElement(Grid$2, {
+	    rows: props.rows,
+	    columns: columns
+	  }, /*#__PURE__*/react.createElement(SelectionState, {
+	    selection: props.selection,
+	    onSelectionChange: props.setSelection
+	  }), /*#__PURE__*/react.createElement(CurrencyTypeProvider, {
+	    for: ['avg_price']
+	  }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(Table$1$1, null), /*#__PURE__*/react.createElement(TableColumnResizing, {
+	    columnWidths: columnWidths,
+	    onColumnWidthsChange: setColumnWidths,
+	    resizingMode: 'nextColumn'
+	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableSelection$1, {
+	    showSelectAll: true,
+	    selectByRowClick: true
+	  })));
+	};
 
 	class AlgoOrdersPanelContainer extends react_6 {
 	  constructor(props) {
@@ -67556,14 +68070,30 @@
 	  forwardRef: true
 	})(AlgoOrdersPanelContainer);
 
-	var css_248z$3 = ".positions-panel-module_main__3bRPm{\n height: 400px;\n /* background-color:red; */\n}\n\n";
-	var style$1 = {"main":"positions-panel-module_main__3bRPm"};
-	styleInject(css_248z$3);
+	var css_248z$4 = ".positions-panel-module_main__3bRPm{\n /* height: 100%; */\n /* width:100%; */\n height: 300px;\n /* background-color:red; */\n}\n\n";
+	var style$2 = {"main":"positions-panel-module_main__3bRPm"};
+	styleInject(css_248z$4);
 
 	//     constructor(props) {
 	// 	super(props);
 	//     }
 	//     render() {
+	//
+
+	const CurrencyFormatter$1 = ({
+	  value
+	}) => /*#__PURE__*/react.createElement("b", {
+	  style: {
+	    color: 'darkblue'
+	  }
+	}, value.toLocaleString('en-US', {
+	  style: 'currency',
+	  currency: 'USD'
+	}));
+
+	const CurrencyTypeProvider$1 = props => /*#__PURE__*/react.createElement(DataTypeProvider, _extends$1({
+	  formatterComponent: CurrencyFormatter$1
+	}, props));
 
 	const PositionsPanel = props => {
 	  // <TemplateConnector>
@@ -67657,11 +68187,13 @@
 	  // // setRows(changedRows);
 	  // };
 	  return /*#__PURE__*/react.createElement("div", {
-	    className: style$1.main
+	    className: style$2.main
 	  }, /*#__PURE__*/react.createElement(Grid$2, {
 	    rows: props.rows,
 	    columns: props.columns
-	  }, /*#__PURE__*/react.createElement(Table$1$1, null), /*#__PURE__*/react.createElement(TableHeaderRow$1, null)));
+	  }, /*#__PURE__*/react.createElement(CurrencyTypeProvider$1, {
+	    for: ['avg_price', 'sod_price', 'last_price']
+	  }), /*#__PURE__*/react.createElement(Table$1$1, null), /*#__PURE__*/react.createElement(VirtualTable, null), /*#__PURE__*/react.createElement(TableHeaderRow$1, null)));
 	}; // };
 
 	// import React from 'react';
@@ -68022,8 +68554,12 @@
 	});
 	var SplitterLayout = unwrapExports(lib$1);
 
-	var css_248z$4 = ".splitter-layout {\n  position: absolute;\n  display: flex;\n  flex-direction: row;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.splitter-layout .layout-pane {\n  position: relative;\n  flex: 0 0 auto;\n  overflow: auto;\n}\n\n.splitter-layout .layout-pane.layout-pane-primary {\n  flex: 1 1 auto;\n}\n\n.splitter-layout > .layout-splitter {\n  flex: 0 0 auto;\n  width: 4px;\n  height: 100%;\n  cursor: col-resize;\n  background-color: #ccc;\n}\n\n.splitter-layout .layout-splitter:hover {\n  background-color: #bbb;\n}\n\n.splitter-layout.layout-changing {\n  cursor: col-resize;\n}\n\n.splitter-layout.layout-changing > .layout-splitter {\n  background-color: #aaa;\n}\n\n.splitter-layout.splitter-layout-vertical {\n  flex-direction: column;\n}\n\n.splitter-layout.splitter-layout-vertical.layout-changing {\n  cursor: row-resize;\n}\n\n.splitter-layout.splitter-layout-vertical > .layout-splitter {\n  width: 100%;\n  height: 4px;\n  cursor: row-resize;\n}\n";
-	styleInject(css_248z$4);
+	var css_248z$5 = ".splitter-layout {\n  position: absolute;\n  display: flex;\n  flex-direction: row;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.splitter-layout .layout-pane {\n  position: relative;\n  flex: 0 0 auto;\n  overflow: auto;\n}\n\n.splitter-layout .layout-pane.layout-pane-primary {\n  flex: 1 1 auto;\n}\n\n.splitter-layout > .layout-splitter {\n  flex: 0 0 auto;\n  width: 4px;\n  height: 100%;\n  cursor: col-resize;\n  background-color: #ccc;\n}\n\n.splitter-layout .layout-splitter:hover {\n  background-color: #bbb;\n}\n\n.splitter-layout.layout-changing {\n  cursor: col-resize;\n}\n\n.splitter-layout.layout-changing > .layout-splitter {\n  background-color: #aaa;\n}\n\n.splitter-layout.splitter-layout-vertical {\n  flex-direction: column;\n}\n\n.splitter-layout.splitter-layout-vertical.layout-changing {\n  cursor: row-resize;\n}\n\n.splitter-layout.splitter-layout-vertical > .layout-splitter {\n  width: 100%;\n  height: 4px;\n  cursor: row-resize;\n}\n";
+	styleInject(css_248z$5);
+
+	var css_248z$6 = ".main-panel-module_main__3JH4u{\n height:100%;\n /* width:800px; */\n}\n";
+	var style$3 = {"main":"main-panel-module_main__3JH4u"};
+	styleInject(css_248z$6);
 
 	// import * as React from 'react';
 
@@ -68071,13 +68607,11 @@
 	  }
 
 	  render() {
-	    return /*#__PURE__*/react.createElement(SplitterLayout, {
+	    return /*#__PURE__*/react.createElement("div", {
+	      className: style$3.main
+	    }, /*#__PURE__*/react.createElement(SplitterLayout, {
 	      vertical: true
-	    }, /*#__PURE__*/react.createElement("div", {
-	      style: {
-	        height: '300'
-	      }
-	    }, /*#__PURE__*/react.createElement(PositionsPanelContainer$1, {
+	    }, /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(PositionsPanelContainer$1, {
 	      comm: this.comm,
 	      ref: r => this.position_panel = r
 	    })), /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(AlgoOrdersPanelContainer$1, {
@@ -68086,7 +68620,7 @@
 	      algoman_rop: this.props.algoman_rop,
 	      ref: r => this.algo_orders_panel = r,
 	      ws_url: this.ws_url
-	    })));
+	    }))));
 	  }
 
 	}
@@ -68116,11 +68650,13 @@
 	  forwardRef: true
 	})(MainPanelContainer);
 
+	var css_248z$7 = ".main-routes-module_main__V2hNn{\n  height:600px;\n}\n";
+	var style$4 = {"main":"main-routes-module_main__V2hNn"};
+	styleInject(css_248z$7);
+
 	const MainRoutes = () => {
 	  return /*#__PURE__*/react.createElement("div", {
-	    style: {
-	      height: "600px"
-	    }
+	    className: style$4.main
 	  }, /*#__PURE__*/react.createElement(MainPanelContainer$1, null));
 	};
 
@@ -68132,13 +68668,17 @@
 	};
 
 	const App = () => {
-	  return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement(Container, {
+	  return /*#__PURE__*/react.createElement("div", {
+	    style: {
+	      height: "300px"
+	    }
+	  }, /*#__PURE__*/react.createElement(Container, {
 	    fluid: true
 	  }, /*#__PURE__*/react.createElement(Row, null, /*#__PURE__*/react.createElement(Col, null, /*#__PURE__*/react.createElement(MainNavbarContainer$1, null), /*#__PURE__*/react.createElement(Routes, null)))));
 	};
 
-	var css_248z$5 = "@import url('https://fonts.googleapis.com/css?family=Open+Sans');\nbody {\n    font-family: 'Open Sans', sans-serif;\n}\n";
-	styleInject(css_248z$5);
+	var css_248z$8 = "@import url('https://fonts.googleapis.com/css?family=Open+Sans');\nbody {\n    font-family: 'Open Sans', sans-serif;\n}\n";
+	styleInject(css_248z$8);
 
 	reactDom.render( /*#__PURE__*/react.createElement(Provider, {
 	  store: store

@@ -87,21 +87,21 @@ export const AlgoOrdersPanel=(props)=>{
 		  </InputGroup>
 		</div>
 
-		{/*<Grid rows={props.rows} columns={props.columns}>*/}
-		<Grid rows={props.rows} columns={columns}>
+		<Grid rows={props.rows} columns={props.columns}>
+		{/*<Grid rows={props.rows} columns={columns}>*/}
 		 <SelectionState
 			selection={props.selection}
 			onSelectionChange={props.setSelection}
 		  />
 		<CurrencyTypeProvider for={['avg_price']} />
 		<IntegratedSelection />
-		<Table />
-		{/*<VirtualTable />*/}
+		{/*<Table />*/}
+		<VirtualTable />
 		{/*<TableColumnResizing defaultColumnWidths={defaultColumnWidths} />*/}
 		<TableColumnResizing
 				  columnWidths={columnWidths}
 				  onColumnWidthsChange={setColumnWidths}
-				  resizingMode={'nextColumn'}
+				  // resizingMode={'nextColumn'}
 				/>
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
