@@ -1,7 +1,8 @@
 .main{
+  grid-area:pos;
  /* height: 100%; */
  /* width:100%; */
- height: 300px;
- /* background-color:red; */
+  /* height: 100px; */ 
+ background-color:orange;
 }
 

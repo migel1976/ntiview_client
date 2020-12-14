@@ -5,6 +5,7 @@ import {Form,FormControl,Button} from 'react-bootstrap';
 
 import OrderModalContainer from '../main-panel/algo-orders-panel/order-modal/order-modal-container';
 import GraphModalContainer from '../main-panel/algo-orders-panel/graph-modal/graph-modal-container';
+import style from './mainnavbar.module.css';
 
 const MainNavbar=(props)=>{
 
@@ -14,7 +15,7 @@ const MainNavbar=(props)=>{
 	};
 
 	return(
-	<div>
+	<div className={style.navbar}>
 		<OrderModalContainer 
 			algoman_rop={props.algoman_rop}	
 		/>

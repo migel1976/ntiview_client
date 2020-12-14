@@ -57,6 +57,7 @@ export const PositionsPanel=(props)=>{
 	return (
 		<div className={style.main}>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
+		<div className='card'>
 		<Grid rows={props.rows} columns={columns}>
         <DragDropProvider />
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price']} />
@@ -66,12 +67,13 @@ export const PositionsPanel=(props)=>{
         />
 		<IntegratedGrouping />
 		{/*<Table />*/}
-		<VirtualTable />
+		<VirtualTable height={'200px'}/>
 		<TableHeaderRow />
 		<TableGroupRow />
         <Toolbar />
         <GroupingPanel />
 		</Grid>
+		</div>
 		</div>
 	);
  }

@@ -10,7 +10,8 @@ import {Grid,
 		TableHeaderRow,
 		TableSelection,
 		VirtualTable,
-		PagingPanel
+		PagingPanel,
+	    TableFixedColumns
 
 } from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
@@ -56,19 +57,19 @@ export const AlgoOrdersPanel=(props)=>{
 		{name: 'avg_price', title:'avg_price'},
 		{name: 'qty_done', title:'qty_done'}
 	  ]);
-	 // const [defaultColumnWidths] = useState([
-	const [columnWidths, setColumnWidths] = useState([
+	 const [defaultColumnWidths] = useState([
+	// const [columnWidths, setColumnWidths] = useState([
 		{ columnName: 'aoid', width:70},
-		{ columnName: 'ticker', width:100},
+		{ columnName: 'ticker', width:90},
 		{ columnName: 'account', width:100},
-		{ columnName: 'aotype', width: 100},
-		{ columnName: 'aostate', width: 100},
-		{ columnName: 'start_time', width:100},
-		{ columnName: 'end_time', width:100},
+		{ columnName: 'aotype', width: 90},
+		{ columnName: 'aostate', width: 120},
+		{ columnName: 'start_time', width:150},
+		{ columnName: 'end_time', width:150},
 		{ columnName: 'aosize', width:100},
-		{ columnName: 'entry_price', width:200},
-		{ columnName: 'avg_price', width:200},
-		{ columnName: 'qty_done', width:200}
+		{ columnName: 'entry_price', width:130},
+		{ columnName: 'avg_price', width:130},
+		{ columnName: 'qty_done', width:130}
 	  ]);
 	return (
 	    <div className={style.main}>
@@ -87,8 +88,8 @@ export const AlgoOrdersPanel=(props)=>{
 		  </InputGroup>
 		</div>
 
-		<Grid rows={props.rows} columns={props.columns}>
-		{/*<Grid rows={props.rows} columns={columns}>*/}
+		{/*<Grid rows={props.rows} columns={props.columns}>*/}
+		<Grid rows={props.rows} columns={columns}>
 		 <SelectionState
 			selection={props.selection}
 			onSelectionChange={props.setSelection}
@@ -96,15 +97,19 @@ export const AlgoOrdersPanel=(props)=>{
 		<CurrencyTypeProvider for={['avg_price']} />
 		<IntegratedSelection />
 		{/*<Table />*/}
-		<VirtualTable />
+		<VirtualTable 
+		   columnExtensions={defaultColumnWidths}
+		   height={'350px'}
+		/>
 		{/*<TableColumnResizing defaultColumnWidths={defaultColumnWidths} />*/}
-		<TableColumnResizing
-				  columnWidths={columnWidths}
-				  onColumnWidthsChange={setColumnWidths}
-				  // resizingMode={'nextColumn'}
-				/>
+		{/*<TableColumnResizing*/}
+				  {/*// columnWidths={columnWidths}*/}
+				  {/*// onColumnWidthsChange={setColumnWidths}*/}
+				  {/*// resizingMode={'nextColumn'}*/}
+				{/*/>*/}
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
+		<TableFixedColumns leftColumns={['start_time','stop_time']} />
 		</Grid>
 	    </div>
 	);

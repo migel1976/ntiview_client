@@ -2,8 +2,6 @@
 // import * as ReactDOM from 'react-dom';
 import React,{Component} from 'react';
 import AlgoOrdersPanelContainer from './algo-orders-panel/algo-orders-panel-container';
-// import * as PositionsPanel from './positions-panel/positions-panel';
-// import {PositionsPanel} from './positions-panel/positions-panel';
 import PositionsPanelContainer from './positions-panel/positions-panel-container';
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
@@ -14,14 +12,11 @@ import style from './main-panel.module.css';
 class SnapshotObserverI extends NTIAlgo.SnapshotObserver
 {
     constructor(app) {
-	// debugger;
 	super();
 	this.app = app;
     }
     
     changedSnapshot(snapshot) {
-	//console.log("df:", df)
-	//this.app.timestamp.refresh(snapshot.timestamp);
 	this.app.position_panel.refresh(snapshot.timestamp, snapshot.position);
 	this.app.algo_orders_panel.refresh(snapshot.algo_orders);
     }
@@ -31,7 +26,6 @@ class MainPanel extends Component {
     constructor() {
 	super();
 	this.comm = new libpybx.Communicator();
-	// this.state = {algoman_rop: null};
 	this.ws_url = "ws://localhost:3005/";
     }
 
@@ -58,14 +52,14 @@ class MainPanel extends Component {
     render() {
 	return (
 		<div className={style.main}>
-		  <SplitterLayout vertical>
-		   <div>
+		  {/*<SplitterLayout vertical>*/}
+		   {/*<div>*/}
 			<PositionsPanelContainer
 					comm={this.comm}
 					ref={r => this.position_panel = r}
 			/>
-	      </div>
-		  <div>
+		  {/*</div>*/}
+		  {/*<div>*/}
 			<AlgoOrdersPanelContainer 
 				  comm={this.comm}
 				  // algoman_rop={this.state.algoman_rop}
@@ -73,8 +67,8 @@ class MainPanel extends Component {
 				  ref={r => this.algo_orders_panel = r}
 				  ws_url={this.ws_url}
 			/>
-		  </div>
-		 </SplitterLayout>
+		  {/*</div>*/}
+		 {/*</SplitterLayout>*/}
 		</div>
 	);
     }
