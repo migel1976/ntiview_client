@@ -13,6 +13,7 @@ import {Grid,
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import style from './positions-panel.module.css';
 
+import useWindowDimensions from '../../../hooks/dimension.hook';
 import {
 	IntegratedGrouping,
 	IntegratedSelection,
@@ -54,6 +55,9 @@ export const PositionsPanel=(props)=>{
 		{name: 'sector', title:'sector'}
 	  ]);
 
+	  const { height, width } = useWindowDimensions();
+	  console.log('width is width',width);
+	  // debugger;
 	return (
 		<div className={style.main}>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
@@ -66,8 +70,8 @@ export const PositionsPanel=(props)=>{
           defaultExpandedGroups={['AAPL','MSFT']}
         />
 		<IntegratedGrouping />
-		{/*<Table />*/}
-		<VirtualTable height={'200px'}/>
+		{/*<VirtualTable height={'200px'}/>*/}
+		<VirtualTable />
 		<TableHeaderRow />
 		<TableGroupRow />
         <Toolbar />

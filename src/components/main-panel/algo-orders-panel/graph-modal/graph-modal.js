@@ -8,7 +8,7 @@ import DxChart from './dx-chart';
 // export const GraphModal=(props)=>{
 export default class GraphModal extends Component{
 	componentDidMount(){
-		debugger;
+		// debugger;
 		this.props.getGraphOrdersByAOID(this.props.row.aoid);
 	};
 	

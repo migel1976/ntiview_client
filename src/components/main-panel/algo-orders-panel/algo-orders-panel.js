@@ -25,6 +25,7 @@ import {
 	TableColumnResizing,
 	TableColumnWidthInfo
 } from '@devexpress/dx-react-grid';
+import useWindowDimensions from '../../../hooks/dimension.hook';
 
 const CurrencyFormatter = ({ value }) => (
   <b style={{ color: 'darkblue' }}>
@@ -71,6 +72,11 @@ export const AlgoOrdersPanel=(props)=>{
 		{ columnName: 'avg_price', width:130},
 		{ columnName: 'qty_done', width:130}
 	  ]);
+	  // console.log('debugger is props',props);
+	  // debugger;
+	  const { height, width } = useWindowDimensions();
+	  const mydim=height-props.height-100;
+	  console.log('mydim is', mydim);
 	return (
 	    <div className={style.main}>
 		{/*<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}*/}
@@ -99,7 +105,11 @@ export const AlgoOrdersPanel=(props)=>{
 		{/*<Table />*/}
 		<VirtualTable 
 		   columnExtensions={defaultColumnWidths}
-		   height={'350px'}
+		   // height={150}
+		   // height={'350px'}
+	       // height={height-props.height}
+		   // height={props.height-height}
+		   height={mydim.toString()}
 		/>
 		{/*<TableColumnResizing defaultColumnWidths={defaultColumnWidths} />*/}
 		{/*<TableColumnResizing*/}
@@ -109,7 +119,9 @@ export const AlgoOrdersPanel=(props)=>{
 				{/*/>*/}
 		<TableHeaderRow />
 		<TableSelection showSelectAll selectByRowClick />
-		<TableFixedColumns leftColumns={['start_time','stop_time']} />
+		<TableFixedColumns 
+		                  leftColumns={['start_time','stop_time']} 
+		/>
 		</Grid>
 	    </div>
 	);

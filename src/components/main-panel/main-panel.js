@@ -1,5 +1,3 @@
-// import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
 import React,{Component} from 'react';
 import AlgoOrdersPanelContainer from './algo-orders-panel/algo-orders-panel-container';
 import PositionsPanelContainer from './positions-panel/positions-panel-container';
@@ -14,6 +12,7 @@ class SnapshotObserverI extends NTIAlgo.SnapshotObserver
     constructor(app) {
 	super();
 	this.app = app;
+	// this.setSelection=this.setSelection.bind(this);
     }
     
     changedSnapshot(snapshot) {
@@ -27,6 +26,9 @@ class MainPanel extends Component {
 	super();
 	this.comm = new libpybx.Communicator();
 	this.ws_url = "ws://localhost:3005/";
+	// this.state={primaryHeight:250, secondaryHeight:250};
+	this.state={h:250};
+	this.secondarySizeChange=this.secondarySizeChange.bind(this);
     }
 
     componentDidMount() {
@@ -48,11 +50,25 @@ class MainPanel extends Component {
 	});
 	
     }
+
+	// primarySizeChange=(number)=>{
+	// 	console.log('primarySizeChange is: ',number);
+	// }
+
+	secondarySizeChange(number){
+		this.setState({h:number});
+	}
     
     render() {
 	return (
 		<div className={style.main}>
-		  {/*<SplitterLayout vertical>*/}
+		  <SplitterLayout
+						  vertical
+						  primaryIndex={1}
+						  secondaryInitialSize={250}
+						  // onPrimaryPaneSizeChange={this.primarySizeChange}
+						  onSecondaryPaneSizeChange={this.secondarySizeChange}
+							>
 		   {/*<div>*/}
 			<PositionsPanelContainer
 					comm={this.comm}
@@ -66,9 +82,10 @@ class MainPanel extends Component {
 				  algoman_rop={this.props.algoman_rop}
 				  ref={r => this.algo_orders_panel = r}
 				  ws_url={this.ws_url}
+				  height={this.state.h}
 			/>
 		  {/*</div>*/}
-		 {/*</SplitterLayout>*/}
+		 </SplitterLayout>
 		</div>
 	);
     }

@@ -36,7 +36,7 @@ const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
 
 		case SET_GRAPH_ORDERS:
-			debugger;
+			// debugger;
 			let arrObj=[];
 			action.items.forEach(function(item,i,arr){
 				var date=moment(item.date).format('YYYY/MM/HH hh:mm:ss');

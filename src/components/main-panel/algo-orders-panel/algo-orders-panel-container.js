@@ -169,6 +169,8 @@ class AlgoOrdersPanelContainer extends Component{
 
 				setToggleSelectionGraph={this.setToggleSelectionGraph}
 			    toggleSelectionGraph={this.state.toggleSelectionGraph}
+
+				height={this.props.height}
 			/>
 		)
 	}

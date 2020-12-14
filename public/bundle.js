@@ -19229,7 +19229,7 @@
 	const orderReducer = (state = initialState, action) => {
 	  switch (action.type) {
 	    case SET_GRAPH_ORDERS:
-	      debugger;
+	      // debugger;
 	      let arrObj = [];
 	      action.items.forEach(function (item, i, arr) {
 	        var date = moment(item.date).format('YYYY/MM/HH hh:mm:ss');
@@ -56531,7 +56531,7 @@
 
 	class GraphModal extends react_6 {
 	  componentDidMount() {
-	    debugger;
+	    // debugger;
 	    this.props.getGraphOrdersByAOID(this.props.row.aoid);
 	  }
 
@@ -67760,6 +67760,30 @@
 	  MenuItem: MenuItem
 	})(ExportPanel);
 
+	function getWindowDimensions() {
+	  const {
+	    innerWidth: width,
+	    innerHeight: height
+	  } = window;
+	  return {
+	    width,
+	    height
+	  };
+	}
+
+	function useDimension() {
+	  const [windowDimensions, setWindowDimensions] = react_27(getWindowDimensions());
+	  react_21(() => {
+	    function handleResize() {
+	      setWindowDimensions(getWindowDimensions());
+	    }
+
+	    window.addEventListener('resize', handleResize);
+	    return () => window.removeEventListener('resize', handleResize);
+	  }, []);
+	  return windowDimensions;
+	}
+
 	const CurrencyFormatter = ({
 	  value
 	}) => /*#__PURE__*/react.createElement("b", {
@@ -67847,7 +67871,15 @@
 	  }, {
 	    columnName: 'qty_done',
 	    width: 130
-	  }]);
+	  }]); // console.log('debugger is props',props);
+	  // debugger;
+
+	  const {
+	    height,
+	    width
+	  } = useDimension();
+	  const mydim = height - props.height - 100;
+	  console.log('mydim is', mydim);
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$2.main
 	  }, /*#__PURE__*/react.createElement(Button, {
@@ -67879,8 +67911,12 @@
 	  }), /*#__PURE__*/react.createElement(CurrencyTypeProvider, {
 	    for: ['avg_price']
 	  }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(VirtualTable, {
-	    columnExtensions: defaultColumnWidths,
-	    height: '350px'
+	    columnExtensions: defaultColumnWidths // height={150}
+	    // height={'350px'}
+	    // height={height-props.height}
+	    // height={props.height-height}
+	    ,
+	    height: mydim.toString()
 	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableSelection$1, {
 	    showSelectAll: true,
 	    selectByRowClick: true
@@ -68063,7 +68099,8 @@
 	      setSelection: this.setSelection,
 	      cancelOrder: this.cancelOrder,
 	      setToggleSelectionGraph: this.setToggleSelectionGraph,
-	      toggleSelectionGraph: this.state.toggleSelectionGraph
+	      toggleSelectionGraph: this.state.toggleSelectionGraph,
+	      height: this.props.height
 	    });
 	  }
 
@@ -68139,6 +68176,12 @@
 	    name: 'sector',
 	    title: 'sector'
 	  }]);
+	  const {
+	    height,
+	    width
+	  } = useDimension();
+	  console.log('width is width', width); // debugger;
+
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$3.main
 	  }, /*#__PURE__*/react.createElement("div", {
@@ -68153,9 +68196,7 @@
 	      columnName: 'ticker'
 	    }],
 	    defaultExpandedGroups: ['AAPL', 'MSFT']
-	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(VirtualTable, {
-	    height: '200px'
-	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1, null))));
+	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(VirtualTable, null), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1, null))));
 	};
 
 	// import React from 'react';
@@ -68514,7 +68555,7 @@
 	    }]);
 	  });
 	});
-	unwrapExports(lib$1);
+	var SplitterLayout = unwrapExports(lib$1);
 
 	var css_248z$6 = ".splitter-layout {\n  position: absolute;\n  display: flex;\n  flex-direction: row;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.splitter-layout .layout-pane {\n  position: relative;\n  flex: 0 0 auto;\n  overflow: auto;\n}\n\n.splitter-layout .layout-pane.layout-pane-primary {\n  flex: 1 1 auto;\n}\n\n.splitter-layout > .layout-splitter {\n  flex: 0 0 auto;\n  width: 4px;\n  height: 100%;\n  cursor: col-resize;\n  background-color: #ccc;\n}\n\n.splitter-layout .layout-splitter:hover {\n  background-color: #bbb;\n}\n\n.splitter-layout.layout-changing {\n  cursor: col-resize;\n}\n\n.splitter-layout.layout-changing > .layout-splitter {\n  background-color: #aaa;\n}\n\n.splitter-layout.splitter-layout-vertical {\n  flex-direction: column;\n}\n\n.splitter-layout.splitter-layout-vertical.layout-changing {\n  cursor: row-resize;\n}\n\n.splitter-layout.splitter-layout-vertical > .layout-splitter {\n  width: 100%;\n  height: 4px;\n  cursor: row-resize;\n}\n";
 	styleInject(css_248z$6);
@@ -68523,12 +68564,10 @@
 	var style$4 = {"main":"main-panel-module_main__3JH4u"};
 	styleInject(css_248z$7);
 
-	// import * as React from 'react';
-
 	class SnapshotObserverI extends SnapshotObserver {
 	  constructor(app) {
 	    super();
-	    this.app = app;
+	    this.app = app; // this.setSelection=this.setSelection.bind(this);
 	  }
 
 	  changedSnapshot(snapshot) {
@@ -68542,7 +68581,12 @@
 	  constructor() {
 	    super();
 	    this.comm = new Communicator();
-	    this.ws_url = "ws://localhost:3005/";
+	    this.ws_url = "ws://localhost:3005/"; // this.state={primaryHeight:250, secondaryHeight:250};
+
+	    this.state = {
+	      h: 250
+	    };
+	    this.secondarySizeChange = this.secondarySizeChange.bind(this);
 	  }
 
 	  componentDidMount() {
@@ -68562,11 +68606,26 @@
 	    }).then(() => {
 	      console.log("connection setup is done");
 	    });
+	  } // primarySizeChange=(number)=>{
+	  // 	console.log('primarySizeChange is: ',number);
+	  // }
+
+
+	  secondarySizeChange(number) {
+	    this.setState({
+	      h: number
+	    });
 	  }
 
 	  render() {
 	    return /*#__PURE__*/react.createElement("div", {
 	      className: style$4.main
+	    }, /*#__PURE__*/react.createElement(SplitterLayout, {
+	      vertical: true,
+	      primaryIndex: 1,
+	      secondaryInitialSize: 250 // onPrimaryPaneSizeChange={this.primarySizeChange}
+	      ,
+	      onSecondaryPaneSizeChange: this.secondarySizeChange
 	    }, /*#__PURE__*/react.createElement(PositionsPanelContainer$1, {
 	      comm: this.comm,
 	      ref: r => this.position_panel = r
@@ -68575,8 +68634,9 @@
 	      ,
 	      algoman_rop: this.props.algoman_rop,
 	      ref: r => this.algo_orders_panel = r,
-	      ws_url: this.ws_url
-	    }));
+	      ws_url: this.ws_url,
+	      height: this.state.h
+	    })));
 	  }
 
 	}
@@ -68620,7 +68680,7 @@
 	const Footer = () => {
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$5.footer
-	  }, "Copyright@2020");
+	  }, "MSMirnov@Copyright 2020");
 	};
 
 	var css_248z$9 = ".app-module_app__3p1pR{\n  /* background-color:red; */\n  display:grid;\n  /* grid-template-columns:100%; */\n  /* grid-template-rows:1fr 1fr 1fr; */\n  grid-template-rows:;\n  grid-template-areas:\n  \"nav\"\n  \"content\"\n  /* height: 100vh; */\n  \"foo\";\n  /* background-image:url(../../assets/images/paper.jpg); */\n}\n.app-module_app_content__1VFwj{\n   grid-area:content; \n  /* background-color:green; */\n  /* background-image:url(../../assets/images/paper.jpg); */\n}\n";
