@@ -27,7 +27,8 @@ class MainPanel extends Component {
 	this.comm = new libpybx.Communicator();
 	this.ws_url = "ws://localhost:3005/";
 	// this.state={primaryHeight:250, secondaryHeight:250};
-	this.state={h:250, serverinfo_rop:null, symbols:null};
+	this.state={h:250};
+	this.state={serverinfo_rop:null, symbols:null, strategyTypes:null, accounts:null};
 	this.secondarySizeChange=this.secondarySizeChange.bind(this);
     }
 
@@ -49,25 +50,35 @@ class MainPanel extends Component {
 		return this.comm.get_rop(NTIAlgo.ServerInfo,this.ws_url,"serverinfo");
 	}).then((serverinfo_rop)=>{
 		// debugger;
-		this.setState({serverinfo_rop:serverinfo_rop});
+		// this.setState({serverinfo_rop:serverinfo_rop});
+		this.props.setServerinfoRop(serverinfo_rop);
 	}).then(() => {
 	    console.log("connection setup is done");
 	});
 	
     }
 
-	componentDidUpdate(prevState){
-		debugger;
-		if(this.state.serverinfo_rop!==prevState.serverinfo_rop){
-			if(this.state.serverinfo_rop!==null){
-				this.state.serverinfo_rop.getStrategyTypes()
-				.then(symbols=>{
-					debugger;
-					this.setState({symbols});
-				})
+	componentDidUpdate(prevProps,prevState){
+		// debugger;
+		if(this.props.serverinfo_rop!==prevProps.serverinfo_rop){
+			if(this.props.serverinfo_rop!==null){
+					this.props.serverinfo_rop.getStrategyTypes()
+					.then(strategyTypes=>{
+						this.setState({strategyTypes});
+					});
+					this.props.serverinfo_rop.getSymbols()
+					.then(symbols=>{
+						this.setState({symbols});
+					})
+					this.props.serverinfo_rop.getAccounts()
+					.then(accounts=>{
+						this.setState({accounts});
+					})
 			}
 		}
-		// console.log('symbols is',this.state.symbols);
+		console.log('symbols is',this.state.symbols);
+		console.log('accounts is',this.state.accounts);
+		console.log('strategyTypes is',this.state.strategyTypes);
 	}
 
 	// primarySizeChange=(number)=>{

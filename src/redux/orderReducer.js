@@ -2,6 +2,7 @@ import OrdersApi from '../api/orders';
 import moment from 'moment'
 
 const initialState={
+	serverinfo_rop:null,
 	algoman_rop:null,
 	timeStart:'09:30:00',
 	timeEnd:'16:00:00',
@@ -33,6 +34,7 @@ const SET_GRAPH_SHOW_MODAL='SET_GRAPH_SHOW_MODAL';
 const SET_ALGOMAN_ROP='SET_ALGOMAN_ROP';
 const SET_TS='SET_TS';
 const SET_SELECTION_ORDER='SET_SELECTION_ORDER';
+const SET_SERVERINFO_ROP='SET_SERVERINFO_ROP';
 
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
@@ -64,6 +66,8 @@ const orderReducer=(state=initialState,action)=>{
 			return {...state,ts:action.ts}
 		case SET_ALGOMAN_ROP:
 			return {...state,algoman_rop:action.rop}
+		case SET_SERVERINFO_ROP:
+			return {...state,serverinfo_rop:action.rop}
 		case SET_ORDER_ITEM:
 			return {...state,orderitem:action.item}
 		case SET_ORDER_SHOW_MODAL:
@@ -92,6 +96,10 @@ export const getGraphOrdersByAOID=(aoid)=>{
 export const setTS=(ts)=>({
 				type:SET_TS,
 				ts});
+
+export const setServerinfoRop=(rop)=>({
+				type:SET_SERVERINFO_ROP,
+				rop});
 
 export const setAlgomanRop=(rop)=>({
 				type:SET_ALGOMAN_ROP,
