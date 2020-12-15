@@ -1,20 +1,20 @@
 //
-// generated code: source - /home/asmirnov/NTI/pybx/NTIAlgo.pybx
+// generated code: source - ../pybx/NTIAlgo.pybx
 import * as libpybx from 'libpybx-js';
 import * as Utils from './Utils.js';
-    
+
 export class AlgoOrderAttributes extends libpybx.dataclass {
-  constructor(strategyType, symbol, account, oside, targetQty, timeStart, timeEnd, discretion, entryPrice, maxSpreadBps) {
+  constructor(strategyType, symbol, account, side, qty, limPrice, timeStart, timeEnd, discretion, maxSpreadBps) {
   super();
     this.strategyType = strategyType;
     this.symbol = symbol;
     this.account = account;
-    this.oside = oside;
-    this.targetQty = targetQty;
+    this.side = side;
+    this.qty = qty;
+    this.limPrice = limPrice;
     this.timeStart = timeStart;
     this.timeEnd = timeEnd;
     this.discretion = discretion;
-    this.entryPrice = entryPrice;
     this.maxSpreadBps = maxSpreadBps;
   }
 };
@@ -24,6 +24,28 @@ export class Snapshot extends libpybx.dataclass {
     this.timestamp = timestamp;
     this.position = position === undefined ? new Utils.DataFrame() : position;
     this.algo_orders = algo_orders === undefined ? new Utils.DataFrame() : algo_orders;
+  }
+};
+export class StrategyType extends libpybx.dataclass {
+  constructor(strategyType, description) {
+  super();
+    this.strategyType = strategyType;
+    this.description = description;
+  }
+};
+export class Symbol extends libpybx.dataclass {
+  constructor(symbol, name, sector) {
+  super();
+    this.symbol = symbol;
+    this.name = name;
+    this.sector = sector;
+  }
+};
+export class Account extends libpybx.dataclass {
+  constructor(account, description) {
+  super();
+    this.account = account;
+    this.description = description;
   }
 };
 export class AlgoOrder_rop extends libpybx.Object_rop {
@@ -76,6 +98,70 @@ export class AlgoOrderManager_rop extends libpybx.Object_rop {
    });
  return p.then(ret_json => {
  let ret = libpybx.from_json(ret_json, new AlgoOrder_rop());
+ return ret; });
+ }
+};
+export class ServerInfo_rop extends libpybx.Object_rop {
+  get_type_name() { return 'NTIAlgo.ServerInfo'; }
+  constructor(comm, ws, object_id) {
+     super(comm, ws, object_id);
+  this.getAccounts = this.getAccounts.bind(this);
+  this.getStrategyTypes = this.getStrategyTypes.bind(this);
+  this.getSymbols = this.getSymbols.bind(this);
+  }
+   to_json() { return {'object_id': this.object_id}; }
+   getAccounts() {
+    let p = new Promise((resolve, reject) => {
+         let call_req = {
+               'message-type': 'method-call',
+               'message-id': libpybx.generateQuickGuid(),
+               'object-id': this.object_id,
+              'method-signature': 'ServerInfo__getAccounts',
+          'args': {
+          }
+       };
+	    this.comm.add_message_handler(call_req['message-id'], [resolve, reject]);
+      console.log("getAccounts:", libpybx.to_json_string(call_req));
+      this.ws.send(libpybx.to_json_string(call_req));
+   });
+ return p.then(ret_json => {
+ let ret = libpybx.from_json(ret_json, []);
+ return ret; });
+ }
+   getStrategyTypes() {
+    let p = new Promise((resolve, reject) => {
+         let call_req = {
+               'message-type': 'method-call',
+               'message-id': libpybx.generateQuickGuid(),
+               'object-id': this.object_id,
+              'method-signature': 'ServerInfo__getStrategyTypes',
+          'args': {
+          }
+       };
+	    this.comm.add_message_handler(call_req['message-id'], [resolve, reject]);
+      console.log("getStrategyTypes:", libpybx.to_json_string(call_req));
+      this.ws.send(libpybx.to_json_string(call_req));
+   });
+ return p.then(ret_json => {
+ let ret = libpybx.from_json(ret_json, []);
+ return ret; });
+ }
+   getSymbols() {
+    let p = new Promise((resolve, reject) => {
+         let call_req = {
+               'message-type': 'method-call',
+               'message-id': libpybx.generateQuickGuid(),
+               'object-id': this.object_id,
+              'method-signature': 'ServerInfo__getSymbols',
+          'args': {
+          }
+       };
+	    this.comm.add_message_handler(call_req['message-id'], [resolve, reject]);
+      console.log("getSymbols:", libpybx.to_json_string(call_req));
+      this.ws.send(libpybx.to_json_string(call_req));
+   });
+ return p.then(ret_json => {
+ let ret = libpybx.from_json(ret_json, []);
  return ret; });
  }
 };
@@ -176,6 +262,26 @@ export class AlgoOrderManager
   throw new Error("unknown method " + method)
 }
 placeAlgoOrder(oa) {throw new Error("not implemented");}
+};
+export class ServerInfo
+{
+  get_rop_type() { return ServerInfo_rop; }
+   __call_method(method, args) {
+      method = method.split("__")[1];
+   if (method == 'getAccounts') {
+    return this.getAccounts();
+  }
+   if (method == 'getStrategyTypes') {
+    return this.getStrategyTypes();
+  }
+   if (method == 'getSymbols') {
+    return this.getSymbols();
+  }
+  throw new Error("unknown method " + method)
+}
+getAccounts() {throw new Error("not implemented");}
+getStrategyTypes() {throw new Error("not implemented");}
+getSymbols() {throw new Error("not implemented");}
 };
 export class SnapshotManager
 {

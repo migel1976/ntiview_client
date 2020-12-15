@@ -1,5 +1,5 @@
 //
-// generated code: source - /home/asmirnov/NTI/pybx/Utils.pybx
+// generated code: source - ../pybx/Utils.pybx
 import * as libpybx from 'libpybx-js';
     
 export class DataFrame extends libpybx.dataclass {
