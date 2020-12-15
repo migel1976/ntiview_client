@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {OrderModal} from './order-modal';
 import {setOrderItem,setOrderShowModal,setSelectionOrder} from '../../../../redux/orderReducer';
 import * as NTIAlgo from '../../../../gen-js/NTIAlgo.js';
+import moment from 'moment'
 
 class OrderModalContainer extends Component{
 	constructor(props){
@@ -14,8 +15,13 @@ class OrderModalContainer extends Component{
 		this.state={algo:''}
 		this.state={algosize:''}
 		this.state={account:''}
+		this.state={timeStart:''}
+		this.state={timeEnd:''}
+
 		// this.state={item:null}
 		// this.place_test_orders = this.place_test_orders.bind(this);
+		this.changeInputStartTime=this.changeInputStartTime.bind(this);
+		this.changeInputStopTime=this.changeInputStopTime.bind(this);
 		this.changeInputAccount=this.changeInputAccount.bind(this);
 		this.changeInputAlgosize=this.changeInputAlgosize.bind(this);
 		this.changeSelectTicker=this.changeSelectTicker.bind(this);
@@ -30,13 +36,30 @@ class OrderModalContainer extends Component{
 		var algo=this.props.algo[0];
 		var algosize=this.props.algosize;
 		var account=this.props.account;
-		this.setState({ticker,buysell,algo,algosize,account});
+		var timeStart=this.props.timeStart;
+		var timeEnd=this.props.timeEnd;
+		// this.setState({ticker,buysell,algo,algosize,account});
+		this.setState({ticker,buysell,algo,algosize,account,timeStart,timeEnd});
 	};
 
 	componentDidMount(){
 		this.initStateValue();
 	};
 
+	changeInputStartTime(e){
+		// debugger;
+		// var timeStart=e.target.value;
+		var timeStart=e.target.value;
+		// var timeStart= moment(time, "HH:mm").format("HH:mm:ss");
+
+		this.setState({timeStart});
+	};
+
+	changeInputStopTime(e){
+		var timeEnd=e.target.value;
+		// var timeEnd= moment(time, "HH:mm").format("HH:mm:ss");
+		this.setState({timeEnd});
+	};
 	// changeInputAccount=(e)=>{
 	changeInputAccount(e){
 		var account=e.target.value;
@@ -75,7 +98,10 @@ class OrderModalContainer extends Component{
 					buysell:this.state.buysell,
 					algo:this.state.algo,
 					algosize:this.state.algosize,
-					account:this.state.account
+					account:this.state.account,
+
+					timeStart:this.state.timeStart,
+					timeEnd:this.state.timeEnd
 		};
 		this.place_test_orders(item);
 		this.props.setOrderShowModal(false);
@@ -98,10 +124,32 @@ class OrderModalContainer extends Component{
 	const algo=item.algo;
 	const algosize=parseInt(item.algosize);
 	const account=item.account;
-	let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
-						 buysell,//NTIAlgo.OrderSide.SELL
-						 algosize,
-						 0, 0, 0, 0, 0);
+
+	const timeStart=item.timeStart;
+	const timeStartCorr= moment(timeStart, "HH:mm").format("HH:mm:ss");
+
+	const timeEnd=item.timeEnd;
+	const timeEndCorr= moment(timeEnd, "HH:mm").format("HH:mm:ss");
+	debugger;
+	// let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
+	// 					 buysell,//NTIAlgo.OrderSide.SELL
+	// 					 algosize,
+	// 					 0, 0, 0, 0, 0);
+	
+	let oa = new NTIAlgo.AlgoOrderAttributes(
+						 algo,//strategyType
+						 ticker,//symbol
+						 account,//account
+						 buysell,//side
+						 algosize,//qty
+
+						 0,//limPrice
+
+						 timeStartCorr,//timeStart
+						 timeEndCorr,//timeEnd
+
+						 0,//description
+						 0);
 	// debugger;
 	this.props.algoman_rop.placeAlgoOrder(oa).then(() => {
 	    console.log("order was placed");
@@ -126,12 +174,18 @@ class OrderModalContainer extends Component{
 				algo_value={this.state.algo}
 				algosize_value={this.state.algosize}
 				account_value={this.state.account}
+				
+				timeStart_value={this.state.timeStart}
+				timeEnd_value={this.state.timeEnd}
 
 				changeSelectTicker={this.changeSelectTicker}
 				changeSelectBuysell={this.changeSelectBuysell}
 				changeSelectAlgo={this.changeSelectAlgo}
 				changeInputAlgosize={this.changeInputAlgosize}
 				changeInputAccount={this.changeInputAccount}
+
+				changeInputStartTime={this.changeInputStartTime}
+				changeInputStopTime={this.changeInputStopTime}
 
 				saveForm={this.saveForm}
 				closeForm={this.closeForm}
@@ -147,7 +201,10 @@ const mapStateToProps=(state)=>({
 	algo:state.orderPage.algo,
 	ordershowmodal:state.orderPage.ordershowmodal,
 	orderitem:state.orderPage.orderitem,
-	account:state.orderPage.account
+	account:state.orderPage.account,
+
+	timeEnd:state.orderPage.timeEnd,
+	timeStart:state.orderPage.timeStart
 });
 
 const mapActionsToProps=({

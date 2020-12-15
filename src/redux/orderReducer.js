@@ -3,6 +3,8 @@ import moment from 'moment'
 
 const initialState={
 	algoman_rop:null,
+	timeStart:'09:30:00',
+	timeEnd:'16:00:00',
 	account:'X',
 	ticker:['AAPL','MSFT'],
 	buysell:['SELL','BUY'],

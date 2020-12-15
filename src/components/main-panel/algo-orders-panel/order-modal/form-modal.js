@@ -4,9 +4,29 @@ import SelectTicker from './select-ticker';
 
 const FormModal=(props)=>{
 	console.log('props is ', props);
+	// debugger;
 	return(
 			<Form>
 			  <div class="form-group">
+			    <label>Start Time</label>
+				<input
+						class="form-control"
+						style={{width:'30%', display:'inline-block',margin:'0 0 0 10'}}
+					    type="time"
+					    value={props.timeStart_value}
+					    onChange={props.changeInputStartTime}	
+				/>
+			    <label
+						style={{margin:'0 0 0 10'}}
+						>Stop Time</label>
+				<input
+						class="form-control"
+						style={{width:'30%', display:'inline-block', margin:'0 0 0 10'}}
+					    type="time"
+					    value={props.timeEnd_value}
+					    onChange={props.changeInputStopTime}	
+				/>
+				<hr/>
 				<label>Algoritm Size</label>
 				<input 
 						type="text"

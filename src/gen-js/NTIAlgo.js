@@ -9,11 +9,15 @@ export class AlgoOrderAttributes extends libpybx.dataclass {
     this.strategyType = strategyType;
     this.symbol = symbol;
     this.account = account;
+
     this.side = side;
     this.qty = qty;
+
     this.limPrice = limPrice;
+
     this.timeStart = timeStart;
     this.timeEnd = timeEnd;
+
     this.discretion = discretion;
     this.maxSpreadBps = maxSpreadBps;
   }

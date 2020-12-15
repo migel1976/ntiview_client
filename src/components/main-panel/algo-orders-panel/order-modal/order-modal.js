@@ -46,6 +46,12 @@ export const OrderModal=(props)=>{
 
 					account_value={props.account_value}
 					changeInputAccount={props.changeInputAccount}
+
+					timeStart_value={props.timeStart_value}
+					changeInputStartTime={props.changeInputStartTime}
+
+					timeEnd_value={props.timeEnd_value}
+					changeInputStopTime={props.changeInputStopTime}
 				/>
 			  </Modal.Body>
 

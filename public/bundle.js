@@ -19193,6 +19193,8 @@
 
 	const initialState = {
 	  algoman_rop: null,
+	  timeStart: '09:30:00',
+	  timeEnd: '16:00:00',
 	  account: 'X',
 	  ticker: ['AAPL', 'MSFT'],
 	  buysell: ['SELL', 'BUY'],
@@ -42235,10 +42237,35 @@
 	};
 
 	const FormModal = props => {
-	  console.log('props is ', props);
+	  console.log('props is ', props); // debugger;
+
 	  return /*#__PURE__*/react.createElement(FormImpl, null, /*#__PURE__*/react.createElement("div", {
 	    class: "form-group"
-	  }, /*#__PURE__*/react.createElement("label", null, "Algoritm Size"), /*#__PURE__*/react.createElement("input", {
+	  }, /*#__PURE__*/react.createElement("label", null, "Start Time"), /*#__PURE__*/react.createElement("input", {
+	    class: "form-control",
+	    style: {
+	      width: '30%',
+	      display: 'inline-block',
+	      margin: '0 0 0 10'
+	    },
+	    type: "time",
+	    value: props.timeStart_value,
+	    onChange: props.changeInputStartTime
+	  }), /*#__PURE__*/react.createElement("label", {
+	    style: {
+	      margin: '0 0 0 10'
+	    }
+	  }, "Stop Time"), /*#__PURE__*/react.createElement("input", {
+	    class: "form-control",
+	    style: {
+	      width: '30%',
+	      display: 'inline-block',
+	      margin: '0 0 0 10'
+	    },
+	    type: "time",
+	    value: props.timeEnd_value,
+	    onChange: props.changeInputStopTime
+	  }), /*#__PURE__*/react.createElement("hr", null), /*#__PURE__*/react.createElement("label", null, "Algoritm Size"), /*#__PURE__*/react.createElement("input", {
 	    type: "text",
 	    class: "form-control",
 	    value: props.algosize_value,
@@ -42283,7 +42310,11 @@
 	    algosize_value: props.algosize_value,
 	    changeInputAlgosize: props.changeInputAlgosize,
 	    account_value: props.account_value,
-	    changeInputAccount: props.changeInputAccount
+	    changeInputAccount: props.changeInputAccount,
+	    timeStart_value: props.timeStart_value,
+	    changeInputStartTime: props.changeInputStartTime,
+	    timeEnd_value: props.timeEnd_value,
+	    changeInputStopTime: props.changeInputStopTime
 	  })), /*#__PURE__*/react.createElement(Modal$1.Footer, null, /*#__PURE__*/react.createElement(Button, {
 	    variant: "secondary",
 	    onClick: props.closeForm
@@ -42442,17 +42473,17 @@
 
 	//
 	class AlgoOrderAttributes extends dataclass {
-	  constructor(strategyType, symbol, account, oside, targetQty, timeStart, timeEnd, discretion, entryPrice, maxSpreadBps) {
+	  constructor(strategyType, symbol, account, side, qty, limPrice, timeStart, timeEnd, discretion, maxSpreadBps) {
 	    super();
 	    this.strategyType = strategyType;
 	    this.symbol = symbol;
 	    this.account = account;
-	    this.oside = oside;
-	    this.targetQty = targetQty;
+	    this.side = side;
+	    this.qty = qty;
+	    this.limPrice = limPrice;
 	    this.timeStart = timeStart;
 	    this.timeEnd = timeEnd;
 	    this.discretion = discretion;
-	    this.entryPrice = entryPrice;
 	    this.maxSpreadBps = maxSpreadBps;
 	  }
 
@@ -42747,9 +42778,17 @@
 	    };
 	    this.state = {
 	      account: ''
+	    };
+	    this.state = {
+	      timeStart: ''
+	    };
+	    this.state = {
+	      timeEnd: ''
 	    }; // this.state={item:null}
 	    // this.place_test_orders = this.place_test_orders.bind(this);
 
+	    this.changeInputStartTime = this.changeInputStartTime.bind(this);
+	    this.changeInputStopTime = this.changeInputStopTime.bind(this);
 	    this.changeInputAccount = this.changeInputAccount.bind(this);
 	    this.changeInputAlgosize = this.changeInputAlgosize.bind(this);
 	    this.changeSelectTicker = this.changeSelectTicker.bind(this);
@@ -42765,17 +42804,40 @@
 	    var algo = this.props.algo[0];
 	    var algosize = this.props.algosize;
 	    var account = this.props.account;
+	    var timeStart = this.props.timeStart;
+	    var timeEnd = this.props.timeEnd; // this.setState({ticker,buysell,algo,algosize,account});
+
 	    this.setState({
 	      ticker,
 	      buysell,
 	      algo,
 	      algosize,
-	      account
+	      account,
+	      timeStart,
+	      timeEnd
 	    });
 	  }
 
 	  componentDidMount() {
 	    this.initStateValue();
+	  }
+
+	  changeInputStartTime(e) {
+	    // debugger;
+	    // var timeStart=e.target.value;
+	    var timeStart = e.target.value; // var timeStart= moment(time, "HH:mm").format("HH:mm:ss");
+
+	    this.setState({
+	      timeStart
+	    });
+	  }
+
+	  changeInputStopTime(e) {
+	    var timeEnd = e.target.value; // var timeEnd= moment(time, "HH:mm").format("HH:mm:ss");
+
+	    this.setState({
+	      timeEnd
+	    });
 	  }
 
 	  // changeInputAccount=(e)=>{
@@ -42827,7 +42889,9 @@
 	      buysell: this.state.buysell,
 	      algo: this.state.algo,
 	      algosize: this.state.algosize,
-	      account: this.state.account
+	      account: this.state.account,
+	      timeStart: this.state.timeStart,
+	      timeEnd: this.state.timeEnd
 	    };
 	    this.place_test_orders(item);
 	    this.props.setOrderShowModal(false);
@@ -42850,8 +42914,25 @@
 	      const algo = item.algo;
 	      const algosize = parseInt(item.algosize);
 	      const account = item.account;
-	      let oa = new AlgoOrderAttributes(algo, ticker, account, buysell, //NTIAlgo.OrderSide.SELL
-	      algosize, 0, 0, 0, 0, 0); // debugger;
+	      const timeStart = item.timeStart;
+	      const timeStartCorr = moment(timeStart, "HH:mm").format("HH:mm:ss");
+	      const timeEnd = item.timeEnd;
+	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss");
+	      debugger; // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
+	      // 					 buysell,//NTIAlgo.OrderSide.SELL
+	      // 					 algosize,
+	      // 					 0, 0, 0, 0, 0);
+
+	      let oa = new AlgoOrderAttributes(algo, //strategyType
+	      ticker, //symbol
+	      account, //account
+	      buysell, //side
+	      algosize, //qty
+	      0, //limPrice
+	      timeStartCorr, //timeStart
+	      timeEndCorr, //timeEnd
+	      0, //description
+	      0); // debugger;
 
 	      this.props.algoman_rop.placeAlgoOrder(oa).then(() => {
 	        console.log("order was placed");
@@ -42874,11 +42955,15 @@
 	      algo_value: this.state.algo,
 	      algosize_value: this.state.algosize,
 	      account_value: this.state.account,
+	      timeStart_value: this.state.timeStart,
+	      timeEnd_value: this.state.timeEnd,
 	      changeSelectTicker: this.changeSelectTicker,
 	      changeSelectBuysell: this.changeSelectBuysell,
 	      changeSelectAlgo: this.changeSelectAlgo,
 	      changeInputAlgosize: this.changeInputAlgosize,
 	      changeInputAccount: this.changeInputAccount,
+	      changeInputStartTime: this.changeInputStartTime,
+	      changeInputStopTime: this.changeInputStopTime,
 	      saveForm: this.saveForm,
 	      closeForm: this.closeForm
 	    });
@@ -42893,7 +42978,9 @@
 	  algo: state.orderPage.algo,
 	  ordershowmodal: state.orderPage.ordershowmodal,
 	  orderitem: state.orderPage.orderitem,
-	  account: state.orderPage.account
+	  account: state.orderPage.account,
+	  timeEnd: state.orderPage.timeEnd,
+	  timeStart: state.orderPage.timeStart
 	});
 
 	const mapActionsToProps = {
