@@ -1,0 +1,17 @@
+# -*- python -*-
+from __future__ import annotations 
+import typing, enum, dataclasses
+
+StringSeq = typing.List[str]
+
+@dataclasses.dataclass
+class DataFrame:
+    columns: StringSeq
+    dataframeJSON: str
+
+DataFrameSeq = typing.List[DataFrame]
+
+@dataclasses.dataclass
+class SDFDict:
+    keys: StringSeq
+    values: DataFrameSeq

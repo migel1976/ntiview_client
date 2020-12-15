@@ -1,0 +1,73 @@
+# -*- python -*-
+from __future__ import annotations 
+import typing, enum, dataclasses
+import pybx
+pybx.import_pybx("Utils")
+
+class OrderSide(enum.Enum):
+    BUY = 0
+    SELL = enum.auto()
+
+@dataclasses.dataclass
+class AlgoOrderAttributes:
+    strategyType: str
+    symbol: str
+    account: str
+    side: OrderSide
+    qty: int
+    limPrice: float
+    timeStart: str # HH:MM:SS
+    timeEnd: str # HH:MM:SS
+    discretion: float
+    maxSpreadBps: float
+
+class AlgoOrder(pybx.interface):
+    def cancelAlgoOrder(self) -> None: ...
+
+AlgoOrder_rop = pybx.ROP[AlgoOrder]
+    
+class AlgoOrderManager(pybx.interface):
+    def placeAlgoOrder(self, oa: AlgoOrderAttributes) -> AlgoOrder_rop: ...
+
+@dataclasses.dataclass
+class Snapshot:
+    timestamp: str
+    position: Utils.DataFrame
+    algo_orders: Utils.DataFrame
+    
+class SnapshotManager(pybx.interface):
+    def getSnapshot(self) -> Snapshot: ...
+    def registerObserver(self, observer: SnapshotObserver_rop) -> None: ...
+
+class SnapshotObserver(pybx.interface):
+    def changedSnapshot(self, new_snapshot: Snapshot) -> None: ...
+
+SnapshotObserver_rop = pybx.ROP[SnapshotObserver]
+
+@dataclasses.dataclass
+class StrategyType:
+    strategyType: str
+    description: str
+
+@dataclasses.dataclass
+class Symbol:
+    symbol: str
+    name: str
+    sector: str
+
+@dataclasses.dataclass
+class Account:
+    account: str
+    description: str
+
+StrategyTypeSeq = typing.List[StrategyType]
+SymbolSeq = typing.List[Symbol]
+AccountSeq = typing.List[Account]
+#SideSeq = typing.List[OrderSide]
+
+class ServerInfo(pybx.interface):
+    def getStrategyTypes(self) -> StrategyTypeSeq: ...
+    def getSymbols(self) -> SymbolSeq: ...
+    def getAccounts(self) -> AccountSeq: ...
+    # NB:: pybx doesn't support yet sequence of enums
+    #def getSides(self) -> SideSeq: ...
