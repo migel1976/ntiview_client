@@ -130,7 +130,7 @@ class OrderModalContainer extends Component{
 
 	const timeEnd=item.timeEnd;
 	const timeEndCorr= moment(timeEnd, "HH:mm").format("HH:mm:ss");
-	debugger;
+	// debugger;
 	// let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
 	// 					 buysell,//NTIAlgo.OrderSide.SELL
 	// 					 algosize,

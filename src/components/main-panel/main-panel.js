@@ -27,7 +27,7 @@ class MainPanel extends Component {
 	this.comm = new libpybx.Communicator();
 	this.ws_url = "ws://localhost:3005/";
 	// this.state={primaryHeight:250, secondaryHeight:250};
-	this.state={h:250};
+	this.state={h:250, serverinfo_rop:null, symbols:null};
 	this.secondarySizeChange=this.secondarySizeChange.bind(this);
     }
 
@@ -45,11 +45,30 @@ class MainPanel extends Component {
 	}).then ((algoman_rop) => {
 	    // this.setState({algoman_rop: algoman_rop});
 		this.props.setAlgomanRop(algoman_rop);
+	}).then(()=>{
+		return this.comm.get_rop(NTIAlgo.ServerInfo,this.ws_url,"serverinfo");
+	}).then((serverinfo_rop)=>{
+		// debugger;
+		this.setState({serverinfo_rop:serverinfo_rop});
 	}).then(() => {
 	    console.log("connection setup is done");
 	});
 	
     }
+
+	componentDidUpdate(prevState){
+		debugger;
+		if(this.state.serverinfo_rop!==prevState.serverinfo_rop){
+			if(this.state.serverinfo_rop!==null){
+				this.state.serverinfo_rop.getStrategyTypes()
+				.then(symbols=>{
+					debugger;
+					this.setState({symbols});
+				})
+			}
+		}
+		// console.log('symbols is',this.state.symbols);
+	}
 
 	// primarySizeChange=(number)=>{
 	// 	console.log('primarySizeChange is: ',number);
