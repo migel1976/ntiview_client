@@ -6,14 +6,9 @@ import {
   LineSeries,
   Legend,
 } from '@devexpress/dx-react-chart-bootstrap4';
-// import { Animation } from '@devexpress/dx-react-chart';
-// import { ArgumentAxis } from '@devexpress/dx-react-chart';
 import { ArgumentAxis } from '@devexpress/dx-react-chart-bootstrap4';
 import { Plugin } from '@devexpress/dx-react-core';
-// import SelectCity from './select-city/select-city';
 import moment from 'moment'
-// import { LineSeries } from '@devexpress/dx-react-chart-material-ui';
-// import { confidence as data } from './data-chart';
 
 const format = () =>((tick)=>(
 	tick=moment(tick).format('mm:ss')
@@ -52,7 +47,6 @@ export default class DxChart extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      // data,
     };
   }
 
@@ -60,8 +54,6 @@ export default class DxChart extends React.PureComponent {
     return (
 		<div>
         <Chart
-          // data={chartData}
-          // data={this.data}
 		  data={this.props.graphorders}
           className="pr-3"
         >

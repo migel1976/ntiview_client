@@ -20,7 +20,7 @@ export default class GraphModal extends Component{
 	return(
 			<Modal show={this.props.show} onHide={this.props.show} >
 			  <Modal.Header>
-				<Modal.Title>Graph current row</Modal.Title>
+				<Modal.Title>Graph row AOID:{this.props.row.aoid}</Modal.Title>
 			  </Modal.Header>
 			  <Modal.Body>
 				{/*<PlotChart*/}
@@ -29,14 +29,9 @@ export default class GraphModal extends Component{
 				<DxChart
 						graphorders={this.props.graphorders}
 				/>
-
-				{/*Hello from row number*/}
-				{/*{row}*/}
-				{/*{row1}*/}
 			  </Modal.Body>
 			  <Modal.Footer>
 				<Button variant="secondary" onClick={this.props.closeForm}>Close</Button>
-				{/*<Button variant="primary" onClick={props.saveForm}>Save changes</Button>*/}
 			  </Modal.Footer>
 			</Modal>
 	)

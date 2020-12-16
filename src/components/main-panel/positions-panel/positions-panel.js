@@ -44,15 +44,15 @@ const CurrencyTypeProvider = props => (
 export const PositionsPanel=(props)=>{
 
 	const [columns] = useState([
-		{name: 'ticker', title:'ticker'},
-		{name: 'account', title:'account'},
-		{name: 'position', title:'position'},
-		{name: 'last_price', title:'last_price'},
-		{name: 'avg_price', title:'avg_price'},
-		{name: 'sod_price', title:'sod_price'},
-		{name: 'pnl', title:'pnl'},
-		{name: 't_pnl', title:'t_pnl'},
-		{name: 'sector', title:'sector'}
+		{name: 'ticker', title:'TICKER'},
+		{name: 'account', title:'ACCOUNT'},
+		{name: 'position', title:'POSITION'},
+		{name: 'last_price', title:'LAST_PRICE'},
+		{name: 'avg_price', title:'AVG_PRICE'},
+		{name: 'sod_price', title:'SOD_PRICE'},
+		{name: 'pnl', title:'PNL'},
+		{name: 't_pnl', title:'T_PNL'},
+		{name: 'sector', title:'SECTOR'}
 	  ]);
 
 	  const { height, width } = useWindowDimensions();
@@ -62,16 +62,20 @@ export const PositionsPanel=(props)=>{
 		<div className={style.main}>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<div className='card'>
+		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
         <DragDropProvider />
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price']} />
 		<GroupingState
-          defaultGrouping={[{ columnName: 'ticker' }]}
-          defaultExpandedGroups={['AAPL','MSFT']}
+          defaultGrouping={[{ columnName: 'sector' }]}
+          defaultExpandedGroups={['TECH']}
+          // defaultGrouping={[{ columnName: 'TICKER' }]}
+          // defaultGrouping={[{ columnName: 'ticker' }]}
+          // defaultExpandedGroups={['AAPL','MSFT']}
         />
 		<IntegratedGrouping />
-		{/*<VirtualTable height={'200px'}/>*/}
-		<VirtualTable />
+		<VirtualTable height={'200px'}/>
+		{/*<VirtualTable />*/}
 		<TableHeaderRow />
 		<TableGroupRow />
         <Toolbar />

@@ -94,13 +94,13 @@ export const AlgoOrdersPanel=(props)=>{
 		  </InputGroup>
 		</div>
 
-		{/*<Grid rows={props.rows} columns={props.columns}>*/}
-		<Grid rows={props.rows} columns={columns}>
+		<Grid rows={props.rows} columns={props.columns}>
+		{/*<Grid rows={props.rows} columns={columns}>*/}
 		 <SelectionState
 			selection={props.selection}
 			onSelectionChange={props.setSelection}
 		  />
-		<CurrencyTypeProvider for={['avg_price']} />
+		<CurrencyTypeProvider for={['avg_price','entry_price']} />
 		<IntegratedSelection />
 		{/*<Table />*/}
 		<VirtualTable 

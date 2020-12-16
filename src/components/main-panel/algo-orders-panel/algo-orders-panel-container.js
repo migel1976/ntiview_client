@@ -143,7 +143,7 @@ class AlgoOrdersPanelContainer extends Component{
 				  // debugger;
 			// if(this.state.selection.length>0){
 				  // var id=this.state.selection[0];
-			if(this.state.idsel>0){
+			if(this.state.idsel>=0){
 				  const id=this.state.idsel;
 				  this.props.getGraphOrdersByAOID(this.state.rows[id].aoid);
 			}

@@ -12,7 +12,7 @@ const App=()=>{
 			 <div className={style.app_content}>
 			  <Routes />
 			 </div>
-			 <Footer />
+			 {/*<Footer />*/}
 			{/*<div style={{height:"300px"}}>*/}
 				{/*<Container fluid>*/}
 					{/*<Row>*/}

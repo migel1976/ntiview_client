@@ -12,7 +12,8 @@ class OrderModalContainer extends Component{
 
 		this.state={ticker:''}
 		this.state={buysell:''}
-		this.state={algo:''}
+		// this.state={algo:''}
+		this.state={algo:this.props.algo[1]}
 		this.state={algosize:''}
 		this.state={account:''}
 		this.state={timeStart:''}
@@ -34,7 +35,7 @@ class OrderModalContainer extends Component{
 		// debugger;
 		var ticker=this.props.ticker[0];
 		var buysell=this.props.buysell[0];
-		var algo=this.props.algo[0];
+		var algo=this.props.algo[1];
 		var algosize=this.props.algosize;
 		var account=this.props.account;
 		var timeStart=this.props.timeStart;
@@ -131,7 +132,7 @@ class OrderModalContainer extends Component{
 
 	const timeEnd=item.timeEnd;
 	const timeEndCorr= moment(timeEnd, "HH:mm").format("HH:mm:ss");
-	// debugger;
+	debugger;
 	// let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
 	// 					 buysell,//NTIAlgo.OrderSide.SELL
 	// 					 algosize,
