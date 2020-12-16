@@ -1,7 +1,7 @@
 // import React from 'react';
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {setAlgomanRop, setServerinfoRop} from '../../redux/orderReducer';
+import {setAlgomanRop, setServerinfoRop, setTicker, setAlgo} from '../../redux/orderReducer';
 import MainPanel from './main-panel';
 
 class MainPanelContainer extends Component{
@@ -13,6 +13,9 @@ class MainPanelContainer extends Component{
 
 			  setServerinfoRop={this.props.setServerinfoRop}
 			  serverinfo_rop={this.props.serverinfo_rop}
+			
+			  setTicker={this.props.setTicker}
+			  setAlgo={this.props.setAlgo}
 			/>
 		)
 	}
@@ -27,7 +30,9 @@ const mapStateToProps=(state)=>({
 
 const mapActionsToProps=({
 	setAlgomanRop,
-	setServerinfoRop
+	setServerinfoRop,
+	setTicker,
+	setAlgo
 	// setOrderShowModal
 });
 export default connect(mapStateToProps,mapActionsToProps,null,{forwardRef:true})(MainPanelContainer);

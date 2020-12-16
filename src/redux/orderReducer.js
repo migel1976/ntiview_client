@@ -7,9 +7,11 @@ const initialState={
 	timeStart:'09:30:00',
 	timeEnd:'16:00:00',
 	account:'X',
-	ticker:['AAPL','MSFT'],
+	ticker:[],
+	// ticker:['AAPL','MSFT'],
 	buysell:['SELL','BUY'],
-	algo:['TWAP'],
+	algo:[],
+	// algo:['TWAP'],
 	algosize:12200,//количетсво заказов в модальном окне формирования заказов
 	orderitem:{},
 	ordershowmodal:false,//флаг для отображения модального окна формирования заказов 
@@ -22,6 +24,9 @@ const initialState={
 
     graphorders:[],//объекты которые
 };
+
+const SET_TICKER='SET_TICKER';
+const SET_ALGO='SET_ALGO';
 
 const SET_GRAPH_ORDERS='SET_GRAPH_ORDERS';
 const SET_ROW_CURRENT_ORDER='SET_ROW_CURRENT_ORDER';
@@ -39,6 +44,13 @@ const SET_SERVERINFO_ROP='SET_SERVERINFO_ROP';
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
 
+		case SET_TICKER:
+			return {...state,ticker:[...action.items]};
+
+		case SET_ALGO:
+			debugger;
+			return {...state,algo:[...action.items]};
+			
 		case SET_GRAPH_ORDERS:
 			// debugger;
 			let arrObj=[];
@@ -96,6 +108,14 @@ export const getGraphOrdersByAOID=(aoid)=>{
 export const setTS=(ts)=>({
 				type:SET_TS,
 				ts});
+
+export const setTicker=(items)=>({
+				type:SET_TICKER,
+				items});
+
+export const setAlgo=(items)=>({
+				type:SET_ALGO,
+				items});
 
 export const setServerinfoRop=(rop)=>({
 				type:SET_SERVERINFO_ROP,

@@ -29,6 +29,7 @@ class MainPanel extends Component {
 	// this.state={primaryHeight:250, secondaryHeight:250};
 	this.state={h:250};
 	this.state={serverinfo_rop:null, symbols:null, strategyTypes:null, accounts:null};
+	this.state={strategy:null};
 	this.secondarySizeChange=this.secondarySizeChange.bind(this);
     }
 
@@ -59,12 +60,20 @@ class MainPanel extends Component {
     }
 
 	componentDidUpdate(prevProps,prevState){
-		// debugger;
+		debugger;
 		if(this.props.serverinfo_rop!==prevProps.serverinfo_rop){
 			if(this.props.serverinfo_rop!==null){
 					this.props.serverinfo_rop.getStrategyTypes()
 					.then(strategyTypes=>{
 						this.setState({strategyTypes});
+						let arrObj=[];
+						strategyTypes.forEach(function(item,i,arr){
+							const obj=item.strategyType;
+							arrObj.push(obj);
+						});
+						this.setState({strategy:arrObj});
+						debugger;
+						this.props.setAlgo(arrObj);
 					});
 					this.props.serverinfo_rop.getSymbols()
 					.then(symbols=>{
@@ -79,6 +88,7 @@ class MainPanel extends Component {
 		console.log('symbols is',this.state.symbols);
 		console.log('accounts is',this.state.accounts);
 		console.log('strategyTypes is',this.state.strategyTypes);
+		console.log('strategy is',this.state.strategy);
 	}
 
 	// primarySizeChange=(number)=>{
