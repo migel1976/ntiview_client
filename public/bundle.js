@@ -19192,13 +19192,16 @@
 	});
 
 	const initialState = {
+	  serverinfo_rop: null,
 	  algoman_rop: null,
 	  timeStart: '09:30:00',
 	  timeEnd: '16:00:00',
 	  account: 'X',
-	  ticker: ['AAPL', 'MSFT'],
+	  ticker: [],
+	  // ticker:['AAPL','MSFT'],
 	  buysell: ['SELL', 'BUY'],
-	  algo: ['TWAP'],
+	  algo: [],
+	  // algo:['TWAP'],
 	  algosize: 12200,
 	  //количетсво заказов в модальном окне формирования заказов
 	  orderitem: {},
@@ -19217,6 +19220,8 @@
 	  graphorders: [] //объекты которые
 
 	};
+	const SET_TICKER = 'SET_TICKER';
+	const SET_ALGO = 'SET_ALGO';
 	const SET_GRAPH_ORDERS = 'SET_GRAPH_ORDERS';
 	const SET_ROW_CURRENT_ORDER = 'SET_ROW_CURRENT_ORDER';
 	const SET_ROWS_ORDER = 'SET_ROWS_ORDER';
@@ -19227,9 +19232,21 @@
 	const SET_ALGOMAN_ROP = 'SET_ALGOMAN_ROP';
 	const SET_TS = 'SET_TS';
 	const SET_SELECTION_ORDER = 'SET_SELECTION_ORDER';
+	const SET_SERVERINFO_ROP = 'SET_SERVERINFO_ROP';
 
 	const orderReducer = (state = initialState, action) => {
 	  switch (action.type) {
+	    case SET_TICKER:
+	      return { ...state,
+	        ticker: [...action.items]
+	      };
+
+	    case SET_ALGO:
+	      // debugger;
+	      return { ...state,
+	        algo: [...action.items]
+	      };
+
 	    case SET_GRAPH_ORDERS:
 	      // debugger;
 	      let arrObj = [];
@@ -19277,6 +19294,11 @@
 	        algoman_rop: action.rop
 	      };
 
+	    case SET_SERVERINFO_ROP:
+	      return { ...state,
+	        serverinfo_rop: action.rop
+	      };
+
 	    case SET_ORDER_ITEM:
 	      return { ...state,
 	        orderitem: action.item
@@ -19312,6 +19334,18 @@
 	const setTS = ts => ({
 	  type: SET_TS,
 	  ts
+	});
+	const setTicker = items => ({
+	  type: SET_TICKER,
+	  items
+	});
+	const setAlgo = items => ({
+	  type: SET_ALGO,
+	  items
+	});
+	const setServerinfoRop = rop => ({
+	  type: SET_SERVERINFO_ROP,
+	  rop
 	});
 	const setAlgomanRop = rop => ({
 	  type: SET_ALGOMAN_ROP,
@@ -42571,6 +42605,82 @@
 	  }
 
 	}
+	class ServerInfo_rop extends Object_rop {
+	  get_type_name() {
+	    return 'NTIAlgo.ServerInfo';
+	  }
+
+	  constructor(comm, ws, object_id) {
+	    super(comm, ws, object_id);
+	    this.getAccounts = this.getAccounts.bind(this);
+	    this.getStrategyTypes = this.getStrategyTypes.bind(this);
+	    this.getSymbols = this.getSymbols.bind(this);
+	  }
+
+	  to_json() {
+	    return {
+	      'object_id': this.object_id
+	    };
+	  }
+
+	  getAccounts() {
+	    let p = new Promise((resolve, reject) => {
+	      let call_req = {
+	        'message-type': 'method-call',
+	        'message-id': generateQuickGuid(),
+	        'object-id': this.object_id,
+	        'method-signature': 'ServerInfo__getAccounts',
+	        'args': {}
+	      };
+	      this.comm.add_message_handler(call_req['message-id'], [resolve, reject]);
+	      console.log("getAccounts:", to_json_string(call_req));
+	      this.ws.send(to_json_string(call_req));
+	    });
+	    return p.then(ret_json => {
+	      let ret = from_json(ret_json, []);
+	      return ret;
+	    });
+	  }
+
+	  getStrategyTypes() {
+	    let p = new Promise((resolve, reject) => {
+	      let call_req = {
+	        'message-type': 'method-call',
+	        'message-id': generateQuickGuid(),
+	        'object-id': this.object_id,
+	        'method-signature': 'ServerInfo__getStrategyTypes',
+	        'args': {}
+	      };
+	      this.comm.add_message_handler(call_req['message-id'], [resolve, reject]);
+	      console.log("getStrategyTypes:", to_json_string(call_req));
+	      this.ws.send(to_json_string(call_req));
+	    });
+	    return p.then(ret_json => {
+	      let ret = from_json(ret_json, []);
+	      return ret;
+	    });
+	  }
+
+	  getSymbols() {
+	    let p = new Promise((resolve, reject) => {
+	      let call_req = {
+	        'message-type': 'method-call',
+	        'message-id': generateQuickGuid(),
+	        'object-id': this.object_id,
+	        'method-signature': 'ServerInfo__getSymbols',
+	        'args': {}
+	      };
+	      this.comm.add_message_handler(call_req['message-id'], [resolve, reject]);
+	      console.log("getSymbols:", to_json_string(call_req));
+	      this.ws.send(to_json_string(call_req));
+	    });
+	    return p.then(ret_json => {
+	      let ret = from_json(ret_json, []);
+	      return ret;
+	    });
+	  }
+
+	}
 	class SnapshotManager_rop extends Object_rop {
 	  get_type_name() {
 	    return 'NTIAlgo.SnapshotManager';
@@ -42708,6 +42818,42 @@
 	  }
 
 	}
+	class ServerInfo {
+	  get_rop_type() {
+	    return ServerInfo_rop;
+	  }
+
+	  __call_method(method, args) {
+	    method = method.split("__")[1];
+
+	    if (method == 'getAccounts') {
+	      return this.getAccounts();
+	    }
+
+	    if (method == 'getStrategyTypes') {
+	      return this.getStrategyTypes();
+	    }
+
+	    if (method == 'getSymbols') {
+	      return this.getSymbols();
+	    }
+
+	    throw new Error("unknown method " + method);
+	  }
+
+	  getAccounts() {
+	    throw new Error("not implemented");
+	  }
+
+	  getStrategyTypes() {
+	    throw new Error("not implemented");
+	  }
+
+	  getSymbols() {
+	    throw new Error("not implemented");
+	  }
+
+	}
 	class SnapshotManager {
 	  get_rop_type() {
 	    return SnapshotManager_rop;
@@ -42799,6 +42945,7 @@
 	  }
 
 	  initStateValue() {
+	    // debugger;
 	    var ticker = this.props.ticker[0];
 	    var buysell = this.props.buysell[0];
 	    var algo = this.props.algo[0];
@@ -42917,8 +43064,8 @@
 	      const timeStart = item.timeStart;
 	      const timeStartCorr = moment(timeStart, "HH:mm").format("HH:mm:ss");
 	      const timeEnd = item.timeEnd;
-	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss");
-	      debugger; // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
+	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss"); // debugger;
+	      // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
 	      // 					 buysell,//NTIAlgo.OrderSide.SELL
 	      // 					 algosize,
 	      // 					 0, 0, 0, 0, 0);
@@ -68673,6 +68820,18 @@
 	    this.state = {
 	      h: 250
 	    };
+	    this.state = {
+	      serverinfo_rop: null,
+	      symbols: null,
+	      strategyTypes: null,
+	      accounts: null
+	    };
+	    this.state = {
+	      strategy: null
+	    };
+	    this.state = {
+	      symbol: null
+	    };
 	    this.secondarySizeChange = this.secondarySizeChange.bind(this);
 	  }
 
@@ -68691,8 +68850,62 @@
 	      // this.setState({algoman_rop: algoman_rop});
 	      this.props.setAlgomanRop(algoman_rop);
 	    }).then(() => {
+	      return this.comm.get_rop(ServerInfo, this.ws_url, "serverinfo");
+	    }).then(serverinfo_rop => {
+	      // debugger;
+	      // this.setState({serverinfo_rop:serverinfo_rop});
+	      this.props.setServerinfoRop(serverinfo_rop);
+	    }).then(() => {
 	      console.log("connection setup is done");
 	    });
+	  }
+
+	  componentDidUpdate(prevProps, prevState) {
+	    // debugger;
+	    if (this.props.serverinfo_rop !== prevProps.serverinfo_rop) {
+	      if (this.props.serverinfo_rop !== null) {
+	        this.props.serverinfo_rop.getStrategyTypes().then(strategyTypes => {
+	          this.setState({
+	            strategyTypes
+	          });
+	          let arrObj = [];
+	          strategyTypes.forEach(function (item, i, arr) {
+	            const obj = item.strategyType;
+	            arrObj.push(obj);
+	          });
+	          this.setState({
+	            strategy: arrObj
+	          });
+	          debugger;
+	          this.props.setAlgo(arrObj);
+	        });
+	        this.props.serverinfo_rop.getSymbols().then(symbols => {
+	          this.setState({
+	            symbols
+	          });
+	          let arrObj = [];
+	          symbols.forEach(function (item, i, arr) {
+	            const obj = item.symbol;
+	            arrObj.push(obj);
+	          });
+	          this.setState({
+	            symbol: arrObj
+	          });
+	          this.props.setTicker(arrObj);
+	        });
+	        this.props.serverinfo_rop.getAccounts().then(accounts => {
+	          this.setState({
+	            accounts
+	          });
+	        });
+	      }
+	    }
+
+	    console.log('symbols is', this.state.symbols);
+	    console.log('symbol is', this.state.symbol);
+	    console.log('accounts is', this.state.accounts);
+	    console.log('strategyTypes is', this.state.strategyTypes);
+	    console.log('strategy is', this.state.strategy);
 	  } // primarySizeChange=(number)=>{
 	  // 	console.log('primarySizeChange is: ',number);
 	  // }
@@ -68734,19 +68947,27 @@
 	  render() {
 	    return /*#__PURE__*/react.createElement(MainPanel, {
 	      algoman_rop: this.props.algoman_rop,
-	      setAlgomanRop: this.props.setAlgomanRop
+	      setAlgomanRop: this.props.setAlgomanRop,
+	      setServerinfoRop: this.props.setServerinfoRop,
+	      serverinfo_rop: this.props.serverinfo_rop,
+	      setTicker: this.props.setTicker,
+	      setAlgo: this.props.setAlgo
 	    });
 	  }
 
 	}
 
 	const mapStateToProps$5 = state => ({
-	  algoman_rop: state.orderPage.algoman_rop // ordershowmodal:state.orderPage.ordershowmodal
+	  algoman_rop: state.orderPage.algoman_rop,
+	  serverinfo_rop: state.orderPage.serverinfo_rop // ordershowmodal:state.orderPage.ordershowmodal
 
 	});
 
 	const mapActionsToProps$5 = {
-	  setAlgomanRop // setOrderShowModal
+	  setAlgomanRop,
+	  setServerinfoRop,
+	  setTicker,
+	  setAlgo // setOrderShowModal
 
 	};
 	var MainPanelContainer$1 = connect(mapStateToProps$5, mapActionsToProps$5, null, {

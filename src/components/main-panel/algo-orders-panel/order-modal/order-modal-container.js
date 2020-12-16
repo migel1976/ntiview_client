@@ -31,7 +31,7 @@ class OrderModalContainer extends Component{
 		this.closeForm=this.closeForm.bind(this);
 	};
     initStateValue(){
-		debugger;
+		// debugger;
 		var ticker=this.props.ticker[0];
 		var buysell=this.props.buysell[0];
 		var algo=this.props.algo[0];

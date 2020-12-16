@@ -48,7 +48,7 @@ const orderReducer=(state=initialState,action)=>{
 			return {...state,ticker:[...action.items]};
 
 		case SET_ALGO:
-			debugger;
+			// debugger;
 			return {...state,algo:[...action.items]};
 			
 		case SET_GRAPH_ORDERS:

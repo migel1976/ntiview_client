@@ -30,6 +30,7 @@ class MainPanel extends Component {
 	this.state={h:250};
 	this.state={serverinfo_rop:null, symbols:null, strategyTypes:null, accounts:null};
 	this.state={strategy:null};
+	this.state={symbol:null};
 	this.secondarySizeChange=this.secondarySizeChange.bind(this);
     }
 
@@ -60,7 +61,7 @@ class MainPanel extends Component {
     }
 
 	componentDidUpdate(prevProps,prevState){
-		debugger;
+		// debugger;
 		if(this.props.serverinfo_rop!==prevProps.serverinfo_rop){
 			if(this.props.serverinfo_rop!==null){
 					this.props.serverinfo_rop.getStrategyTypes()
@@ -78,7 +79,14 @@ class MainPanel extends Component {
 					this.props.serverinfo_rop.getSymbols()
 					.then(symbols=>{
 						this.setState({symbols});
-					})
+						let arrObj=[];
+						symbols.forEach(function(item,i,arr){
+							const obj=item.symbol;
+							arrObj.push(obj);
+						});
+						this.setState({symbol:arrObj});
+						this.props.setTicker(arrObj);
+					});
 					this.props.serverinfo_rop.getAccounts()
 					.then(accounts=>{
 						this.setState({accounts});
@@ -86,6 +94,7 @@ class MainPanel extends Component {
 			}
 		}
 		console.log('symbols is',this.state.symbols);
+		console.log('symbol is',this.state.symbol);
 		console.log('accounts is',this.state.accounts);
 		console.log('strategyTypes is',this.state.strategyTypes);
 		console.log('strategy is',this.state.strategy);
