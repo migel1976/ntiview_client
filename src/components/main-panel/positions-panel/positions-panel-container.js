@@ -29,6 +29,7 @@ class PositionsPanelContainer extends Component{
 			<PositionsPanel
 				columns={this.state.columns}
 				rows={this.state.rows}
+				height={this.props.height}
 				// ts={this.props.ts}
 				// setTS={this.props.ts}
 			/>

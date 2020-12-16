@@ -64,6 +64,7 @@ class MainPanel extends Component {
 		// debugger;
 		if(this.props.serverinfo_rop!==prevProps.serverinfo_rop){
 			if(this.props.serverinfo_rop!==null){
+
 					this.props.serverinfo_rop.getStrategyTypes()
 					.then(strategyTypes=>{
 						this.setState({strategyTypes});
@@ -73,9 +74,9 @@ class MainPanel extends Component {
 							arrObj.push(obj);
 						});
 						this.setState({strategy:arrObj});
-						debugger;
-						this.props.setAlgo(arrObj);
+						this.props.setAlgo(arrObj.reverse());
 					});
+
 					this.props.serverinfo_rop.getSymbols()
 					.then(symbols=>{
 						this.setState({symbols});
@@ -87,17 +88,18 @@ class MainPanel extends Component {
 						this.setState({symbol:arrObj});
 						this.props.setTicker(arrObj);
 					});
-					this.props.serverinfo_rop.getAccounts()
-					.then(accounts=>{
-						this.setState({accounts});
-					})
+
+					// this.props.serverinfo_rop.getAccounts()
+					// .then(accounts=>{
+					// 	this.setState({accounts});
+					// })
 			}
 		}
-		console.log('symbols is',this.state.symbols);
-		console.log('symbol is',this.state.symbol);
-		console.log('accounts is',this.state.accounts);
-		console.log('strategyTypes is',this.state.strategyTypes);
-		console.log('strategy is',this.state.strategy);
+		// console.log('symbols is',this.state.symbols);
+		// console.log('symbol is',this.state.symbol);
+		// console.log('accounts is',this.state.accounts);
+		// console.log('strategyTypes is',this.state.strategyTypes);
+		// console.log('strategy is',this.state.strategy);
 	}
 
 	// primarySizeChange=(number)=>{
@@ -122,6 +124,7 @@ class MainPanel extends Component {
 			<PositionsPanelContainer
 					comm={this.comm}
 					ref={r => this.position_panel = r}
+				    height={this.state.h}
 			/>
 		  {/*</div>*/}
 		  {/*<div>*/}

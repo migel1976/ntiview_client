@@ -12,8 +12,8 @@ class OrderModalContainer extends Component{
 
 		this.state={ticker:''}
 		this.state={buysell:''}
-		// this.state={algo:''}
-		this.state={algo:this.props.algo[1]}
+		this.state={algo:''}
+		// this.state={algo:this.props.algo[1]}
 		this.state={algosize:''}
 		this.state={account:''}
 		this.state={timeStart:''}
@@ -35,7 +35,7 @@ class OrderModalContainer extends Component{
 		// debugger;
 		var ticker=this.props.ticker[0];
 		var buysell=this.props.buysell[0];
-		var algo=this.props.algo[1];
+		var algo=this.props.algo[0];
 		var algosize=this.props.algosize;
 		var account=this.props.account;
 		var timeStart=this.props.timeStart;
@@ -45,7 +45,14 @@ class OrderModalContainer extends Component{
 	};
 
 	componentDidMount(){
+		// debugger;
 		this.initStateValue();
+	};
+	componentDidUpdate(prevProps, prevState){
+		// debugger;
+		if(this.props!==prevProps){
+			this.initStateValue();
+		}
 	};
 
 	changeInputStartTime(e){
@@ -155,7 +162,6 @@ class OrderModalContainer extends Component{
 	// debugger;
 	this.props.algoman_rop.placeAlgoOrder(oa).then(() => {
 	    console.log("order was placed");
-		
 	});
     }
 		this.initStateValue();

@@ -56,8 +56,8 @@ export const PositionsPanel=(props)=>{
 	  ]);
 
 	  const { height, width } = useWindowDimensions();
-	  console.log('width is width',width);
-	  // debugger;
+	  const mydimposition=height-(height-props.height);
+	  console.log('mydimposition is', mydimposition);
 	return (
 		<div className={style.main}>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
@@ -74,7 +74,10 @@ export const PositionsPanel=(props)=>{
           // defaultExpandedGroups={['AAPL','MSFT']}
         />
 		<IntegratedGrouping />
-		<VirtualTable height={'200px'}/>
+		<VirtualTable 
+					height={mydimposition.toString()}
+					// height={'200px'}
+		/>
 		{/*<VirtualTable />*/}
 		<TableHeaderRow />
 		<TableGroupRow />
