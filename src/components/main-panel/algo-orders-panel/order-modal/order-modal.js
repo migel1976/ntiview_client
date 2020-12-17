@@ -2,11 +2,18 @@ import React,{useState} from 'react';
 import {Button, Modal, InputGroup, FormControl} from 'react-bootstrap';
 import FormModal from './form-modal';
 
+// const FormatTicker=(props)=>{
+// 	return(
+// 			{props.el.symbol}
+// 	)
+// };
+
 export const OrderModal=(props)=>{
-	
+    debugger;	
 	const ticker_options=props.ticker.map(el=>(
-		<option>
-		 {el}
+		<option key={el.symbol} value={el.symbol}>
+		 {el.symbol} | company: {el.name} | sector: {el.sector}
+		 {/*<FormatTicker el={el}/>*/}
 		</option>
 	));
 	
@@ -17,14 +24,14 @@ export const OrderModal=(props)=>{
 	));
 
 	const algo_options=props.algo.map(el=>(
-		<option>
+		<option key={el.strategyType} value={el.strategyType}>
 		 {/*// {el} | {el}*/}
-		 {el}
+		 {el.strategyType} | desc: {el.description}
 		</option>
 	));
 
 	const account_options=props.account.map(el=>(
-		<option>
+		<option key={el.account} value={el.account}>
 		 {el.account} | {el.description}
 		</option>
 	));

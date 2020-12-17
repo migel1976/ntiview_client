@@ -68,26 +68,38 @@ class MainPanel extends Component {
 					this.props.serverinfo_rop.getStrategyTypes()
 					.then(strategyTypes=>{
 						this.setState({strategyTypes});
-						let arrObj=[];
-						strategyTypes.forEach(function(item,i,arr){
-							const obj=item.strategyType;
-							arrObj.push(obj);
-						});
-						this.setState({strategy:arrObj});
-						this.props.setAlgo(arrObj.reverse());
+						this.props.setAlgo(strategyTypes.reverse());
 					});
+
+					// this.props.serverinfo_rop.getStrategyTypes()
+					// .then(strategyTypes=>{
+					// 	this.setState({strategyTypes});
+					// 	let arrObj=[];
+					// 	strategyTypes.forEach(function(item,i,arr){
+					// 		const obj=item.strategyType;
+					// 		arrObj.push(obj);
+					// 	});
+					// 	this.setState({strategy:arrObj});
+					// 	this.props.setAlgo(arrObj.reverse());
+					// });
 
 					this.props.serverinfo_rop.getSymbols()
 					.then(symbols=>{
 						this.setState({symbols});
-						let arrObj=[];
-						symbols.forEach(function(item,i,arr){
-							const obj=item.symbol;
-							arrObj.push(obj);
-						});
-						this.setState({symbol:arrObj});
-						this.props.setTicker(arrObj);
+						this.props.setTicker(symbols);
 					});
+
+					// this.props.serverinfo_rop.getSymbols()
+					// .then(symbols=>{
+					// 	this.setState({symbols});
+					// 	let arrObj=[];
+					// 	symbols.forEach(function(item,i,arr){
+					// 		const obj=item.symbol;
+					// 		arrObj.push(obj);
+					// 	});
+					// 	this.setState({symbol:arrObj});
+					// 	this.props.setTicker(arrObj);
+					// });
 
 					this.props.serverinfo_rop.getAccounts()
 					.then(accounts=>{
@@ -107,10 +119,10 @@ class MainPanel extends Component {
 			}
 		}
 		console.log('accounts is',this.state.accounts);
-		// console.log('symbols is',this.state.symbols);
+		console.log('symbols is',this.state.symbols);
 		// console.log('symbol is',this.state.symbol);
 		// console.log('accounts is',this.state.accounts);
-		// console.log('strategyTypes is',this.state.strategyTypes);
+		console.log('strategyTypes is',this.state.strategyTypes);
 		// console.log('strategy is',this.state.strategy);
 	}
 

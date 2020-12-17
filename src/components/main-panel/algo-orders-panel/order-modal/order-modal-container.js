@@ -33,7 +33,7 @@ class OrderModalContainer extends Component{
 		this.closeForm=this.closeForm.bind(this);
 	};
     initStateValue(){
-		// debugger;
+		debugger;
 		var ticker=this.props.ticker[0];
 		var buysell=this.props.buysell[0];
 		var algo=this.props.algo[0];
@@ -43,12 +43,15 @@ class OrderModalContainer extends Component{
 		var timeStart=this.props.timeStart;
 		var timeEnd=this.props.timeEnd;
 		// this.setState({ticker,buysell,algo,algosize,account});
-		this.setState({ticker,buysell,algo,algosize,account,timeStart,timeEnd});
+		// if(ticker!==undefined){
+		if(ticker!==undefined && algo!==undefined && account!==undefined){
+		  this.setState({ticker:ticker.symbol,buysell,algo:algo.strategyType,algosize,account:account.account,timeStart,timeEnd});
+		}
 	};
 
 	componentDidMount(){
 		// debugger;
-		this.initStateValue();
+		// this.initStateValue();
 	};
 	componentDidUpdate(prevProps, prevState){
 		// debugger;
@@ -86,6 +89,7 @@ class OrderModalContainer extends Component{
 
 	// changeSelectTicker=(e)=>{
 	changeSelectTicker(e){
+		debugger;
 		var ticker=e.target.value;
 		this.setState({ticker});
 	};
@@ -103,14 +107,15 @@ class OrderModalContainer extends Component{
 	};
 	// saveForm=(e)=>{
 	saveForm(e){
-		// debugger;
+		debugger;
 		const item={
 					ticker:this.state.ticker,
 					buysell:this.state.buysell,
 					algo:this.state.algo,
+					// algo:this.state.algo.strategyType,
 					algosize:this.state.algosize,
-					// account:this.state.account,
-					account:this.state.account.account,
+					account:this.state.account,
+					// account:this.state.account.account,
 
 					timeStart:this.state.timeStart,
 					timeEnd:this.state.timeEnd
