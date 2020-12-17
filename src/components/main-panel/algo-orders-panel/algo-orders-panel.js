@@ -105,10 +105,6 @@ export const AlgoOrdersPanel=(props)=>{
 		{/*<Table />*/}
 		<VirtualTable 
 		   columnExtensions={defaultColumnWidths}
-		   // height={150}
-		   // height={'350px'}
-	       // height={height-props.height}
-		   // height={props.height-height}
 		   height={mydim.toString()}
 		/>
 		{/*<TableColumnResizing defaultColumnWidths={defaultColumnWidths} />*/}

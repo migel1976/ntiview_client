@@ -1,5 +1,9 @@
 import React,{useState} from 'react';
-import {GroupingState} from '@devexpress/dx-react-grid';
+import {
+		GroupingState,
+		SummaryState,
+		IntegratedSummary,
+} from '@devexpress/dx-react-grid';
 // import "@devexpress/dx-react-grid";
 // import {Grid, Table, TableHeaderRow,TableEditColumn} from "@devexpress/dx-react-grid-bootstrap4";
 import {Grid,
@@ -9,7 +13,9 @@ import {Grid,
 		DragDropProvider,
 		TableGroupRow,
 		Toolbar,
-		GroupingPanel} from "@devexpress/dx-react-grid-bootstrap4";
+		GroupingPanel,
+		TableSummaryRow
+} from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import style from './positions-panel.module.css';
 
@@ -55,6 +61,29 @@ export const PositionsPanel=(props)=>{
 		{name: 'sector', title:'SECTOR'}
 	  ]);
 
+	  const [grouping]=useState([{columnName:'account'}]);
+      const [tableColumnExtensions] = useState([
+			{ columnName: 'amount', align: 'right' },
+		  ]);
+		const [totalSummaryItems] = useState([
+			{ columnName: 'ticker', type: 'count' },
+			{ columnName: 'pnl', type: 'max' },
+			{ columnName: 'pnl', type: 'min' },
+			{ columnName: 'pnl', type: 'sum' },
+		  ]);
+	 // const [groupSummaryItems] = useState([
+		// { columnName: 'region', type: 'count' },
+		// { columnName: 'amount', type: 'sum' },
+		// {
+		  // columnName: 'amount', type: 'sum', showInGroupFooter: false,
+		// },
+		// {
+		  // columnName: 'amount', type: 'max', showInGroupFooter: false, alignByColumn: true,
+		// },
+		// // {
+		// //   columnName: 'units', type: 'sum', showInGroupFooter: false, alignByColumn: true,
+		// // },
+	 //  ]);
 	  const { height, width } = useWindowDimensions();
 	  const mydimposition=height-(height-props.height);
 	  console.log('mydimposition is', mydimposition);
@@ -64,25 +93,33 @@ export const PositionsPanel=(props)=>{
 		<div className='card'>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
-        <DragDropProvider />
+        {/*<DragDropProvider />*/}
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price','pnl','t_pnl']} />
-		<GroupingState
-          defaultGrouping={[{ columnName: 'sector' }]}
-          defaultExpandedGroups={['TECH']}
-          // defaultGrouping={[{ columnName: 'TICKER' }]}
-          // defaultGrouping={[{ columnName: 'ticker' }]}
-          // defaultExpandedGroups={['AAPL','MSFT']}
+		{/*<GroupingState*/}
+			 {/*grouping={grouping}*/}
+        {/*/>*/}
+		<SummaryState
+          totalItems={totalSummaryItems}
+          // groupItems={groupSummaryItems}
         />
-		<IntegratedGrouping />
-		<VirtualTable 
-					height={mydimposition.toString()}
-					// height={'200px'}
+		{/*<IntegratedGrouping />*/}
+		<IntegratedSummary />
+		<Table
+					columnExtensions={tableColumnExtensions}
 		/>
-		{/*<VirtualTable />*/}
+		{/*<VirtualTable */}
+					{/*height={mydimposition.toString()}*/}
+					{/*columnExtensions={tableColumnExtensions}*/}
+		{/*/>*/}
 		<TableHeaderRow />
-		<TableGroupRow />
-        <Toolbar />
-        <GroupingPanel />
+		<TableSummaryRow />
+		{/*<TableGroupRow />*/}
+        {/*<Toolbar />*/}
+
+        {/*<GroupingPanel*/}
+			{/*// showColumnsWhenGrouped*/}
+		{/*/>*/}
+
 		</Grid>
 		</div>
 		</div>

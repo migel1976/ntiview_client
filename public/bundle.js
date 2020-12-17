@@ -19196,7 +19196,8 @@
 	  algoman_rop: null,
 	  timeStart: '09:30:00',
 	  timeEnd: '16:00:00',
-	  account: 'X',
+	  account: [],
+	  // account:'X',
 	  ticker: [],
 	  // ticker:['AAPL','MSFT'],
 	  buysell: ['SELL', 'BUY'],
@@ -19221,6 +19222,7 @@
 
 	};
 	const SET_TICKER = 'SET_TICKER';
+	const SET_ACCOUNT = 'SET_ACCOUNT';
 	const SET_ALGO = 'SET_ALGO';
 	const SET_GRAPH_ORDERS = 'SET_GRAPH_ORDERS';
 	const SET_ROW_CURRENT_ORDER = 'SET_ROW_CURRENT_ORDER';
@@ -19236,6 +19238,11 @@
 
 	const orderReducer = (state = initialState, action) => {
 	  switch (action.type) {
+	    case SET_ACCOUNT:
+	      return { ...state,
+	        account: [...action.items]
+	      };
+
 	    case SET_TICKER:
 	      return { ...state,
 	        ticker: [...action.items]
@@ -19334,6 +19341,10 @@
 	const setTS = ts => ({
 	  type: SET_TS,
 	  ts
+	});
+	const setAccount = items => ({
+	  type: SET_ACCOUNT,
+	  items
 	});
 	const setTicker = items => ({
 	  type: SET_TICKER,
@@ -42308,11 +42319,10 @@
 	    value: props.algo_value,
 	    options: props.algo_options,
 	    changeSelectTicker: props.changeSelectAlgo
-	  }), /*#__PURE__*/react.createElement("hr", null), /*#__PURE__*/react.createElement("label", null, "Account"), /*#__PURE__*/react.createElement("input", {
-	    type: "text",
-	    class: "form-control",
+	  }), /*#__PURE__*/react.createElement("hr", null), /*#__PURE__*/react.createElement("label", null, "Account"), /*#__PURE__*/react.createElement(SelectTicker, {
 	    value: props.account_value,
-	    onChange: props.changeInputAccount
+	    options: props.account_options,
+	    changeSelectAccount: props.changeSelectAccount
 	  }), /*#__PURE__*/react.createElement("hr", null), /*#__PURE__*/react.createElement("label", null, "Ticker"), /*#__PURE__*/react.createElement(SelectTicker, {
 	    value: props.ticker_value,
 	    options: props.ticker_options,
@@ -42324,10 +42334,26 @@
 	  })));
 	};
 
+	// 	return(
+	// 			{props.el.symbol}
+	// 	)
+	// };
+
 	const OrderModal = props => {
-	  const ticker_options = props.ticker.map(el => /*#__PURE__*/react.createElement("option", null, el));
+	  debugger;
+	  const ticker_options = props.ticker.map(el => /*#__PURE__*/react.createElement("option", {
+	    key: el.symbol,
+	    value: el.symbol
+	  }, el.symbol, " | company: ", el.name, " | sector: ", el.sector));
 	  const buysell_options = props.buysell.map(el => /*#__PURE__*/react.createElement("option", null, el));
-	  const algo_options = props.algo.map(el => /*#__PURE__*/react.createElement("option", null, el));
+	  const algo_options = props.algo.map(el => /*#__PURE__*/react.createElement("option", {
+	    key: el.strategyType,
+	    value: el.strategyType
+	  }, el.strategyType, " | desc: ", el.description));
+	  const account_options = props.account.map(el => /*#__PURE__*/react.createElement("option", {
+	    key: el.account,
+	    value: el.account
+	  }, el.account, " | ", el.description));
 	  return /*#__PURE__*/react.createElement(Modal$1, {
 	    show: props.show,
 	    onHide: props.show
@@ -42344,7 +42370,10 @@
 	    algosize_value: props.algosize_value,
 	    changeInputAlgosize: props.changeInputAlgosize,
 	    account_value: props.account_value,
-	    changeInputAccount: props.changeInputAccount,
+	    account_options: account_options,
+	    changeSelectAccount: props.changeSelectAccount // account_value={props.account_value}
+	    // changeInputAccount={props.changeInputAccount}
+	    ,
 	    timeStart_value: props.timeStart_value,
 	    changeInputStartTime: props.changeInputStartTime,
 	    timeEnd_value: props.timeEnd_value,
@@ -42935,8 +42964,9 @@
 	    // this.place_test_orders = this.place_test_orders.bind(this);
 
 	    this.changeInputStartTime = this.changeInputStartTime.bind(this);
-	    this.changeInputStopTime = this.changeInputStopTime.bind(this);
-	    this.changeInputAccount = this.changeInputAccount.bind(this);
+	    this.changeInputStopTime = this.changeInputStopTime.bind(this); // this.changeInputAccount=this.changeInputAccount.bind(this);
+
+	    this.changeSelectAccount = this.changeSelectAccount.bind(this);
 	    this.changeInputAlgosize = this.changeInputAlgosize.bind(this);
 	    this.changeSelectTicker = this.changeSelectTicker.bind(this);
 	    this.changeSelectBuysell = this.changeSelectBuysell.bind(this);
@@ -42946,29 +42976,32 @@
 	  }
 
 	  initStateValue() {
-	    // debugger;
+	    debugger;
 	    var ticker = this.props.ticker[0];
 	    var buysell = this.props.buysell[0];
 	    var algo = this.props.algo[0];
 	    var algosize = this.props.algosize;
-	    var account = this.props.account;
+	    var account = this.props.account[0]; // var account=this.props.account;
+
 	    var timeStart = this.props.timeStart;
 	    var timeEnd = this.props.timeEnd; // this.setState({ticker,buysell,algo,algosize,account});
+	    // if(ticker!==undefined){
 
-	    this.setState({
-	      ticker,
-	      buysell,
-	      algo,
-	      algosize,
-	      account,
-	      timeStart,
-	      timeEnd
-	    });
+	    if (ticker !== undefined && algo !== undefined && account !== undefined) {
+	      this.setState({
+	        ticker: ticker.symbol,
+	        buysell,
+	        algo: algo.strategyType,
+	        algosize,
+	        account: account.account,
+	        timeStart,
+	        timeEnd
+	      });
+	    }
 	  }
 
-	  componentDidMount() {
-	    // debugger;
-	    this.initStateValue();
+	  componentDidMount() {// debugger;
+	    // this.initStateValue();
 	  }
 
 	  componentDidUpdate(prevProps, prevState) {
@@ -42979,27 +43012,26 @@
 	  }
 
 	  changeInputStartTime(e) {
-	    // debugger;
-	    // var timeStart=e.target.value;
-	    var timeStart = e.target.value; // var timeStart= moment(time, "HH:mm").format("HH:mm:ss");
-
+	    var timeStart = e.target.value;
 	    this.setState({
 	      timeStart
 	    });
 	  }
 
 	  changeInputStopTime(e) {
-	    var timeEnd = e.target.value; // var timeEnd= moment(time, "HH:mm").format("HH:mm:ss");
-
+	    var timeEnd = e.target.value;
 	    this.setState({
 	      timeEnd
 	    });
 	  }
 
-	  // changeInputAccount=(e)=>{
-	  changeInputAccount(e) {
+	  // changeInputAccount(e){
+	  // 	var account=e.target.value;
+	  // 	console.log('algosize is:',account);
+	  // 	this.setState({account});
+	  // };
+	  changeSelectAccount(e) {
 	    var account = e.target.value;
-	    console.log('algosize is:', account);
 	    this.setState({
 	      account
 	    });
@@ -43016,6 +43048,7 @@
 
 	  // changeSelectTicker=(e)=>{
 	  changeSelectTicker(e) {
+	    debugger;
 	    var ticker = e.target.value;
 	    this.setState({
 	      ticker
@@ -43040,12 +43073,15 @@
 
 	  // saveForm=(e)=>{
 	  saveForm(e) {
+	    debugger;
 	    const item = {
 	      ticker: this.state.ticker,
 	      buysell: this.state.buysell,
 	      algo: this.state.algo,
+	      // algo:this.state.algo.strategyType,
 	      algosize: this.state.algosize,
 	      account: this.state.account,
+	      // account:this.state.account.account,
 	      timeStart: this.state.timeStart,
 	      timeEnd: this.state.timeEnd
 	    };
@@ -43106,6 +43142,7 @@
 	      ticker: this.props.ticker,
 	      buysell: this.props.buysell,
 	      algo: this.props.algo,
+	      account: this.props.account,
 	      ticker_value: this.state.ticker,
 	      buysell_value: this.state.buysell,
 	      algo_value: this.state.algo,
@@ -43116,8 +43153,9 @@
 	      changeSelectTicker: this.changeSelectTicker,
 	      changeSelectBuysell: this.changeSelectBuysell,
 	      changeSelectAlgo: this.changeSelectAlgo,
-	      changeInputAlgosize: this.changeInputAlgosize,
-	      changeInputAccount: this.changeInputAccount,
+	      changeInputAlgosize: this.changeInputAlgosize // changeInputAccount={this.changeInputAccount}
+	      ,
+	      changeSelectAccount: this.changeSelectAccount,
 	      changeInputStartTime: this.changeInputStartTime,
 	      changeInputStopTime: this.changeInputStopTime,
 	      saveForm: this.saveForm,
@@ -68428,7 +68466,7 @@
 	    rows: props.rows,
 	    columns: columns
 	  }, /*#__PURE__*/react.createElement(DragDropProvider$2, null), /*#__PURE__*/react.createElement(CurrencyTypeProvider$1, {
-	    for: ['avg_price', 'sod_price', 'last_price']
+	    for: ['avg_price', 'sod_price', 'last_price', 'pnl', 't_pnl']
 	  }), /*#__PURE__*/react.createElement(GroupingState, {
 	    defaultGrouping: [{
 	      columnName: 'sector'
@@ -68879,40 +68917,56 @@
 	          this.setState({
 	            strategyTypes
 	          });
-	          let arrObj = [];
-	          strategyTypes.forEach(function (item, i, arr) {
-	            const obj = item.strategyType;
-	            arrObj.push(obj);
-	          });
-	          this.setState({
-	            strategy: arrObj
-	          });
-	          this.props.setAlgo(arrObj.reverse());
-	        });
+	          this.props.setAlgo(strategyTypes.reverse());
+	        }); // this.props.serverinfo_rop.getStrategyTypes()
+	        // .then(strategyTypes=>{
+	        // 	this.setState({strategyTypes});
+	        // 	let arrObj=[];
+	        // 	strategyTypes.forEach(function(item,i,arr){
+	        // 		const obj=item.strategyType;
+	        // 		arrObj.push(obj);
+	        // 	});
+	        // 	this.setState({strategy:arrObj});
+	        // 	this.props.setAlgo(arrObj.reverse());
+	        // });
+
 	        this.props.serverinfo_rop.getSymbols().then(symbols => {
 	          this.setState({
 	            symbols
 	          });
-	          let arrObj = [];
-	          symbols.forEach(function (item, i, arr) {
-	            const obj = item.symbol;
-	            arrObj.push(obj);
-	          });
-	          this.setState({
-	            symbol: arrObj
-	          });
-	          this.props.setTicker(arrObj);
+	          this.props.setTicker(symbols);
+	        }); // this.props.serverinfo_rop.getSymbols()
+	        // .then(symbols=>{
+	        // 	this.setState({symbols});
+	        // 	let arrObj=[];
+	        // 	symbols.forEach(function(item,i,arr){
+	        // 		const obj=item.symbol;
+	        // 		arrObj.push(obj);
+	        // 	});
+	        // 	this.setState({symbol:arrObj});
+	        // 	this.props.setTicker(arrObj);
+	        // });
+
+	        this.props.serverinfo_rop.getAccounts().then(accounts => {
+	          this.props.setAccount(accounts);
 	        }); // this.props.serverinfo_rop.getAccounts()
 	        // .then(accounts=>{
 	        // 	this.setState({accounts});
-	        // })
+	        // 	let arrObj=[];
+	        // 	accounts.forEach(function(item,i,arr){
+	        // 		const obj=item.account;
+	        // 		arrObj.push(obj);
+	        // 	});
+	        // 	this.props.setAccount(arrObj);
+	        // });
 	      }
-	    } // console.log('symbols is',this.state.symbols);
-	    // console.log('symbol is',this.state.symbol);
-	    // console.log('accounts is',this.state.accounts);
-	    // console.log('strategyTypes is',this.state.strategyTypes);
-	    // console.log('strategy is',this.state.strategy);
+	    }
 
+	    console.log('accounts is', this.state.accounts);
+	    console.log('symbols is', this.state.symbols); // console.log('symbol is',this.state.symbol);
+	    // console.log('accounts is',this.state.accounts);
+
+	    console.log('strategyTypes is', this.state.strategyTypes); // console.log('strategy is',this.state.strategy);
 	  } // primarySizeChange=(number)=>{
 	  // 	console.log('primarySizeChange is: ',number);
 	  // }
@@ -68959,7 +69013,8 @@
 	      setServerinfoRop: this.props.setServerinfoRop,
 	      serverinfo_rop: this.props.serverinfo_rop,
 	      setTicker: this.props.setTicker,
-	      setAlgo: this.props.setAlgo
+	      setAlgo: this.props.setAlgo,
+	      setAccount: this.props.setAccount
 	    });
 	  }
 
@@ -68975,7 +69030,8 @@
 	  setAlgomanRop,
 	  setServerinfoRop,
 	  setTicker,
-	  setAlgo // setOrderShowModal
+	  setAlgo,
+	  setAccount // setOrderShowModal
 
 	};
 	var MainPanelContainer$1 = connect(mapStateToProps$5, mapActionsToProps$5, null, {
