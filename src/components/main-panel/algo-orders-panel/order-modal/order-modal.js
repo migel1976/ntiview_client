@@ -25,7 +25,7 @@ export const OrderModal=(props)=>{
 
 	const account_options=props.account.map(el=>(
 		<option>
-		 {el}
+		 {el.account} | {el.description}
 		</option>
 	));
 

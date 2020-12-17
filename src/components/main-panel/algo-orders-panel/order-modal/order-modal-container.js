@@ -103,12 +103,14 @@ class OrderModalContainer extends Component{
 	};
 	// saveForm=(e)=>{
 	saveForm(e){
+		// debugger;
 		const item={
 					ticker:this.state.ticker,
 					buysell:this.state.buysell,
 					algo:this.state.algo,
 					algosize:this.state.algosize,
-					account:this.state.account,
+					// account:this.state.account,
+					account:this.state.account.account,
 
 					timeStart:this.state.timeStart,
 					timeEnd:this.state.timeEnd
