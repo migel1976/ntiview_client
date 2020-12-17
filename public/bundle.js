@@ -42918,7 +42918,8 @@
 	    };
 	    this.state = {
 	      algo: ''
-	    };
+	    }; // this.state={algo:this.props.algo[1]}
+
 	    this.state = {
 	      algosize: ''
 	    };
@@ -42966,7 +42967,15 @@
 	  }
 
 	  componentDidMount() {
+	    // debugger;
 	    this.initStateValue();
+	  }
+
+	  componentDidUpdate(prevProps, prevState) {
+	    // debugger;
+	    if (this.props !== prevProps) {
+	      this.initStateValue();
+	    }
 	  }
 
 	  changeInputStartTime(e) {
@@ -43064,8 +43073,8 @@
 	      const timeStart = item.timeStart;
 	      const timeStartCorr = moment(timeStart, "HH:mm").format("HH:mm:ss");
 	      const timeEnd = item.timeEnd;
-	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss"); // debugger;
-	      // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
+	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss");
+	      debugger; // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
 	      // 					 buysell,//NTIAlgo.OrderSide.SELL
 	      // 					 algosize,
 	      // 					 0, 0, 0, 0, 0);
@@ -56709,8 +56718,6 @@
 	  DragBox: DragBox$1
 	})(ZoomAndPan);
 
-	// import { confidence as data } from './data-chart';
-
 	const format$1 = () => tick => tick = moment(tick).format('mm:ss');
 
 	const ValueLabel = props => {
@@ -56725,14 +56732,11 @@
 	class DxChart extends react_7 {
 	  constructor(props) {
 	    super(props);
-	    this.state = {// data,
-	    };
+	    this.state = {};
 	  }
 
 	  render() {
-	    return /*#__PURE__*/react_11("div", null, /*#__PURE__*/react_11(Chart$1 // data={chartData}
-	    // data={this.data}
-	    , {
+	    return /*#__PURE__*/react_11("div", null, /*#__PURE__*/react_11(Chart$1, {
 	      data: this.props.graphorders,
 	      className: "pr-3"
 	    }, /*#__PURE__*/react_11(ArgumentAxis$1 // tickInterval='minute'
@@ -56776,7 +56780,7 @@
 	    return /*#__PURE__*/react.createElement(Modal$1, {
 	      show: this.props.show,
 	      onHide: this.props.show
-	    }, /*#__PURE__*/react.createElement(Modal$1.Header, null, /*#__PURE__*/react.createElement(Modal$1.Title, null, "Graph current row")), /*#__PURE__*/react.createElement(Modal$1.Body, null, /*#__PURE__*/react.createElement(DxChart, {
+	    }, /*#__PURE__*/react.createElement(Modal$1.Header, null, /*#__PURE__*/react.createElement(Modal$1.Title, null, "Graph row AOID:", this.props.row.aoid)), /*#__PURE__*/react.createElement(Modal$1.Body, null, /*#__PURE__*/react.createElement(DxChart, {
 	      graphorders: this.props.graphorders
 	    })), /*#__PURE__*/react.createElement(Modal$1.Footer, null, /*#__PURE__*/react.createElement(Button, {
 	      variant: "secondary",
@@ -68138,12 +68142,12 @@
 	    disabled: true
 	  }))), /*#__PURE__*/react.createElement(Grid$2, {
 	    rows: props.rows,
-	    columns: columns
+	    columns: props.columns
 	  }, /*#__PURE__*/react.createElement(SelectionState, {
 	    selection: props.selection,
 	    onSelectionChange: props.setSelection
 	  }), /*#__PURE__*/react.createElement(CurrencyTypeProvider, {
-	    for: ['avg_price']
+	    for: ['avg_price', 'entry_price']
 	  }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(VirtualTable, {
 	    columnExtensions: defaultColumnWidths // height={150}
 	    // height={'350px'}
@@ -68312,7 +68316,7 @@
 	      // debugger;
 	      // if(this.state.selection.length>0){
 	      // var id=this.state.selection[0];
-	      if (this.state.idsel > 0) {
+	      if (this.state.idsel >= 0) {
 	        const id = this.state.idsel;
 	        this.props.getGraphOrdersByAOID(this.state.rows[id].aoid);
 	      }
@@ -68384,38 +68388,38 @@
 	const PositionsPanel = props => {
 	  const [columns] = react_27([{
 	    name: 'ticker',
-	    title: 'ticker'
+	    title: 'TICKER'
 	  }, {
 	    name: 'account',
-	    title: 'account'
+	    title: 'ACCOUNT'
 	  }, {
 	    name: 'position',
-	    title: 'position'
+	    title: 'POSITION'
 	  }, {
 	    name: 'last_price',
-	    title: 'last_price'
+	    title: 'LAST_PRICE'
 	  }, {
 	    name: 'avg_price',
-	    title: 'avg_price'
+	    title: 'AVG_PRICE'
 	  }, {
 	    name: 'sod_price',
-	    title: 'sod_price'
+	    title: 'SOD_PRICE'
 	  }, {
 	    name: 'pnl',
-	    title: 'pnl'
+	    title: 'PNL'
 	  }, {
 	    name: 't_pnl',
-	    title: 't_pnl'
+	    title: 'T_PNL'
 	  }, {
 	    name: 'sector',
-	    title: 'sector'
+	    title: 'SECTOR'
 	  }]);
 	  const {
 	    height,
 	    width
 	  } = useDimension();
-	  console.log('width is width', width); // debugger;
-
+	  const mydimposition = height - (height - props.height);
+	  console.log('mydimposition is', mydimposition);
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$3.main
 	  }, /*#__PURE__*/react.createElement("div", {
@@ -68427,10 +68431,16 @@
 	    for: ['avg_price', 'sod_price', 'last_price']
 	  }), /*#__PURE__*/react.createElement(GroupingState, {
 	    defaultGrouping: [{
-	      columnName: 'ticker'
+	      columnName: 'sector'
 	    }],
-	    defaultExpandedGroups: ['AAPL', 'MSFT']
-	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(VirtualTable, null), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1, null))));
+	    defaultExpandedGroups: ['TECH'] // defaultGrouping={[{ columnName: 'TICKER' }]}
+	    // defaultGrouping={[{ columnName: 'ticker' }]}
+	    // defaultExpandedGroups={['AAPL','MSFT']}
+
+	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(VirtualTable, {
+	    height: mydimposition.toString() // height={'200px'}
+
+	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1, null))));
 	};
 
 	// import React from 'react';
@@ -68465,7 +68475,8 @@
 	  render() {
 	    return /*#__PURE__*/react.createElement(PositionsPanel, {
 	      columns: this.state.columns,
-	      rows: this.state.rows // ts={this.props.ts}
+	      rows: this.state.rows,
+	      height: this.props.height // ts={this.props.ts}
 	      // setTS={this.props.ts}
 
 	    });
@@ -68876,8 +68887,7 @@
 	          this.setState({
 	            strategy: arrObj
 	          });
-	          debugger;
-	          this.props.setAlgo(arrObj);
+	          this.props.setAlgo(arrObj.reverse());
 	        });
 	        this.props.serverinfo_rop.getSymbols().then(symbols => {
 	          this.setState({
@@ -68892,20 +68902,17 @@
 	            symbol: arrObj
 	          });
 	          this.props.setTicker(arrObj);
-	        });
-	        this.props.serverinfo_rop.getAccounts().then(accounts => {
-	          this.setState({
-	            accounts
-	          });
-	        });
+	        }); // this.props.serverinfo_rop.getAccounts()
+	        // .then(accounts=>{
+	        // 	this.setState({accounts});
+	        // })
 	      }
-	    }
+	    } // console.log('symbols is',this.state.symbols);
+	    // console.log('symbol is',this.state.symbol);
+	    // console.log('accounts is',this.state.accounts);
+	    // console.log('strategyTypes is',this.state.strategyTypes);
+	    // console.log('strategy is',this.state.strategy);
 
-	    console.log('symbols is', this.state.symbols);
-	    console.log('symbol is', this.state.symbol);
-	    console.log('accounts is', this.state.accounts);
-	    console.log('strategyTypes is', this.state.strategyTypes);
-	    console.log('strategy is', this.state.strategy);
 	  } // primarySizeChange=(number)=>{
 	  // 	console.log('primarySizeChange is: ',number);
 	  // }
@@ -68928,7 +68935,8 @@
 	      onSecondaryPaneSizeChange: this.secondarySizeChange
 	    }, /*#__PURE__*/react.createElement(PositionsPanelContainer$1, {
 	      comm: this.comm,
-	      ref: r => this.position_panel = r
+	      ref: r => this.position_panel = r,
+	      height: this.state.h
 	    }), /*#__PURE__*/react.createElement(AlgoOrdersPanelContainer$1, {
 	      comm: this.comm // algoman_rop={this.state.algoman_rop}
 	      ,
@@ -68982,25 +68990,18 @@
 	};
 
 	var css_248z$8 = ".footer-module_footer__3zCYC{\n  grid-area:foo;\n}\n";
-	var style$5 = {"footer":"footer-module_footer__3zCYC"};
 	styleInject(css_248z$8);
 
-	const Footer = () => {
-	  return /*#__PURE__*/react.createElement("div", {
-	    className: style$5.footer
-	  }, "MSMirnov@Copyright 2020");
-	};
-
-	var css_248z$9 = ".app-module_app__3p1pR{\n  /* background-color:red; */\n  display:grid;\n  /* grid-template-columns:100%; */\n  /* grid-template-rows:1fr 1fr 1fr; */\n  grid-template-rows:;\n  grid-template-areas:\n  \"nav\"\n  \"content\"\n  /* height: 100vh; */\n  \"foo\";\n  /* background-image:url(../../assets/images/paper.jpg); */\n}\n.app-module_app_content__1VFwj{\n   grid-area:content; \n  /* background-color:green; */\n  /* background-image:url(../../assets/images/paper.jpg); */\n}\n";
-	var style$6 = {"app":"app-module_app__3p1pR","app_content":"app-module_app_content__1VFwj"};
+	var css_248z$9 = ".app-module_app__3p1pR{\n  /* background-color:red; */\n  display:grid;\n  /* grid-template-columns:100%; */\n  /* grid-template-rows:1fr 1fr 1fr; */\n  grid-template-rows:;\n  grid-template-areas:\n  \"nav\"\n  \"content\"\n  /* height: 100vh; */\n  /* \"foo\"; */\n  /* background-image:url(../../assets/images/paper.jpg); */\n}\n.app-module_app_content__1VFwj{\n   grid-area:content; \n  /* background-color:green; */\n  /* background-image:url(../../assets/images/paper.jpg); */\n}\n";
+	var style$5 = {"app":"app-module_app__3p1pR","app_content":"app-module_app_content__1VFwj"};
 	styleInject(css_248z$9);
 
 	const App = () => {
 	  return /*#__PURE__*/react.createElement("div", {
-	    className: style$6.app
+	    className: style$5.app
 	  }, /*#__PURE__*/react.createElement(MainNavbarContainer$1, null), /*#__PURE__*/react.createElement("div", {
-	    className: style$6.app_content
-	  }, /*#__PURE__*/react.createElement(Routes, null)), /*#__PURE__*/react.createElement(Footer, null));
+	    className: style$5.app_content
+	  }, /*#__PURE__*/react.createElement(Routes, null)));
 	};
 
 	var css_248z$a = "@import url('https://fonts.googleapis.com/css?family=Open+Sans');\nbody {\n    font-family: 'Open Sans', sans-serif;\n}\n";

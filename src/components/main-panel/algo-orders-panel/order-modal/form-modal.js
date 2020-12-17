@@ -45,12 +45,17 @@ const FormModal=(props)=>{
 
 				<hr/>
 				<label>Account</label>
-				<input 
-						type="text"
-						class="form-control"
-						value={props.account_value}
-					    onChange={props.changeInputAccount}	
+				<SelectTicker
+					value={props.account_value}
+					options={props.account_options}
+				    changeSelectAccount={props.changeSelectAccount}	
 				/>
+				{/*<input */}
+						{/*type="text"*/}
+						{/*class="form-control"*/}
+						{/*value={props.account_value}*/}
+						{/*onChange={props.changeInputAccount}	*/}
+				{/*/>*/}
 		
 				<hr/>
 				<label>Ticker</label>

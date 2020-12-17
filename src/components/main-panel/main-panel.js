@@ -89,12 +89,19 @@ class MainPanel extends Component {
 						this.props.setTicker(arrObj);
 					});
 
-					// this.props.serverinfo_rop.getAccounts()
-					// .then(accounts=>{
-					// 	this.setState({accounts});
-					// })
+					this.props.serverinfo_rop.getAccounts()
+					.then(accounts=>{
+						this.setState({accounts});
+						let arrObj=[];
+						accounts.forEach(function(item,i,arr){
+							const obj=item.account;
+							arrObj.push(obj);
+						});
+						this.props.setAccount(arrObj);
+					});
 			}
 		}
+		console.log('accounts is',this.state.accounts);
 		// console.log('symbols is',this.state.symbols);
 		// console.log('symbol is',this.state.symbol);
 		// console.log('accounts is',this.state.accounts);

@@ -23,7 +23,8 @@ class OrderModalContainer extends Component{
 		// this.place_test_orders = this.place_test_orders.bind(this);
 		this.changeInputStartTime=this.changeInputStartTime.bind(this);
 		this.changeInputStopTime=this.changeInputStopTime.bind(this);
-		this.changeInputAccount=this.changeInputAccount.bind(this);
+		// this.changeInputAccount=this.changeInputAccount.bind(this);
+		this.changeSelectAccount=this.changeSelectAccount.bind(this);
 		this.changeInputAlgosize=this.changeInputAlgosize.bind(this);
 		this.changeSelectTicker=this.changeSelectTicker.bind(this);
 		this.changeSelectBuysell=this.changeSelectBuysell.bind(this);
@@ -37,7 +38,8 @@ class OrderModalContainer extends Component{
 		var buysell=this.props.buysell[0];
 		var algo=this.props.algo[0];
 		var algosize=this.props.algosize;
-		var account=this.props.account;
+		var account=this.props.account[0];
+		// var account=this.props.account;
 		var timeStart=this.props.timeStart;
 		var timeEnd=this.props.timeEnd;
 		// this.setState({ticker,buysell,algo,algosize,account});
@@ -56,26 +58,25 @@ class OrderModalContainer extends Component{
 	};
 
 	changeInputStartTime(e){
-		// debugger;
-		// var timeStart=e.target.value;
 		var timeStart=e.target.value;
-		// var timeStart= moment(time, "HH:mm").format("HH:mm:ss");
-
 		this.setState({timeStart});
 	};
 
 	changeInputStopTime(e){
 		var timeEnd=e.target.value;
-		// var timeEnd= moment(time, "HH:mm").format("HH:mm:ss");
 		this.setState({timeEnd});
 	};
-	// changeInputAccount=(e)=>{
-	changeInputAccount(e){
+	
+	// changeInputAccount(e){
+	// 	var account=e.target.value;
+	// 	console.log('algosize is:',account);
+	// 	this.setState({account});
+	// };
+
+	changeSelectAccount(e){
 		var account=e.target.value;
-		console.log('algosize is:',account);
 		this.setState({account});
 	};
-
 	// changeInputAlgosize=(e)=>{
 	changeInputAlgosize(e){
 		var algosize=e.target.value;
@@ -176,6 +177,7 @@ class OrderModalContainer extends Component{
 				ticker={this.props.ticker}
 				buysell={this.props.buysell}
 				algo={this.props.algo}
+				account={this.props.account}
 
 				ticker_value={this.state.ticker}
 				buysell_value={this.state.buysell}
@@ -190,7 +192,8 @@ class OrderModalContainer extends Component{
 				changeSelectBuysell={this.changeSelectBuysell}
 				changeSelectAlgo={this.changeSelectAlgo}
 				changeInputAlgosize={this.changeInputAlgosize}
-				changeInputAccount={this.changeInputAccount}
+				// changeInputAccount={this.changeInputAccount}
+				changeSelectAccount={this.changeSelectAccount}
 
 				changeInputStartTime={this.changeInputStartTime}
 				changeInputStopTime={this.changeInputStopTime}

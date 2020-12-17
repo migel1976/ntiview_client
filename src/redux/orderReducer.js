@@ -6,7 +6,8 @@ const initialState={
 	algoman_rop:null,
 	timeStart:'09:30:00',
 	timeEnd:'16:00:00',
-	account:'X',
+	account:[],
+	// account:'X',
 	ticker:[],
 	// ticker:['AAPL','MSFT'],
 	buysell:['SELL','BUY'],
@@ -26,6 +27,7 @@ const initialState={
 };
 
 const SET_TICKER='SET_TICKER';
+const SET_ACCOUNT='SET_ACCOUNT';
 const SET_ALGO='SET_ALGO';
 
 const SET_GRAPH_ORDERS='SET_GRAPH_ORDERS';
@@ -43,6 +45,9 @@ const SET_SERVERINFO_ROP='SET_SERVERINFO_ROP';
 
 const orderReducer=(state=initialState,action)=>{
 	switch(action.type){
+
+		case SET_ACCOUNT:
+			return {...state,account:[...action.items]};
 
 		case SET_TICKER:
 			return {...state,ticker:[...action.items]};
@@ -108,6 +113,10 @@ export const getGraphOrdersByAOID=(aoid)=>{
 export const setTS=(ts)=>({
 				type:SET_TS,
 				ts});
+
+export const setAccount=(items)=>({
+				type:SET_ACCOUNT,
+				items});
 
 export const setTicker=(items)=>({
 				type:SET_TICKER,

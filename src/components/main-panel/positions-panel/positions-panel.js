@@ -65,7 +65,7 @@ export const PositionsPanel=(props)=>{
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
         <DragDropProvider />
-		<CurrencyTypeProvider for={['avg_price','sod_price','last_price']} />
+		<CurrencyTypeProvider for={['avg_price','sod_price','last_price','pnl','t_pnl']} />
 		<GroupingState
           defaultGrouping={[{ columnName: 'sector' }]}
           defaultExpandedGroups={['TECH']}

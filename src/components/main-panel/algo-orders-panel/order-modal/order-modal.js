@@ -18,6 +18,13 @@ export const OrderModal=(props)=>{
 
 	const algo_options=props.algo.map(el=>(
 		<option>
+		 {/*// {el} | {el}*/}
+		 {el}
+		</option>
+	));
+
+	const account_options=props.account.map(el=>(
+		<option>
 		 {el}
 		</option>
 	));
@@ -45,7 +52,10 @@ export const OrderModal=(props)=>{
 					changeInputAlgosize={props.changeInputAlgosize}
 
 					account_value={props.account_value}
-					changeInputAccount={props.changeInputAccount}
+					account_options={account_options}
+					changeSelectAccount={props.changeSelectAccount}
+					// account_value={props.account_value}
+					// changeInputAccount={props.changeInputAccount}
 
 					timeStart_value={props.timeStart_value}
 					changeInputStartTime={props.changeInputStartTime}
