@@ -63,10 +63,11 @@ export const PositionsPanel=(props)=>{
 
 	  const [grouping]=useState([{columnName:'account'}]);
       const [tableColumnExtensions] = useState([
-			{ columnName: 'amount', align: 'right' },
+			{ columnName: 'account', align: 'right' },
 		  ]);
 		const [totalSummaryItems] = useState([
-			{ columnName: 'ticker', type: 'count' },
+			// { columnName: 'ticker', type: 'count' },
+			{ columnName: 'account', type: 'count' },
 			{ columnName: 'pnl', type: 'max' },
 			{ columnName: 'pnl', type: 'min' },
 			{ columnName: 'pnl', type: 'sum' },
@@ -85,7 +86,8 @@ export const PositionsPanel=(props)=>{
 		// // },
 	 //  ]);
 	  const { height, width } = useWindowDimensions();
-	  const mydimposition=height-(height-props.height);
+	  // const mydimposition=height-(height-props.height);
+	  const mydimposition=height-(height-props.height)-50;
 	  console.log('mydimposition is', mydimposition);
 	return (
 		<div className={style.main}>
@@ -93,32 +95,31 @@ export const PositionsPanel=(props)=>{
 		<div className='card'>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
-        {/*<DragDropProvider />*/}
+		<DragDropProvider />
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price','pnl','t_pnl']} />
-		{/*<GroupingState*/}
-			 {/*grouping={grouping}*/}
-        {/*/>*/}
+		<GroupingState
+			 // grouping={grouping}
+		/>
 		<SummaryState
           totalItems={totalSummaryItems}
           // groupItems={groupSummaryItems}
         />
-		{/*<IntegratedGrouping />*/}
+		<IntegratedGrouping />
 		<IntegratedSummary />
-		<Table
-					columnExtensions={tableColumnExtensions}
-		/>
-		{/*<VirtualTable */}
-					{/*height={mydimposition.toString()}*/}
+		{/*<Table*/}
 					{/*columnExtensions={tableColumnExtensions}*/}
 		{/*/>*/}
+		<VirtualTable 
+					height={mydimposition.toString()}
+					columnExtensions={tableColumnExtensions}
+		/>
 		<TableHeaderRow />
 		<TableSummaryRow />
-		{/*<TableGroupRow />*/}
-        {/*<Toolbar />*/}
-
-        {/*<GroupingPanel*/}
-			{/*// showColumnsWhenGrouped*/}
-		{/*/>*/}
+		<TableGroupRow />
+		<Toolbar />
+		<GroupingPanel
+			// showColumnsWhenGrouped
+		/>
 
 		</Grid>
 		</div>
