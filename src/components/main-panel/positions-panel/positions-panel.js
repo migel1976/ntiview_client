@@ -34,6 +34,22 @@ import {
   Plugin, Template, TemplateConnector, TemplatePlaceholder,
 } from '@devexpress/dx-react-core';
 
+const summaryCalculator = (type, rows, getValue) => {
+  if (type === 'customsum') {
+    let sum=0;
+    rows.forEach(element => {
+      sum=sum+getValue(element);
+    });
+    return sum;
+  }
+  return IntegratedSummary.defaultCalculator(type, rows, getValue);
+};
+
+const messages = {
+  //median: 'Median',
+  customsum:''
+};
+
 const CurrencyFormatter = ({ value }) => (
   <b style={{ color: 'darkblue' }}>
     {value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
@@ -67,22 +83,20 @@ export const PositionsPanel=(props)=>{
 		  ]);
 		const [totalSummaryItems] = useState([
 			{ columnName: 'ticker', type: 'count' },
-			{ columnName: 'pnl', type: 'sum' },
-			{ columnName: 't_pnl', type: 'sum' },
+			{ columnName: 'pnl', type: 'customsum' },
+			{ columnName: 't_pnl', type: 'customsum' },
+			// { columnName: 'pnl', type: 'sum' },
+			// { columnName: 't_pnl', type: 'sum' },
 		  ]);
 	 const [groupSummaryItems] = useState([
 		{ columnName: 'sector', type: 'count' },
-		{ columnName: 'pnl', type: 'sum' },
+		// { columnName: 'pnl', type: 'sum' },
+		{ columnName: 'pnl', type: 'customsum' },
 		{
 		  columnName: 'pnl', type: 'sum', showInGroupFooter: false,
+		  // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
 		},
 		{ columnName: 'ticker', type: 'count' },
-		// {
-		//   columnName: 'amount', type: 'max', showInGroupFooter: false, alignByColumn: true,
-		// },
-		// {
-		//   columnName: 'units', type: 'sum', showInGroupFooter: false, alignByColumn: true,
-		// },
 	  ]);
 	  const { height, width } = useWindowDimensions();
 	  // const mydimposition=height-(height-props.height);
@@ -104,7 +118,9 @@ export const PositionsPanel=(props)=>{
           groupItems={groupSummaryItems}
         />
 		<IntegratedGrouping />
-		<IntegratedSummary />
+		<IntegratedSummary 
+		  calculator={summaryCalculator}
+		/>
 		{/*<Table*/}
 					{/*columnExtensions={tableColumnExtensions}*/}
 		{/*/>*/}
@@ -113,7 +129,9 @@ export const PositionsPanel=(props)=>{
 					columnExtensions={tableColumnExtensions}
 		/>
 		<TableHeaderRow />
-		<TableSummaryRow />
+		<TableSummaryRow
+		 messages={messages}
+		/>
 		<TableGroupRow />
 		<Toolbar />
 		<GroupingPanel
