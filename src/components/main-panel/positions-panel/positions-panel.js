@@ -70,7 +70,8 @@ export const PositionsPanel=(props)=>{
 		{name: 'sector', title:'SECTOR'}
 	  ]);
 
-	  const [grouping]=useState([{columnName:'sector'}]);
+	  const [grouping, setGrouping]=useState([{columnName:'sector'}]);
+
       const [tableColumnExtensions] = useState([
 			{ columnName: 'account', align: 'right' },
 		  ]);
@@ -103,6 +104,7 @@ export const PositionsPanel=(props)=>{
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price','pnl','t_pnl']} />
 		<GroupingState
 			 grouping={grouping}
+			 onGroupingChange={setGrouping}
 		/>
 		<SummaryState
           totalItems={totalSummaryItems}
