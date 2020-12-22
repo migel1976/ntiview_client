@@ -58860,6 +58860,200 @@
 	  return splitHeaderColumnChains(chains, tableColumns, shouldSplitChain, extendChainProps);
 	};
 
+	var defaultSummaryCalculators = {
+	  count: function (rows) {
+	    return rows.length;
+	  },
+	  sum: function (rows, getValue) {
+	    return rows.reduce(function (acc, row) {
+	      return acc + getValue(row);
+	    }, 0);
+	  },
+	  max: function (rows, getValue) {
+	    return rows.length ? rows.reduce(function (acc, row) {
+	      return Math.max(acc, getValue(row));
+	    }, -Infinity) : null;
+	  },
+	  min: function (rows, getValue) {
+	    return rows.length ? rows.reduce(function (acc, row) {
+	      return Math.min(acc, getValue(row));
+	    }, Infinity) : null;
+	  },
+	  avg: function (rows, getValue) {
+	    return rows.length ? rows.reduce(function (acc, row) {
+	      return acc + getValue(row);
+	    }, 0) / rows.length : null;
+	  }
+	};
+
+	var defaultSummaryCalculator = function (type, rows, getValue) {
+	  var summaryCalculator = defaultSummaryCalculators[type];
+
+	  if (!summaryCalculator) {
+	    throw new Error("The summary type '" + type + "' is not defined");
+	  }
+
+	  return summaryCalculator(rows, getValue);
+	};
+
+	var rowsSummary = function (rows, summaryItems, getCellValue, calculator) {
+	  return summaryItems.reduce(function (acc, _a) {
+	    var type = _a.type,
+	        columnName = _a.columnName;
+
+	    var getValue = function (row) {
+	      return getCellValue(row, columnName);
+	    };
+
+	    acc.push(calculator(type, rows, getValue));
+	    return acc;
+	  }, []);
+	};
+
+	var expandRows = function (rows, getRowLevelKey, getCollapsedRows, isGroupRow, includeGroupRow) {
+	  if (includeGroupRow === void 0) {
+	    includeGroupRow = false;
+	  }
+
+	  var shouldIncludeRow = includeGroupRow || !isGroupRow ? function () {
+	    return true;
+	  } : function (row) {
+	    return !isGroupRow(row);
+	  };
+	  return rows.reduce(function (acc, row) {
+	    if (getRowLevelKey && getRowLevelKey(row)) {
+	      if (shouldIncludeRow(row)) {
+	        acc.push(row);
+	      }
+
+	      var collapsedRows = getCollapsedRows && getCollapsedRows(row);
+
+	      if (collapsedRows) {
+	        acc.push.apply(acc, __spread$4(collapsedRows));
+	      }
+
+	      return acc;
+	    }
+
+	    acc.push(row);
+	    return acc;
+	  }, []);
+	};
+
+	var totalSummaryValues = function (rows, summaryItems, getCellValue, getRowLevelKey, isGroupRow, getCollapsedRows, calculator) {
+	  if (calculator === void 0) {
+	    calculator = defaultSummaryCalculator;
+	  }
+
+	  var plainRows = expandRows(rows, getRowLevelKey, getCollapsedRows, isGroupRow);
+	  return rowsSummary(plainRows, summaryItems, getCellValue, calculator);
+	};
+
+	var groupSummaryValues = function (rows, summaryItems, getCellValue, getRowLevelKey, isGroupRow, getCollapsedRows, calculator) {
+	  if (calculator === void 0) {
+	    calculator = defaultSummaryCalculator;
+	  }
+
+	  var levels = [];
+
+	  var getLevelIndex = function (levelKey) {
+	    return levels.findIndex(function (level) {
+	      return level.levelKey === levelKey;
+	    });
+	  };
+
+	  var summaries = {};
+	  var anyRowLevelSummaryExist = summaryItems.some(function (item) {
+	    return !item.showInGroupFooter;
+	  });
+	  var expandedRows = anyRowLevelSummaryExist ? expandRows(rows, getRowLevelKey, getCollapsedRows, isGroupRow, true) : rows;
+	  expandedRows.forEach(function (row) {
+	    var levelKey = getRowLevelKey(row);
+	    var collapsedRows = getCollapsedRows && getCollapsedRows(row);
+	    var levelIndex = getLevelIndex(levelKey);
+
+	    if (levelIndex > -1) {
+	      levels.forEach(function (level) {
+	        summaries[level.row.compoundKey] = rowsSummary(level.rows, summaryItems, getCellValue, calculator);
+	      });
+	      levels = levels.slice(0, levelIndex);
+	    }
+
+	    if (isGroupRow(row)) {
+	      levels.push({
+	        levelKey: levelKey,
+	        row: row,
+	        rows: []
+	      });
+	      levelIndex = getLevelIndex(levelKey);
+	    } // when row level summary exists, these rows had already been expanded earlier
+
+
+	    var isCollapsedNestedGroupRow = collapsedRows && levelIndex > 0 && !anyRowLevelSummaryExist;
+	    var rowsToAppend = !levelKey ? [row] : collapsedRows;
+
+	    if (!levelKey || isCollapsedNestedGroupRow) {
+	      levels.forEach(function (level) {
+	        var _a;
+
+	        (_a = level.rows).push.apply(_a, __spread$4(rowsToAppend));
+	      });
+	    }
+	  }, {});
+	  levels.forEach(function (level) {
+	    summaries[level.row.compoundKey] = rowsSummary(level.rows, summaryItems, getCellValue, calculator);
+	  });
+	  return summaries;
+	};
+
+	var treeSummaryValues = function (rows, summaryItems, getCellValue, getRowLevelKey, isGroupRow, getRowId, calculator) {
+	  if (calculator === void 0) {
+	    calculator = defaultSummaryCalculator;
+	  }
+
+	  var levels = [];
+	  var summaries = {};
+	  rows.forEach(function (row) {
+	    var levelKey = getRowLevelKey(row);
+
+	    if (!levelKey) {
+	      levels[levels.length - 1].rows.push(row);
+	      return;
+	    }
+
+	    var levelIndex = levels.findIndex(function (level) {
+	      return level.levelKey === levelKey;
+	    });
+
+	    if (levelIndex > -1) {
+	      levels.slice(levelIndex).forEach(function (level) {
+	        if (level.rows.length) {
+	          summaries[getRowId(level.row)] = rowsSummary(level.rows, summaryItems, getCellValue, calculator);
+	        }
+	      });
+	      levels = levels.slice(0, levelIndex);
+	    }
+
+	    if (!isGroupRow || !isGroupRow(row)) {
+	      if (levels.length) {
+	        levels[levels.length - 1].rows.push(row);
+	      }
+
+	      levels.push({
+	        levelKey: levelKey,
+	        row: row,
+	        rows: []
+	      });
+	    }
+	  }, {});
+	  levels.forEach(function (level) {
+	    if (level.rows.length) {
+	      summaries[getRowId(level.row)] = rowsSummary(level.rows, summaryItems, getCellValue, calculator);
+	    }
+	  });
+	  return summaries;
+	};
+
 	var TABLE_TOTAL_SUMMARY_TYPE = Symbol('totalSummary');
 	var TABLE_GROUP_SUMMARY_TYPE = Symbol('groupSummary');
 	var TABLE_TREE_SUMMARY_TYPE = Symbol('treeSummary');
@@ -59019,6 +59213,14 @@
 	  });
 	  levels.slice().reverse().forEach(closeLevel);
 	  return result;
+	};
+
+	var prepareGroupSummaryItems = function (items) {
+	  return !!items ? items.map(function (item) {
+	    return __assign$3(__assign$3({}, item), {
+	      showInGroupFooter: item.showInGroupFooter === undefined && !item.alignByColumn ? true : item.showInGroupFooter
+	    });
+	  }) : items;
 	};
 
 	var getTargetColumnGeometries = function (columnGeometries, sourceIndex) {
@@ -63525,6 +63727,121 @@
 
 
 	var TableFixedColumns = TableFixedColumnsBase;
+
+	var groupSummaryItemsComputed = function (_a) {
+	  var groupSummaryItems = _a.groupSummaryItems;
+	  return prepareGroupSummaryItems(groupSummaryItems);
+	};
+
+	var SummaryStateBase = /*#__PURE__*/function (_super) {
+	  __extends$2(SummaryStateBase, _super);
+
+	  function SummaryStateBase() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  }
+
+	  SummaryStateBase.prototype.render = function () {
+	    var _a = this.props,
+	        totalItems = _a.totalItems,
+	        groupItems = _a.groupItems,
+	        treeItems = _a.treeItems;
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "SummaryState"
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "totalSummaryItems",
+	      value: totalItems
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "groupSummaryItems",
+	      value: groupItems
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "groupSummaryItems",
+	      computed: groupSummaryItemsComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "treeSummaryItems",
+	      value: treeItems
+	    }));
+	  };
+
+	  SummaryStateBase.defaultProps = {
+	    totalItems: [],
+	    groupItems: [],
+	    treeItems: []
+	  };
+	  return SummaryStateBase;
+	}(react_7);
+	/** A plugin that provides items for total, group, and tree summaries. */
+
+
+	var SummaryState = SummaryStateBase;
+	var pluginDependencies$k = [{
+	  name: 'SummaryState'
+	}, {
+	  name: 'IntegratedGrouping',
+	  optional: true
+	}];
+
+	var IntegratedSummaryBase = /*#__PURE__*/function (_super) {
+	  __extends$2(IntegratedSummaryBase, _super);
+
+	  function IntegratedSummaryBase() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  }
+
+	  IntegratedSummaryBase.prototype.render = function () {
+	    var calculator = this.props.calculator;
+
+	    var totalSummaryValuesComputed = function (_a) {
+	      var rows = _a.rows,
+	          totalSummaryItems = _a.totalSummaryItems,
+	          getCellValue = _a.getCellValue,
+	          getRowLevelKey = _a.getRowLevelKey,
+	          isGroupRow = _a.isGroupRow,
+	          getCollapsedRows = _a.getCollapsedRows;
+	      return totalSummaryValues(rows, totalSummaryItems, getCellValue, getRowLevelKey, isGroupRow, getCollapsedRows, calculator);
+	    };
+
+	    var groupSummaryValuesComputed = function (_a) {
+	      var rows = _a.rows,
+	          groupSummaryItems = _a.groupSummaryItems,
+	          getCellValue = _a.getCellValue,
+	          getRowLevelKey = _a.getRowLevelKey,
+	          isGroupRow = _a.isGroupRow,
+	          getCollapsedRows = _a.getCollapsedRows;
+	      return groupSummaryValues(rows, groupSummaryItems, getCellValue, getRowLevelKey, isGroupRow, getCollapsedRows, calculator);
+	    };
+
+	    var treeSummaryValuesComputed = function (_a) {
+	      var rows = _a.rows,
+	          treeSummaryItems = _a.treeSummaryItems,
+	          getCellValue = _a.getCellValue,
+	          getRowLevelKey = _a.getRowLevelKey,
+	          isGroupRow = _a.isGroupRow,
+	          getRowId = _a.getRowId;
+	      return treeSummaryValues(rows, treeSummaryItems, getCellValue, getRowLevelKey, isGroupRow, getRowId, calculator);
+	    };
+
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "IntegratedSummary",
+	      dependencies: pluginDependencies$k
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "totalSummaryValues",
+	      computed: totalSummaryValuesComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "groupSummaryValues",
+	      computed: groupSummaryValuesComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "treeSummaryValues",
+	      computed: treeSummaryValuesComputed
+	    }));
+	  };
+
+	  IntegratedSummaryBase.defaultCalculator = defaultSummaryCalculator;
+	  return IntegratedSummaryBase;
+	}(react_7);
+	/** A plugin that performs a built-in data summary calculation. */
+
+
+	var IntegratedSummary = IntegratedSummaryBase;
 	var dependencies$1$1 = [{
 	  name: 'DataTypeProvider',
 	  optional: true
@@ -68187,11 +68504,7 @@
 	  }), /*#__PURE__*/react.createElement(CurrencyTypeProvider, {
 	    for: ['avg_price', 'entry_price']
 	  }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(VirtualTable, {
-	    columnExtensions: defaultColumnWidths // height={150}
-	    // height={'350px'}
-	    // height={height-props.height}
-	    // height={props.height-height}
-	    ,
+	    columnExtensions: defaultColumnWidths,
 	    height: mydim.toString()
 	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableSelection$1, {
 	    showSelectAll: true,
@@ -68408,6 +68721,22 @@
 	var style$3 = {"main":"positions-panel-module_main__3bRPm"};
 	styleInject(css_248z$5);
 
+	const summaryCalculator = (type, rows, getValue) => {
+	  if (type === 'customsum') {
+	    let sum = 0;
+	    rows.forEach(element => {
+	      sum = sum + getValue(element);
+	    });
+	    return sum;
+	  }
+
+	  return IntegratedSummary.defaultCalculator(type, rows, getValue);
+	};
+
+	const messages = {
+	  customsum: ''
+	};
+
 	const CurrencyFormatter$1 = ({
 	  value
 	}) => /*#__PURE__*/react.createElement("b", {
@@ -68452,12 +68781,46 @@
 	    name: 'sector',
 	    title: 'SECTOR'
 	  }]);
+	  const [grouping, setGrouping] = react_27([{
+	    columnName: 'sector'
+	  }]);
+	  const [tableColumnExtensions] = react_27([{
+	    columnName: 'account',
+	    align: 'right'
+	  }]);
+	  const [totalSummaryItems] = react_27([{
+	    columnName: 'ticker',
+	    type: 'count'
+	  }, {
+	    columnName: 'pnl',
+	    type: 'customsum'
+	  }, {
+	    columnName: 't_pnl',
+	    type: 'customsum'
+	  } // { columnName: 'pnl', type: 'sum' },
+	  // { columnName: 't_pnl', type: 'sum' },
+	  ]);
+	  const [groupSummaryItems] = react_27([{
+	    columnName: 'sector',
+	    type: 'count'
+	  }, // { columnName: 'pnl', type: 'sum' },
+	  {
+	    columnName: 'pnl',
+	    type: 'customsum'
+	  }, {
+	    columnName: 'pnl',
+	    type: 'sum',
+	    showInGroupFooter: false // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
+
+	  }, {
+	    columnName: 'ticker',
+	    type: 'count'
+	  }]);
 	  const {
 	    height,
 	    width
 	  } = useDimension();
-	  const mydimposition = height - (height - props.height);
-	  console.log('mydimposition is', mydimposition);
+	  const mydimposition = height - (height - props.height) - 50;
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$3.main
 	  }, /*#__PURE__*/react.createElement("div", {
@@ -68468,17 +68831,24 @@
 	  }, /*#__PURE__*/react.createElement(DragDropProvider$2, null), /*#__PURE__*/react.createElement(CurrencyTypeProvider$1, {
 	    for: ['avg_price', 'sod_price', 'last_price', 'pnl', 't_pnl']
 	  }), /*#__PURE__*/react.createElement(GroupingState, {
-	    defaultGrouping: [{
-	      columnName: 'sector'
-	    }],
-	    defaultExpandedGroups: ['TECH'] // defaultGrouping={[{ columnName: 'TICKER' }]}
-	    // defaultGrouping={[{ columnName: 'ticker' }]}
-	    // defaultExpandedGroups={['AAPL','MSFT']}
-
-	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(VirtualTable, {
-	    height: mydimposition.toString() // height={'200px'}
-
-	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1, null))));
+	    grouping: grouping,
+	    onGroupingChange: setGrouping
+	  }), /*#__PURE__*/react.createElement(SummaryState, {
+	    totalItems: totalSummaryItems,
+	    groupItems: groupSummaryItems
+	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(IntegratedSummary, {
+	    calculator: summaryCalculator
+	  }), /*#__PURE__*/react.createElement(VirtualTable, {
+	    height: mydimposition.toString(),
+	    columnExtensions: tableColumnExtensions
+	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, {
+	    showGroupingControls: true
+	  }), /*#__PURE__*/react.createElement(TableSummaryRow$1, {
+	    messages: messages
+	  }), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1 // showColumnsWhenGrouped
+	  , {
+	    showGroupingControls: true
+	  }))));
 	};
 
 	// import React from 'react';
