@@ -72,10 +72,11 @@ export const PositionsPanel=(props)=>{
 		  ]);
 	 const [groupSummaryItems] = useState([
 		{ columnName: 'sector', type: 'count' },
-		// { columnName: 'pnl', type: 'sum' },
+		{ columnName: 'pnl', type: 'sum' },
 		{
 		  columnName: 'pnl', type: 'sum', showInGroupFooter: false,
 		},
+		{ columnName: 'ticker', type: 'count' },
 		// {
 		//   columnName: 'amount', type: 'max', showInGroupFooter: false, alignByColumn: true,
 		// },
