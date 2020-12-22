@@ -66,25 +66,23 @@ export const PositionsPanel=(props)=>{
 			{ columnName: 'account', align: 'right' },
 		  ]);
 		const [totalSummaryItems] = useState([
-			// { columnName: 'ticker', type: 'count' },
-			{ columnName: 'account', type: 'count' },
-			{ columnName: 'pnl', type: 'max' },
-			{ columnName: 'pnl', type: 'min' },
+			{ columnName: 'ticker', type: 'count' },
 			{ columnName: 'pnl', type: 'sum' },
+			{ columnName: 't_pnl', type: 'sum' },
 		  ]);
-	 // const [groupSummaryItems] = useState([
-		// { columnName: 'region', type: 'count' },
-		// { columnName: 'amount', type: 'sum' },
+	 const [groupSummaryItems] = useState([
+		{ columnName: 'sector', type: 'count' },
+		// { columnName: 'pnl', type: 'sum' },
+		{
+		  columnName: 'pnl', type: 'sum', showInGroupFooter: false,
+		},
 		// {
-		  // columnName: 'amount', type: 'sum', showInGroupFooter: false,
+		//   columnName: 'amount', type: 'max', showInGroupFooter: false, alignByColumn: true,
 		// },
 		// {
-		  // columnName: 'amount', type: 'max', showInGroupFooter: false, alignByColumn: true,
+		//   columnName: 'units', type: 'sum', showInGroupFooter: false, alignByColumn: true,
 		// },
-		// // {
-		// //   columnName: 'units', type: 'sum', showInGroupFooter: false, alignByColumn: true,
-		// // },
-	 //  ]);
+	  ]);
 	  const { height, width } = useWindowDimensions();
 	  // const mydimposition=height-(height-props.height);
 	  const mydimposition=height-(height-props.height)-50;
@@ -102,7 +100,7 @@ export const PositionsPanel=(props)=>{
 		/>
 		<SummaryState
           totalItems={totalSummaryItems}
-          // groupItems={groupSummaryItems}
+          groupItems={groupSummaryItems}
         />
 		<IntegratedGrouping />
 		<IntegratedSummary />
