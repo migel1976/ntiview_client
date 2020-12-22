@@ -1,11 +1,4 @@
 import React,{useState} from 'react';
-import {
-		GroupingState,
-		SummaryState,
-		IntegratedSummary,
-} from '@devexpress/dx-react-grid';
-// import "@devexpress/dx-react-grid";
-// import {Grid, Table, TableHeaderRow,TableEditColumn} from "@devexpress/dx-react-grid-bootstrap4";
 import {Grid,
 		Table,
 		TableHeaderRow,
@@ -16,8 +9,7 @@ import {Grid,
 		GroupingPanel,
 		TableSummaryRow
 } from "@devexpress/dx-react-grid-bootstrap4";
-import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
-import style from './positions-panel.module.css';
+
 
 import useWindowDimensions from '../../../hooks/dimension.hook';
 import {
@@ -27,12 +19,14 @@ import {
 	PagingState,
 	IntegratedPaging,
 	VirtualTableState,
-	DataTypeProvider
+	DataTypeProvider,
+	GroupingState,
+	SummaryState,
+	IntegratedSummary,
 } from '@devexpress/dx-react-grid';
 
-import {
-  Plugin, Template, TemplateConnector, TemplatePlaceholder,
-} from '@devexpress/dx-react-core';
+import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import style from './positions-panel.module.css';
 
 const summaryCalculator = (type, rows, getValue) => {
   if (type === 'customsum') {
@@ -46,7 +40,6 @@ const summaryCalculator = (type, rows, getValue) => {
 };
 
 const messages = {
-  //median: 'Median',
   customsum:''
 };
 
@@ -77,7 +70,7 @@ export const PositionsPanel=(props)=>{
 		{name: 'sector', title:'SECTOR'}
 	  ]);
 
-	  const [grouping]=useState([{columnName:'account'}]);
+	  const [grouping]=useState([{columnName:'sector'}]);
       const [tableColumnExtensions] = useState([
 			{ columnName: 'account', align: 'right' },
 		  ]);
@@ -99,19 +92,17 @@ export const PositionsPanel=(props)=>{
 		{ columnName: 'ticker', type: 'count' },
 	  ]);
 	  const { height, width } = useWindowDimensions();
-	  // const mydimposition=height-(height-props.height);
 	  const mydimposition=height-(height-props.height)-50;
-	  console.log('mydimposition is', mydimposition);
+
 	return (
 		<div className={style.main}>
-		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<div className='card'>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
 		<DragDropProvider />
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price','pnl','t_pnl']} />
 		<GroupingState
-			 // grouping={grouping}
+			 grouping={grouping}
 		/>
 		<SummaryState
           totalItems={totalSummaryItems}
@@ -121,14 +112,13 @@ export const PositionsPanel=(props)=>{
 		<IntegratedSummary 
 		  calculator={summaryCalculator}
 		/>
-		{/*<Table*/}
-					{/*columnExtensions={tableColumnExtensions}*/}
-		{/*/>*/}
 		<VirtualTable 
 					height={mydimposition.toString()}
 					columnExtensions={tableColumnExtensions}
 		/>
-		<TableHeaderRow />
+		<TableHeaderRow
+		    showGroupingControls
+		/>
 		<TableSummaryRow
 		 messages={messages}
 		/>
@@ -136,8 +126,8 @@ export const PositionsPanel=(props)=>{
 		<Toolbar />
 		<GroupingPanel
 			// showColumnsWhenGrouped
+		    showGroupingControls
 		/>
-
 		</Grid>
 		</div>
 		</div>
