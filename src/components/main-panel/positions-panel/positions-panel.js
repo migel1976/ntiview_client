@@ -60,8 +60,46 @@ const CurrencyTypeProvider = props => (
   />
 );
 
+const styles = {
+  tech: {
+    backgroundColor: '#f5f5f5',
+  },
+  etf: {
+    backgroundColor: '#f5f5f5',
+  },
+  consumer: {
+    backgroundColor: '#f5f5f5',
+  },
+  // // health: {
+  // tech: {
+  //   backgroundColor: '#a2e2a4',
+  // },
+  // telecom: {
+  //   backgroundColor: '#b3e5fc',
+  // },
+  // energy: {
+  //   backgroundColor: '#ffcdd2',
+  // },
+  // insurance: {
+  //   backgroundColor: '#f0f4c3',
+  // },
+};
+
+const TableRow = ({ row, ...restProps }) => (
+  <Table.Row
+    {...restProps}
+    // eslint-disable-next-line no-alert
+    onClick={() => alert(JSON.stringify(row))}
+    style={{
+      cursor: 'pointer',
+      ...styles[row.sector.toLowerCase()],
+    }}
+  />
+);
+
 const Cell = (props) => {
   const { column } = props;
+  debugger;
   if (column.name === 'sector') {
     return <HighlightedCell {...props} />;
   }
@@ -136,7 +174,7 @@ export const PositionsPanel=(props)=>{
 		<SummaryState
           totalItems={totalSummaryItems}
           groupItems={groupSummaryItems}
-					cellComponent={Cell}
+					// cellComponent={Cell}
         />
 		<IntegratedGrouping />
 		<IntegratedSummary 
@@ -145,6 +183,7 @@ export const PositionsPanel=(props)=>{
 		<VirtualTable 
 					height={mydimposition.toString()}
 					columnExtensions={tableColumnExtensions}
+					rowComponent={TableRow}
 					// cellComponent={Cell}
 		/>
 		<TableHeaderRow

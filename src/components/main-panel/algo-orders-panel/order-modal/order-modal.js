@@ -9,7 +9,7 @@ import FormModal from './form-modal';
 // };
 
 export const OrderModal=(props)=>{
-    debugger;	
+    // debugger;	
 	const ticker_options=props.ticker.map(el=>(
 		<option key={el.symbol} value={el.symbol}>
 		 {el.symbol} | company: {el.name} | sector: {el.sector}
