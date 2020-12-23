@@ -34,6 +34,10 @@ const summaryCalculator = (type, rows, getValue) => {
     rows.forEach(element => {
       sum=sum+getValue(element);
     });
+	const ret=<b style={{ color: 'red' }}>
+		sum
+	  </b>
+    // return ret;
     return sum;
   }
   return IntegratedSummary.defaultCalculator(type, rows, getValue);
@@ -58,6 +62,9 @@ const CurrencyTypeProvider = props => (
 
 const Cell = (props) => {
   const { column } = props;
+  if (column.name === 'sector') {
+    return <HighlightedCell {...props} />;
+  }
   if (column.name === 't_pnl') {
     return <HighlightedCell {...props} />;
   }
@@ -103,20 +110,12 @@ export const PositionsPanel=(props)=>{
 		  ]);
 	 const [groupSummaryItems] = useState([
 		{ columnName: 'sector', type: 'count' },
-		// { columnName: 'pnl', type: 'sum' },
-		// { columnName: 'pnl', type: 'customsum' },
-		// { columnName: 't_pnl', type: 'customsum' },
 		{
-			columnName: 'pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
-			// columnName: 't_pnl', type: 'sum', showInGroupFooter: false, alignByColumn:true,
-			// columnName: 't_pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
-			// columnName: 'pnl', type: 'sum', showInGroupFooter: false, alignByColumn:true,
-		  // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
+			columnName: 'pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true
 		},
 		{
 			columnName: 't_pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
 		},
-		// { columnName: 'ticker', type: 'count' },
 		{ columnName: 'ticker', type: 'count',showInGroupFooter:false },
 	  ]);
 	  const { height, width } = useWindowDimensions();
@@ -132,7 +131,7 @@ export const PositionsPanel=(props)=>{
 		<GroupingState
 			 grouping={grouping}
 			 onGroupingChange={setGrouping}
-					cellComponent={Cell}
+					// cellComponent={Cell}
 		/>
 		<SummaryState
           totalItems={totalSummaryItems}
@@ -146,7 +145,7 @@ export const PositionsPanel=(props)=>{
 		<VirtualTable 
 					height={mydimposition.toString()}
 					columnExtensions={tableColumnExtensions}
-					cellComponent={Cell}
+					// cellComponent={Cell}
 		/>
 		<TableHeaderRow
 		    showGroupingControls
