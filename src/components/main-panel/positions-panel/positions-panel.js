@@ -93,7 +93,8 @@ export const PositionsPanel=(props)=>{
 			// columnName: 'pnl', type: 'sum', showInGroupFooter: false, alignByColumn:true,
 		  // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
 		},
-		{ columnName: 'ticker', type: 'count' },
+		// { columnName: 'ticker', type: 'count' },
+		{ columnName: 'ticker', type: 'count',showInGroupFooter:false },
 	  ]);
 	  const { height, width } = useWindowDimensions();
 	  const mydimposition=height-(height-props.height)-50;
