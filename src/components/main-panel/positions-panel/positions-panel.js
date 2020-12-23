@@ -9,7 +9,7 @@ import {Grid,
 		GroupingPanel,
 		TableSummaryRow
 } from "@devexpress/dx-react-grid-bootstrap4";
-
+import { HighlightedCell } from './highlighted-cell';
 
 import useWindowDimensions from '../../../hooks/dimension.hook';
 import {
@@ -56,6 +56,25 @@ const CurrencyTypeProvider = props => (
   />
 );
 
+const Cell = (props) => {
+  const { column } = props;
+  if (column.name === 't_pnl') {
+    return <HighlightedCell {...props} />;
+  }
+  if (column.name === 'pnl') {
+    return <HighlightedCell {...props} />;
+  }
+  if (column.name === 'sod_price') {
+    return <HighlightedCell {...props} />;
+  }
+  if (column.name === 'avg_price') {
+    return <HighlightedCell {...props} />;
+  }
+  if (column.name === 'last_price') {
+    return <HighlightedCell {...props} />;
+  }
+  return <Table.Cell {...props} />;
+};
 export const PositionsPanel=(props)=>{
 
 	const [columns] = useState([
@@ -113,10 +132,12 @@ export const PositionsPanel=(props)=>{
 		<GroupingState
 			 grouping={grouping}
 			 onGroupingChange={setGrouping}
+					cellComponent={Cell}
 		/>
 		<SummaryState
           totalItems={totalSummaryItems}
           groupItems={groupSummaryItems}
+					cellComponent={Cell}
         />
 		<IntegratedGrouping />
 		<IntegratedSummary 
@@ -125,6 +146,7 @@ export const PositionsPanel=(props)=>{
 		<VirtualTable 
 					height={mydimposition.toString()}
 					columnExtensions={tableColumnExtensions}
+					cellComponent={Cell}
 		/>
 		<TableHeaderRow
 		    showGroupingControls
