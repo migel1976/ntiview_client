@@ -89,9 +89,13 @@ export const PositionsPanel=(props)=>{
 		// { columnName: 't_pnl', type: 'customsum' },
 		{
 			columnName: 'pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
+			// columnName: 't_pnl', type: 'sum', showInGroupFooter: false, alignByColumn:true,
 			// columnName: 't_pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
 			// columnName: 'pnl', type: 'sum', showInGroupFooter: false, alignByColumn:true,
 		  // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
+		},
+		{
+			columnName: 't_pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
 		},
 		// { columnName: 'ticker', type: 'count' },
 		{ columnName: 'ticker', type: 'count',showInGroupFooter:false },
