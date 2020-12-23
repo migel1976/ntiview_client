@@ -85,9 +85,12 @@ export const PositionsPanel=(props)=>{
 	 const [groupSummaryItems] = useState([
 		{ columnName: 'sector', type: 'count' },
 		// { columnName: 'pnl', type: 'sum' },
-		{ columnName: 'pnl', type: 'customsum' },
+		// { columnName: 'pnl', type: 'customsum' },
+		// { columnName: 't_pnl', type: 'customsum' },
 		{
-		  columnName: 'pnl', type: 'sum', showInGroupFooter: false,
+			columnName: 'pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
+			// columnName: 't_pnl', type: 'customsum', showInGroupFooter: false, alignByColumn:true,
+			// columnName: 'pnl', type: 'sum', showInGroupFooter: false, alignByColumn:true,
 		  // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
 		},
 		{ columnName: 'ticker', type: 'count' },
