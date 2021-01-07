@@ -6,9 +6,11 @@ import style from './algo-orders-panel.module.css';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 
 import {
+	SortingState,
 	FilteringState,
 	SearchState,
 	IntegratedFiltering,
+	IntegratedSorting,
 } from '@devexpress/dx-react-grid';
 
 import {Grid,
@@ -86,6 +88,7 @@ export const AlgoOrdersPanel=(props)=>{
 	  const mydim=height-props.height-100;
 	  // console.log('mydim is', mydim);
 	  const [searchValue, setSearchState] = useState('');
+	  const [sorting, setSorting] = useState([{ columnName: 'ticker', direction: 'asc' }]);
 
 	return (
 	    <div className={style.main}>
@@ -104,6 +107,11 @@ export const AlgoOrdersPanel=(props)=>{
 
 		<Grid rows={props.rows} columns={props.columns}>
 		{/*<Grid rows={props.rows} columns={columns}>*/}
+		<SortingState
+			sorting={sorting}
+			onSortingChange={setSorting}
+        />
+		<IntegratedSorting />
 		<SearchState
           value={searchValue}
           onValueChange={setSearchState}
@@ -127,7 +135,9 @@ export const AlgoOrdersPanel=(props)=>{
 				  {/*// onColumnWidthsChange={setColumnWidths}*/}
 				  {/*// resizingMode={'nextColumn'}*/}
 				{/*/>*/}
-		<TableHeaderRow />
+		<TableHeaderRow 
+			showSortingControls
+		/>
 		<TableFilterRow />
 		<TableSelection showSelectAll selectByRowClick />
 		<TableFixedColumns 
