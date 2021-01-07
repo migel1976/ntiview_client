@@ -143,8 +143,8 @@ export const AlgoOrdersPanel=(props)=>{
 		<TableFixedColumns 
 		                  leftColumns={['start_time','stop_time']} 
 		/>
-		<Toolbar />
- 		<SearchPanel />
+		{/*<Toolbar />*/}
+         {/*<SearchPanel />*/}
 		</Grid>
 	    </div>
 	);
