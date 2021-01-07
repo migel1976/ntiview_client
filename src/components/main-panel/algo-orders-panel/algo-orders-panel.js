@@ -6,8 +6,9 @@ import style from './algo-orders-panel.module.css';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 
 import {
-  SearchState,
-  IntegratedFiltering,
+	FilteringState,
+	SearchState,
+	IntegratedFiltering,
 } from '@devexpress/dx-react-grid';
 
 import {Grid,
@@ -19,6 +20,7 @@ import {Grid,
 	    TableFixedColumns,
 	    Toolbar,
         SearchPanel,
+		TableFilterRow,
 } from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import {
@@ -106,6 +108,7 @@ export const AlgoOrdersPanel=(props)=>{
           value={searchValue}
           onValueChange={setSearchState}
         />
+		<FilteringState defaultFilters={[]} />
         <IntegratedFiltering />
 		 <SelectionState
 			selection={props.selection}
@@ -125,6 +128,7 @@ export const AlgoOrdersPanel=(props)=>{
 				  {/*// resizingMode={'nextColumn'}*/}
 				{/*/>*/}
 		<TableHeaderRow />
+		<TableFilterRow />
 		<TableSelection showSelectAll selectByRowClick />
 		<TableFixedColumns 
 		                  leftColumns={['start_time','stop_time']} 
