@@ -19,7 +19,7 @@ const MainNavbar=(props)=>{
 		<OrderModalContainer 
 			algoman_rop={props.algoman_rop}	
 		/>
-		<GraphModalContainer />
+		{/*<GraphModalContainer />*/}
       <header>
 		<Navbar variant="dark" bg="primary" expand='lg'>
           <Navbar.Brand href="#home">NTIView</Navbar.Brand>
