@@ -130,7 +130,7 @@ export const AlgoOrdersPanel=(props)=>{
 		                  leftColumns={['start_time','stop_time']} 
 		/>
 		<Toolbar />
-		<SearchPanel />
+ 		<SearchPanel />
 		</Grid>
 	    </div>
 	);

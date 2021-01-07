@@ -7,7 +7,8 @@ import {Grid,
 		TableGroupRow,
 		Toolbar,
 		GroupingPanel,
-		TableSummaryRow
+		TableSummaryRow,
+        SearchPanel,
 } from "@devexpress/dx-react-grid-bootstrap4";
 import { HighlightedCell } from './highlighted-cell';
 
@@ -23,6 +24,8 @@ import {
 	GroupingState,
 	SummaryState,
 	IntegratedSummary,
+	SearchState,
+	IntegratedFiltering,
 } from '@devexpress/dx-react-grid';
 
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
@@ -159,11 +162,18 @@ export const PositionsPanel=(props)=>{
 	  const { height, width } = useWindowDimensions();
 	  const mydimposition=height-(height-props.height)-50;
 
+	  const [searchValue, setSearchState] = useState('');
+
 	return (
 		<div className={style.main}>
 		<div className='card'>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
+		<SearchState
+          value={searchValue}
+          onValueChange={setSearchState}
+        />
+        <IntegratedFiltering />
 		<DragDropProvider />
 		<CurrencyTypeProvider for={['avg_price','sod_price','last_price','pnl','t_pnl']} />
 		<GroupingState
@@ -198,6 +208,7 @@ export const PositionsPanel=(props)=>{
 			// showColumnsWhenGrouped
 		    showGroupingControls
 		/>
+		<SearchPanel />
 		</Grid>
 		</div>
 		</div>
