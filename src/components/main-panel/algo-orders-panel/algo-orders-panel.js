@@ -88,7 +88,7 @@ export const AlgoOrdersPanel=(props)=>{
 	  const mydim=height-props.height-100;
 	  // console.log('mydim is', mydim);
 	  const [searchValue, setSearchState] = useState('');
-	  const [sorting, setSorting] = useState([{ columnName: 'ticker', direction: 'asc' }]);
+	  // const [sorting, setSorting] = useState([{ columnName: 'ticker', direction: 'asc' }]);
 
 	return (
 	    <div className={style.main}>
@@ -107,11 +107,11 @@ export const AlgoOrdersPanel=(props)=>{
 
 		<Grid rows={props.rows} columns={props.columns}>
 		{/*<Grid rows={props.rows} columns={columns}>*/}
-		<SortingState
-			sorting={sorting}
-			onSortingChange={setSorting}
-        />
-		<IntegratedSorting />
+		{/*<SortingState*/}
+			{/*sorting={sorting}*/}
+			{/*onSortingChange={setSorting}*/}
+        {/*/>*/}
+		{/*<IntegratedSorting />*/}
 		<SearchState
           value={searchValue}
           onValueChange={setSearchState}
@@ -136,7 +136,7 @@ export const AlgoOrdersPanel=(props)=>{
 				  {/*// resizingMode={'nextColumn'}*/}
 				{/*/>*/}
 		<TableHeaderRow 
-			showSortingControls
+			// showSortingControls
 		/>
 		<TableFilterRow />
 		<TableSelection showSelectAll selectByRowClick />

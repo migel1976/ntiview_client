@@ -26,6 +26,8 @@ import {
 	IntegratedSummary,
 	SearchState,
 	IntegratedFiltering,
+	SortingState,
+	IntegratedSorting,
 } from '@devexpress/dx-react-grid';
 
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
@@ -163,12 +165,17 @@ export const PositionsPanel=(props)=>{
 	  const mydimposition=height-(height-props.height)-50;
 
 	  const [searchValue, setSearchState] = useState('');
-
+	  const [sorting, setSorting] = useState([{ columnName: 'ticker', direction: 'asc' }]);
 	return (
 		<div className={style.main}>
 		<div className='card'>
 		{/*<Grid rows={props.rows} columns={props.columns}>*/}
 		<Grid rows={props.rows} columns={columns}>
+		<SortingState
+			sorting={sorting}
+			onSortingChange={setSorting}
+        />
+		<IntegratedSorting />
 		<SearchState
           value={searchValue}
           onValueChange={setSearchState}
@@ -197,6 +204,7 @@ export const PositionsPanel=(props)=>{
 					// cellComponent={Cell}
 		/>
 		<TableHeaderRow
+			showSortingControls
 		    showGroupingControls
 		/>
 		<TableSummaryRow
