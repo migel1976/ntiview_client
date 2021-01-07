@@ -94,11 +94,8 @@ class AlgoOrdersPanelContainer extends Component{
 	// setData=async()=> {
 	async setData(){
 		try {
-			// debugger;
-			// console.log(props);
 			let arrObj=[];
 			this.state.rows.forEach(function(item, i, arr) {
-			  // console.log( i + ": " + item + " (массив:" + arr + ")" );
 			  if(item.aostate==='WORKING'){
 			  var now=new Date();	
 			  console.log('дата',now);
@@ -137,7 +134,7 @@ class AlgoOrdersPanelContainer extends Component{
 	    // this.props.setRowsOrder(JSON.parse(df.dataframeJSON));
 		this.setState({columns: df.columns.map(x => {return {name: x, title:x.toUpperCase()};}),
 		       rows: JSON.parse(df.dataframeJSON)});
-		this.setData();
+		// this.setData();
 
 	    if(this.state.toggleSelectionGraph===true){
 				  // debugger;

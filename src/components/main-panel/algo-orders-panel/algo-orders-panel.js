@@ -76,22 +76,21 @@ export const AlgoOrdersPanel=(props)=>{
 	  // debugger;
 	  const { height, width } = useWindowDimensions();
 	  const mydim=height-props.height-100;
-	  console.log('mydim is', mydim);
+	  // console.log('mydim is', mydim);
+
 	return (
 	    <div className={style.main}>
-		{/*<Button variant='primary' onClick={this.openModal}>PLACE TEST ORDERS</Button>{' '}*/}
 		<Button variant='primary' onClick={()=>props.setOrderShowModal(true)}>PLACE TEST ORDERS</Button>{' '}
 		<Button variant='danger' onClick={props.cancelOrder} disabled={!props.flagSelection}>Cancel Order(s)</Button>{' '}
 		 <div style={{float:"right"}}> 
-		 <InputGroup>
-			<InputGroupAddon addonType="prepend">
-			  <InputGroupText>
-				<Input addon type="checkbox" onChange={props.setToggleSelectionGraph} />
-				{/*<Input addon type="checkbox" onChange={this.openGraphModal} />*/}
-			  </InputGroupText>
-			</InputGroupAddon>
-			<Input placeholder="show graph" disabled />
-		  </InputGroup>
+		 {/*<InputGroup>*/}
+			{/*<InputGroupAddon addonType="prepend">*/}
+			  {/*<InputGroupText>*/}
+				{/*<Input addon type="checkbox" onChange={props.setToggleSelectionGraph} />*/}
+			  {/*</InputGroupText>*/}
+			{/*</InputGroupAddon>*/}
+			{/*<Input placeholder="show graph" disabled />*/}
+		  {/*</InputGroup>*/}
 		</div>
 
 		<Grid rows={props.rows} columns={props.columns}>
