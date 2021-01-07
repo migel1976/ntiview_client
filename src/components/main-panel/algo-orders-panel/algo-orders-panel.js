@@ -4,15 +4,21 @@ import GraphModalContainer from './graph-modal/graph-modal-container';
 import {Button, Form} from 'react-bootstrap';
 import style from './algo-orders-panel.module.css';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
-import "@devexpress/dx-react-grid";
+
+import {
+  SearchState,
+  IntegratedFiltering,
+} from '@devexpress/dx-react-grid';
+
 import {Grid,
 		Table,
 		TableHeaderRow,
 		TableSelection,
 		VirtualTable,
 		PagingPanel,
-	    TableFixedColumns
-
+	    TableFixedColumns,
+	    Toolbar,
+        SearchPanel,
 } from "@devexpress/dx-react-grid-bootstrap4";
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import {
@@ -77,6 +83,7 @@ export const AlgoOrdersPanel=(props)=>{
 	  const { height, width } = useWindowDimensions();
 	  const mydim=height-props.height-100;
 	  // console.log('mydim is', mydim);
+	  const [searchValue, setSearchState] = useState('');
 
 	return (
 	    <div className={style.main}>
@@ -95,6 +102,11 @@ export const AlgoOrdersPanel=(props)=>{
 
 		<Grid rows={props.rows} columns={props.columns}>
 		{/*<Grid rows={props.rows} columns={columns}>*/}
+		<SearchState
+          value={searchValue}
+          onValueChange={setSearchState}
+        />
+        <IntegratedFiltering />
 		 <SelectionState
 			selection={props.selection}
 			onSelectionChange={props.setSelection}
@@ -117,6 +129,8 @@ export const AlgoOrdersPanel=(props)=>{
 		<TableFixedColumns 
 		                  leftColumns={['start_time','stop_time']} 
 		/>
+		<Toolbar />
+		<SearchPanel />
 		</Grid>
 	    </div>
 	);
