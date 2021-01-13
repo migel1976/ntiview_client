@@ -42340,7 +42340,7 @@
 	// };
 
 	const OrderModal = props => {
-	  debugger;
+	  // debugger;	
 	  const ticker_options = props.ticker.map(el => /*#__PURE__*/react.createElement("option", {
 	    key: el.symbol,
 	    value: el.symbol
@@ -42976,7 +42976,7 @@
 	  }
 
 	  initStateValue() {
-	    debugger;
+	    // debugger;
 	    var ticker = this.props.ticker[0];
 	    var buysell = this.props.buysell[0];
 	    var algo = this.props.algo[0];
@@ -43048,7 +43048,7 @@
 
 	  // changeSelectTicker=(e)=>{
 	  changeSelectTicker(e) {
-	    debugger;
+	    // debugger;
 	    var ticker = e.target.value;
 	    this.setState({
 	      ticker
@@ -43073,7 +43073,7 @@
 
 	  // saveForm=(e)=>{
 	  saveForm(e) {
-	    debugger;
+	    // debugger;
 	    const item = {
 	      ticker: this.state.ticker,
 	      buysell: this.state.buysell,
@@ -43109,8 +43109,8 @@
 	      const timeStart = item.timeStart;
 	      const timeStartCorr = moment(timeStart, "HH:mm").format("HH:mm:ss");
 	      const timeEnd = item.timeEnd;
-	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss");
-	      debugger; // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
+	      const timeEndCorr = moment(timeEnd, "HH:mm").format("HH:mm:ss"); // debugger;
+	      // let oa = new NTIAlgo.AlgoOrderAttributes(algo,ticker,account,
 	      // 					 buysell,//NTIAlgo.OrderSide.SELL
 	      // 					 algosize,
 	      // 					 0, 0, 0, 0, 0);
@@ -56877,7 +56877,7 @@
 	  setSelectionOrder,
 	  getGraphOrdersByAOID
 	};
-	var GraphModalContainer$1 = connect(mapStateToProps$1, mapActionsToProps$1, null, {
+	connect(mapStateToProps$1, mapActionsToProps$1, null, {
 	  forwardRef: true
 	})(GraphModalContainer);
 
@@ -56895,7 +56895,7 @@
 	    className: style$1.navbar
 	  }, /*#__PURE__*/react.createElement(OrderModalContainer$1, {
 	    algoman_rop: props.algoman_rop
-	  }), /*#__PURE__*/react.createElement(GraphModalContainer$1, null), /*#__PURE__*/react.createElement("header", null, /*#__PURE__*/react.createElement(Navbar, {
+	  }), /*#__PURE__*/react.createElement("header", null, /*#__PURE__*/react.createElement(Navbar, {
 	    variant: "dark",
 	    bg: "primary",
 	    expand: "lg"
@@ -56956,261 +56956,6 @@
 	var MainNavbarContainer$1 = connect(mapStateToProps$2, mapActionsToProps$2, null, {
 	  forwardRef: true
 	})(MainNavbarContainer);
-
-	var globalCssModule;
-	function mapToCssModules(className, cssModule) {
-	  if (className === void 0) {
-	    className = '';
-	  }
-
-	  if (cssModule === void 0) {
-	    cssModule = globalCssModule;
-	  }
-
-	  if (!cssModule) return className;
-	  return className.split(' ').map(function (c) {
-	    return cssModule[c] || c;
-	  }).join(' ');
-	}
-	var warned = {};
-	function warnOnce(message) {
-	  if (!warned[message]) {
-	    /* istanbul ignore else */
-	    if (typeof console !== 'undefined') {
-	      console.error(message); // eslint-disable-line no-console
-	    }
-
-	    warned[message] = true;
-	  }
-	}
-
-	var Element$2 = typeof window === 'object' && window.Element || function () {};
-
-	function DOMElement(props, propName, componentName) {
-	  if (!(props[propName] instanceof Element$2)) {
-	    return new Error('Invalid prop `' + propName + '` supplied to `' + componentName + '`. Expected prop to be an instance of Element. Validation failed.');
-	  }
-	}
-	var targetPropType = propTypes.oneOfType([propTypes.string, propTypes.func, DOMElement, propTypes.shape({
-	  current: propTypes.any
-	})]);
-	var tagPropType = propTypes.oneOfType([propTypes.func, propTypes.string, propTypes.shape({
-	  $$typeof: propTypes.symbol,
-	  render: propTypes.func
-	}), propTypes.arrayOf(propTypes.oneOfType([propTypes.func, propTypes.string, propTypes.shape({
-	  $$typeof: propTypes.symbol,
-	  render: propTypes.func
-	})]))]);
-
-	function _assertThisInitialized$2(self) {
-	  if (self === void 0) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }
-
-	  return self;
-	}
-
-	var propTypes$8 = {
-	  children: propTypes.node,
-	  type: propTypes.string,
-	  size: propTypes.oneOfType([propTypes.number, propTypes.string]),
-	  bsSize: propTypes.string,
-	  valid: propTypes.bool,
-	  invalid: propTypes.bool,
-	  tag: tagPropType,
-	  innerRef: propTypes.oneOfType([propTypes.object, propTypes.func, propTypes.string]),
-	  plaintext: propTypes.bool,
-	  addon: propTypes.bool,
-	  className: propTypes.string,
-	  cssModule: propTypes.object
-	};
-	var defaultProps$i = {
-	  type: 'text'
-	};
-
-	var Input = /*#__PURE__*/function (_React$Component) {
-	  _inheritsLoose(Input, _React$Component);
-
-	  function Input(props) {
-	    var _this;
-
-	    _this = _React$Component.call(this, props) || this;
-	    _this.getRef = _this.getRef.bind(_assertThisInitialized$2(_this));
-	    _this.focus = _this.focus.bind(_assertThisInitialized$2(_this));
-	    return _this;
-	  }
-
-	  var _proto = Input.prototype;
-
-	  _proto.getRef = function getRef(ref) {
-	    if (this.props.innerRef) {
-	      this.props.innerRef(ref);
-	    }
-
-	    this.ref = ref;
-	  };
-
-	  _proto.focus = function focus() {
-	    if (this.ref) {
-	      this.ref.focus();
-	    }
-	  };
-
-	  _proto.render = function render() {
-	    var _this$props = this.props,
-	        className = _this$props.className,
-	        cssModule = _this$props.cssModule,
-	        type = _this$props.type,
-	        bsSize = _this$props.bsSize,
-	        valid = _this$props.valid,
-	        invalid = _this$props.invalid,
-	        tag = _this$props.tag,
-	        addon = _this$props.addon,
-	        plaintext = _this$props.plaintext,
-	        innerRef = _this$props.innerRef,
-	        attributes = _objectWithoutPropertiesLoose(_this$props, ["className", "cssModule", "type", "bsSize", "valid", "invalid", "tag", "addon", "plaintext", "innerRef"]);
-
-	    var checkInput = ['radio', 'checkbox'].indexOf(type) > -1;
-	    var isNotaNumber = new RegExp('\\D', 'g');
-	    var fileInput = type === 'file';
-	    var textareaInput = type === 'textarea';
-	    var selectInput = type === 'select';
-	    var rangeInput = type === 'range';
-	    var Tag = tag || (selectInput || textareaInput ? type : 'input');
-	    var formControlClass = 'form-control';
-
-	    if (plaintext) {
-	      formControlClass = formControlClass + "-plaintext";
-	      Tag = tag || 'input';
-	    } else if (fileInput) {
-	      formControlClass = formControlClass + "-file";
-	    } else if (rangeInput) {
-	      formControlClass = formControlClass + "-range";
-	    } else if (checkInput) {
-	      if (addon) {
-	        formControlClass = null;
-	      } else {
-	        formControlClass = 'form-check-input';
-	      }
-	    }
-
-	    if (attributes.size && isNotaNumber.test(attributes.size)) {
-	      warnOnce('Please use the prop "bsSize" instead of the "size" to bootstrap\'s input sizing.');
-	      bsSize = attributes.size;
-	      delete attributes.size;
-	    }
-
-	    var classes = mapToCssModules(classnames(className, invalid && 'is-invalid', valid && 'is-valid', bsSize ? "form-control-" + bsSize : false, formControlClass), cssModule);
-
-	    if (Tag === 'input' || tag && typeof tag === 'function') {
-	      attributes.type = type;
-	    }
-
-	    if (attributes.children && !(plaintext || type === 'select' || typeof Tag !== 'string' || Tag === 'select')) {
-	      warnOnce("Input with a type of \"" + type + "\" cannot have children. Please use \"value\"/\"defaultValue\" instead.");
-	      delete attributes.children;
-	    }
-
-	    return /*#__PURE__*/react.createElement(Tag, _extends({}, attributes, {
-	      ref: innerRef,
-	      className: classes,
-	      "aria-invalid": invalid
-	    }));
-	  };
-
-	  return Input;
-	}(react.Component);
-
-	Input.propTypes = propTypes$8;
-	Input.defaultProps = defaultProps$i;
-
-	var propTypes$9 = {
-	  tag: tagPropType,
-	  size: propTypes.string,
-	  className: propTypes.string,
-	  cssModule: propTypes.object
-	};
-	var defaultProps$j = {
-	  tag: 'div'
-	};
-
-	var InputGroup = function InputGroup(props) {
-	  var className = props.className,
-	      cssModule = props.cssModule,
-	      Tag = props.tag,
-	      size = props.size,
-	      attributes = _objectWithoutPropertiesLoose(props, ["className", "cssModule", "tag", "size"]);
-
-	  var classes = mapToCssModules(classnames(className, 'input-group', size ? "input-group-" + size : null), cssModule);
-	  return /*#__PURE__*/react.createElement(Tag, _extends({}, attributes, {
-	    className: classes
-	  }));
-	};
-
-	InputGroup.propTypes = propTypes$9;
-	InputGroup.defaultProps = defaultProps$j;
-
-	var propTypes$a = {
-	  tag: tagPropType,
-	  className: propTypes.string,
-	  cssModule: propTypes.object
-	};
-	var defaultProps$k = {
-	  tag: 'span'
-	};
-
-	var InputGroupText = function InputGroupText(props) {
-	  var className = props.className,
-	      cssModule = props.cssModule,
-	      Tag = props.tag,
-	      attributes = _objectWithoutPropertiesLoose(props, ["className", "cssModule", "tag"]);
-
-	  var classes = mapToCssModules(classnames(className, 'input-group-text'), cssModule);
-	  return /*#__PURE__*/react.createElement(Tag, _extends({}, attributes, {
-	    className: classes
-	  }));
-	};
-
-	InputGroupText.propTypes = propTypes$a;
-	InputGroupText.defaultProps = defaultProps$k;
-
-	var propTypes$b = {
-	  tag: tagPropType,
-	  addonType: propTypes.oneOf(['prepend', 'append']).isRequired,
-	  children: propTypes.node,
-	  className: propTypes.string,
-	  cssModule: propTypes.object
-	};
-	var defaultProps$l = {
-	  tag: 'div'
-	};
-
-	var InputGroupAddon = function InputGroupAddon(props) {
-	  var className = props.className,
-	      cssModule = props.cssModule,
-	      Tag = props.tag,
-	      addonType = props.addonType,
-	      children = props.children,
-	      attributes = _objectWithoutPropertiesLoose(props, ["className", "cssModule", "tag", "addonType", "children"]);
-
-	  var classes = mapToCssModules(classnames(className, 'input-group-' + addonType), cssModule); // Convenience to assist with transition
-
-	  if (typeof children === 'string') {
-	    return /*#__PURE__*/react.createElement(Tag, _extends({}, attributes, {
-	      className: classes
-	    }), /*#__PURE__*/react.createElement(InputGroupText, {
-	      children: children
-	    }));
-	  }
-
-	  return /*#__PURE__*/react.createElement(Tag, _extends({}, attributes, {
-	    className: classes,
-	    children: children
-	  }));
-	};
-
-	InputGroupAddon.propTypes = propTypes$b;
-	InputGroupAddon.defaultProps = defaultProps$l;
 
 	var css_248z$4 = ".algo-orders-panel-module_main__iUh3L{\n  grid-area:orders;\n /* height: 100%; */\n /* width:100%; */\n /* height: 1fr; */\n /* background-color:red; */\n}\n\n";
 	var style$2 = {"main":"algo-orders-panel-module_main__iUh3L"};
@@ -57280,6 +57025,50 @@
 	    return map[columnName] ? map[columnName](row, columnName) : getCellValue(row, columnName);
 	  };
 	};
+
+	var changeColumnSorting = function (state, _a) {
+	  var columnName = _a.columnName,
+	      direction = _a.direction,
+	      keepOther = _a.keepOther,
+	      sortIndex = _a.sortIndex;
+	  var sorting = state.sorting;
+	  var nextSorting = [];
+
+	  if (keepOther === true) {
+	    nextSorting = sorting;
+	  }
+
+	  if (Array.isArray(keepOther)) {
+	    nextSorting = slice(sorting).filter(function (s) {
+	      return keepOther.indexOf(s.columnName) > -1;
+	    });
+	  }
+
+	  var columnSortingIndex = sorting.findIndex(function (s) {
+	    return s.columnName === columnName;
+	  });
+	  var columnSorting = sorting[columnSortingIndex];
+	  var newColumnSorting = {
+	    columnName: columnName,
+	    direction: direction || (!columnSorting || columnSorting.direction === 'desc' ? 'asc' : 'desc')
+	  };
+
+	  if (columnSortingIndex > -1) {
+	    nextSorting = slice(nextSorting);
+	    nextSorting.splice(columnSortingIndex, 1);
+	  }
+
+	  if (direction !== null) {
+	    var newIndexFallback = columnSortingIndex > -1 ? columnSortingIndex : nextSorting.length;
+	    var newIndex = sortIndex !== undefined ? sortIndex : newIndexFallback;
+	    nextSorting = slice(nextSorting);
+	    nextSorting.splice(newIndex, 0, newColumnSorting);
+	  }
+
+	  return {
+	    sorting: nextSorting
+	  };
+	};
 	/*! *****************************************************************************
 	Copyright (c) Microsoft Corporation.
 
@@ -57341,11 +57130,48 @@
 	  return ar;
 	}
 
+	var unique = function (arr) {
+	  return __spread$4(Array.from(new Set(arr)));
+	};
+
 	var getColumnSortingDirection = function (sorting, columnName) {
 	  var columnSorting = sorting.filter(function (s) {
 	    return s.columnName === columnName;
 	  })[0];
 	  return columnSorting ? columnSorting.direction : null;
+	};
+
+	var getPersistentSortedColumns = function (sorting, columnExtensions) {
+	  if (columnExtensions === void 0) {
+	    columnExtensions = [];
+	  }
+
+	  return columnExtensions.reduce(function (acc, _a) {
+	    var columnName = _a.columnName,
+	        sortingEnabled = _a.sortingEnabled;
+
+	    if (sortingEnabled === false) {
+	      if (sorting.findIndex(function (sortItem) {
+	        return sortItem.columnName === columnName;
+	      }) > -1) {
+	        acc.push(columnName);
+	      }
+	    }
+
+	    return acc;
+	  }, []);
+	};
+
+	var calculateKeepOther = function (sorting, keepOther, persistentSortedColumns) {
+	  if (persistentSortedColumns === void 0) {
+	    persistentSortedColumns = [];
+	  }
+
+	  if (!persistentSortedColumns.length) return keepOther;
+	  if (!keepOther) return persistentSortedColumns;
+	  return Array.isArray(keepOther) ? unique(__spread$4(keepOther, persistentSortedColumns)) : unique(__spread$4(sorting.map(function (item) {
+	    return item.columnName;
+	  }), persistentSortedColumns));
 	};
 	/* eslint-disable no-plusplus, no-param-reassign, no-use-before-define, no-constant-condition */
 
@@ -57421,10 +57247,313 @@
 	  return result;
 	};
 
+	var NODE_CHECK = Symbol('node');
+
+	var rowsToTree = function (rows, getRowLevelKey) {
+	  if (!rows.length) return rows;
+	  var levels = [{
+	    children: []
+	  }];
+	  rows.forEach(function (row) {
+	    var _a;
+
+	    var levelKey = getRowLevelKey(row);
+
+	    if (levelKey) {
+	      var levelIndex = levels.slice(1).findIndex(function (level) {
+	        return getRowLevelKey(level.root) === levelKey;
+	      }) + 1;
+
+	      if (levelIndex > 0) {
+	        levels.splice(levelIndex, levels.length - levelIndex);
+	      }
+
+	      var node = (_a = {}, _a[NODE_CHECK] = true, _a.root = row, _a.children = [], _a);
+	      levels[levels.length - 1].children.push(node);
+	      levels.push(node);
+	    } else {
+	      levels[levels.length - 1].children.push(row);
+	    }
+	  });
+	  return levels[0].children;
+	};
+
+	var treeToRows = function (tree, rows) {
+	  if (rows === void 0) {
+	    rows = [];
+	  }
+
+	  if (!tree.length) return tree;
+	  return tree.reduce(function (acc, node) {
+	    if (node[NODE_CHECK]) {
+	      acc.push(node.root);
+	      treeToRows(node.children, rows);
+	    } else {
+	      acc.push(node);
+	    }
+
+	    return acc;
+	  }, rows);
+	};
+
+	var defaultCompare = function (a, b) {
+	  if (a === b) return 0;
+
+	  if (a === null) {
+	    return b === undefined ? -1 : 1;
+	  }
+
+	  if (a === undefined) {
+	    return 1;
+	  }
+
+	  if (b === null || b === undefined) {
+	    return -1;
+	  }
+
+	  return a < b ? -1 : 1;
+	};
+
+	var createCompare = function (sorting, getColumnCompare, getComparableValue) {
+	  return sorting.reduceRight(function (prevCompare, columnSorting) {
+	    var columnName = columnSorting.columnName;
+	    var inverse = columnSorting.direction === 'desc';
+	    var columnCompare = getColumnCompare && getColumnCompare(columnName) || defaultCompare;
+	    return function (aRow, bRow) {
+	      var a = getComparableValue(aRow, columnName);
+	      var b = getComparableValue(bRow, columnName);
+	      var result = columnCompare(a, b);
+
+	      if (result !== 0) {
+	        return inverse ? -result : result;
+	      }
+
+	      return prevCompare(aRow, bRow);
+	    };
+	  }, function () {
+	    var args = [];
+
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	      args[_i] = arguments[_i];
+	    }
+
+	    return 0;
+	  });
+	};
+
+	var sortTree = function (tree, compare) {
+	  var sortedTree = tree.map(function (node) {
+	    if (node[NODE_CHECK]) {
+	      return __assign$3(__assign$3({}, node), {
+	        children: sortTree(node.children, compare)
+	      });
+	    }
+
+	    return node;
+	  });
+	  return mergeSort(sortedTree, function (a, b) {
+	    return compare(a[NODE_CHECK] ? a.root : a, b[NODE_CHECK] ? b.root : b);
+	  });
+	};
+
+	var sortHierarchicalRows = function (rows, compare, getRowLevelKey) {
+	  var tree = rowsToTree(rows, getRowLevelKey);
+	  var sortedTree = sortTree(tree, compare);
+	  return treeToRows(sortedTree);
+	};
+
+	var sortedRows = function (rows, sorting, getCellValue, getColumnCompare, isGroupRow, getRowLevelKey) {
+	  if (!sorting.length || !rows.length) return rows;
+	  var compare;
+
+	  if (!getRowLevelKey) {
+	    compare = createCompare(sorting, getColumnCompare, getCellValue);
+	    return mergeSort(rows.slice(), compare);
+	  }
+
+	  compare = createCompare(sorting, getColumnCompare, function (row, columnName) {
+	    if (isGroupRow && isGroupRow(row)) {
+	      if (row.groupedBy === columnName) {
+	        return row.value;
+	      }
+
+	      return undefined;
+	    }
+
+	    return getCellValue(row, columnName);
+	  });
+	  return sortHierarchicalRows(rows, compare, getRowLevelKey);
+	};
+
 	var getColumnFilterConfig = function (filters, columnName) {
 	  return filters.length && filters.filter(function (s) {
 	    return s.columnName === columnName;
 	  })[0] || null;
+	};
+
+	var operators = {
+	  or: function (predicates) {
+	    return function (row) {
+	      return predicates.reduce(function (acc, predicate) {
+	        return acc || predicate(row);
+	      }, false);
+	    };
+	  },
+	  and: function (predicates) {
+	    return function (row) {
+	      return predicates.reduce(function (acc, predicate) {
+	        return acc && predicate(row);
+	      }, true);
+	    };
+	  }
+	};
+
+	var toLowerCase = function (value) {
+	  return String(value).toLowerCase();
+	};
+
+	var operationPredicates = {
+	  contains: function (value, filter) {
+	    return toLowerCase(value).indexOf(toLowerCase(filter.value)) > -1;
+	  },
+	  notContains: function (value, filter) {
+	    return toLowerCase(value).indexOf(toLowerCase(filter.value)) === -1;
+	  },
+	  startsWith: function (value, filter) {
+	    return toLowerCase(value).startsWith(toLowerCase(filter.value));
+	  },
+	  endsWith: function (value, filter) {
+	    return toLowerCase(value).endsWith(toLowerCase(filter.value));
+	  },
+	  equal: function (value, filter) {
+	    return String(value) === String(filter.value);
+	  },
+	  notEqual: function (value, filter) {
+	    return String(value) !== String(filter.value);
+	  },
+	  greaterThan: function (value, filter) {
+	    return value > filter.value;
+	  },
+	  greaterThanOrEqual: function (value, filter) {
+	    return value >= filter.value;
+	  },
+	  lessThan: function (value, filter) {
+	    return value < filter.value;
+	  },
+	  lessThanOrEqual: function (value, filter) {
+	    return value <= filter.value;
+	  }
+	};
+
+	var defaultFilterPredicate = function (value, filter) {
+	  var operation = filter.operation || 'contains';
+	  return operationPredicates[operation](value, filter);
+	};
+
+	var filterTree = function (tree, predicate) {
+	  return tree.reduce(function (acc, node) {
+	    if (node[NODE_CHECK]) {
+	      var filteredChildren = filterTree(node.children, predicate);
+
+	      if (filteredChildren.length > 0) {
+	        acc.push(__assign$3(__assign$3({}, node), {
+	          children: filteredChildren
+	        }));
+	        return acc;
+	      }
+
+	      if (predicate(node.root, true)) {
+	        acc.push(node.root);
+	        return acc;
+	      }
+
+	      return acc;
+	    }
+
+	    if (predicate(node)) {
+	      acc.push(node);
+	      return acc;
+	    }
+
+	    return acc;
+	  }, []);
+	};
+
+	var filterHierarchicalRows = function (rows, predicate, getRowLevelKey, getCollapsedRows) {
+	  var tree = rowsToTree(rows, getRowLevelKey);
+	  var collapsedRowsMeta = [];
+	  var filteredTree = filterTree(tree, function (row, isNode) {
+	    if (isNode) {
+	      var collapsedRows = getCollapsedRows && getCollapsedRows(row);
+
+	      if (collapsedRows && collapsedRows.length) {
+	        var filteredCollapsedRows = collapsedRows.filter(predicate);
+	        collapsedRowsMeta.push([row, filteredCollapsedRows]);
+	        return !!filteredCollapsedRows.length || predicate(row);
+	      }
+
+	      if (predicate(row)) {
+	        collapsedRowsMeta.push([row, []]);
+	        return true;
+	      }
+
+	      return false;
+	    }
+
+	    return predicate(row);
+	  });
+	  return {
+	    rows: treeToRows(filteredTree),
+	    collapsedRowsMeta: new Map(collapsedRowsMeta)
+	  };
+	};
+
+	var buildPredicate = function (initialFilterExpression, getCellValue, getColumnPredicate) {
+	  var getSimplePredicate = function (filter) {
+	    var columnName = filter.columnName;
+	    var customPredicate = getColumnPredicate && getColumnPredicate(columnName);
+	    var predicate = customPredicate || defaultFilterPredicate;
+	    return function (row) {
+	      return predicate(getCellValue(row, columnName), filter, row);
+	    };
+	  };
+
+	  var getOperatorPredicate = function (filterExpression) {
+	    var build = operators[toLowerCase(filterExpression.operator)];
+	    return build && build(filterExpression.filters.map(getPredicate));
+	  };
+
+	  var getPredicate = function (filterExpression) {
+	    return getOperatorPredicate(filterExpression) || getSimplePredicate(filterExpression);
+	  };
+
+	  return getPredicate(initialFilterExpression);
+	};
+
+	var filteredRows = function (rows, filterExpression, getCellValue, getColumnPredicate, getRowLevelKey, getCollapsedRows) {
+	  if (!(filterExpression && Object.keys(filterExpression).length && rows.length)) {
+	    // tslint:disable-next-line:no-object-literal-type-assertion
+	    return {
+	      rows: rows
+	    };
+	  }
+
+	  var predicate = buildPredicate(filterExpression, getCellValue, getColumnPredicate);
+	  return getRowLevelKey ? filterHierarchicalRows(rows, predicate, getRowLevelKey, getCollapsedRows) : {
+	    rows: rows.filter(predicate)
+	  };
+	};
+
+	var filteredCollapsedRowsGetter = function (_a) {
+	  var collapsedRowsMeta = _a.collapsedRowsMeta;
+	  return function (row) {
+	    return collapsedRowsMeta && collapsedRowsMeta.get(row);
+	  };
+	};
+
+	var unwrappedFilteredRows = function (_a) {
+	  var rows = _a.rows;
+	  return rows;
 	};
 
 	var GROUP_KEY_SEPARATOR = '|';
@@ -58763,6 +58892,33 @@
 
 	var isTreeTableCell = function (tableRow, tableColumn, forColumnName) {
 	  return tableRow.type === TABLE_DATA_TYPE && tableColumn.type === TABLE_DATA_TYPE && tableColumn.column.name === forColumnName;
+	};
+
+	var changeSearchValue = function (prevSearchValue, searchValue) {
+	  return searchValue;
+	};
+
+	var searchFilterExpression = function (searchValue, columns, filterExpression) {
+	  var filters = columns.map(function (_a) {
+	    var name = _a.name;
+	    return {
+	      columnName: name,
+	      value: searchValue
+	    };
+	  });
+	  var selfFilterExpression = {
+	    filters: filters,
+	    operator: 'or'
+	  };
+
+	  if (!filterExpression) {
+	    return selfFilterExpression;
+	  }
+
+	  return {
+	    operator: 'and',
+	    filters: [filterExpression, selfFilterExpression]
+	  };
 	};
 
 	var getAvailableFilterOperationsGetter = function (getAvailableFilterOperations, availableFilterOperations, columnNames) {
@@ -60455,6 +60611,67 @@
 
 
 	var ColumnChooser = ColumnChooserBase;
+	var pluginDependencies$1 = [{
+	  name: 'FilteringState',
+	  optional: true
+	}, {
+	  name: 'SearchState',
+	  optional: true
+	}];
+
+	var getCollapsedRowsComputed = function (_a) {
+	  var rows = _a.rows;
+	  return filteredCollapsedRowsGetter(rows);
+	};
+
+	var unwrappedRowsComputed = function (_a) {
+	  var rows = _a.rows;
+	  return unwrappedFilteredRows(rows);
+	};
+
+	var IntegratedFilteringBase = /*#__PURE__*/function (_super) {
+	  __extends$2(IntegratedFilteringBase, _super);
+
+	  function IntegratedFilteringBase() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  }
+
+	  IntegratedFilteringBase.prototype.render = function () {
+	    var columnExtensions = this.props.columnExtensions;
+
+	    var getColumnPredicate = function (columnName) {
+	      return getColumnExtension(columnExtensions, columnName).predicate;
+	    };
+
+	    var rowsComputed = function (_a) {
+	      var rows = _a.rows,
+	          filterExpression = _a.filterExpression,
+	          getCellValue = _a.getCellValue,
+	          getRowLevelKey = _a.getRowLevelKey,
+	          getCollapsedRows = _a.getCollapsedRows;
+	      return filteredRows(rows, filterExpression, getCellValue, getColumnPredicate, getRowLevelKey, getCollapsedRows);
+	    };
+
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "IntegratedFiltering",
+	      dependencies: pluginDependencies$1
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "rows",
+	      computed: rowsComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "getCollapsedRows",
+	      computed: getCollapsedRowsComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "rows",
+	      computed: unwrappedRowsComputed
+	    }));
+	  };
+
+	  return IntegratedFilteringBase;
+	}(react_7);
+
+	IntegratedFilteringBase.defaultPredicate = defaultFilterPredicate;
+	var IntegratedFiltering = IntegratedFilteringBase;
 	var dependencies$1 = [{
 	  name: 'SortingState',
 	  optional: true
@@ -60822,6 +61039,119 @@
 
 
 	var IntegratedSelection = IntegratedSelectionBase;
+	/* tslint:enable: max-line-length */
+
+	var columnExtensionValueGetter$3 = function (columnExtensions, defaultValue) {
+	  return getColumnExtensionValueGetter(columnExtensions, 'sortingEnabled', defaultValue);
+	};
+
+	var SortingStateBase = /*#__PURE__*/function (_super) {
+	  __extends$2(SortingStateBase, _super);
+
+	  function SortingStateBase(props) {
+	    var _this = _super.call(this, props) || this;
+
+	    _this.state = {
+	      sorting: props.sorting || props.defaultSorting
+	    };
+	    var stateHelper = createStateHelper(_this, {
+	      sorting: function () {
+	        var onSortingChange = _this.props.onSortingChange;
+	        return onSortingChange;
+	      }
+	    });
+	    _this.changeColumnSorting = stateHelper.applyReducer.bind(stateHelper, function (prevState, payload) {
+	      var _a = _this.props.sorting,
+	          sorting = _a === void 0 ? prevState.sorting : _a;
+	      var persistentSortedColumns = getPersistentSortedColumns(sorting, props.columnExtensions);
+	      var keepOther = calculateKeepOther(prevState.sorting, payload.keepOther, persistentSortedColumns);
+	      return changeColumnSorting(prevState, __assign$4(__assign$4({}, payload), {
+	        keepOther: keepOther
+	      }));
+	    });
+	    return _this;
+	  }
+
+	  SortingStateBase.getDerivedStateFromProps = function (nextProps, prevState) {
+	    var _a = nextProps.sorting,
+	        sorting = _a === void 0 ? prevState.sorting : _a;
+	    return {
+	      sorting: sorting
+	    };
+	  };
+
+	  SortingStateBase.prototype.render = function () {
+	    var sorting = this.state.sorting;
+	    var _a = this.props,
+	        columnExtensions = _a.columnExtensions,
+	        columnSortingEnabled = _a.columnSortingEnabled;
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "SortingState"
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "sorting",
+	      value: sorting
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "isColumnSortingEnabled",
+	      value: columnExtensionValueGetter$3(columnExtensions, columnSortingEnabled)
+	    }), /*#__PURE__*/react_11(Action, {
+	      name: "changeColumnSorting",
+	      action: this.changeColumnSorting
+	    }));
+	  };
+
+	  SortingStateBase.defaultProps = {
+	    defaultSorting: [],
+	    columnSortingEnabled: true
+	  };
+	  return SortingStateBase;
+	}(react_7); // tslint:disable-next-line: max-line-length
+
+	/** A plugin that manages the sorting state. It controls the list of columns that participate in sorting. */
+
+
+	var SortingState = SortingStateBase;
+	var pluginDependencies$7 = [{
+	  name: 'SortingState'
+	}];
+
+	var IntegratedSortingBase = /*#__PURE__*/function (_super) {
+	  __extends$2(IntegratedSortingBase, _super);
+
+	  function IntegratedSortingBase() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  }
+
+	  IntegratedSortingBase.prototype.render = function () {
+	    var columnExtensions = this.props.columnExtensions;
+
+	    var getColumnCompare = function (columnName) {
+	      return getColumnExtension(columnExtensions, columnName).compare;
+	    };
+
+	    var rowsComputed = function (_a) {
+	      var rows = _a.rows,
+	          sorting = _a.sorting,
+	          getCellValue = _a.getCellValue,
+	          isGroupRow = _a.isGroupRow,
+	          getRowLevelKey = _a.getRowLevelKey;
+	      return sortedRows(rows, sorting, getCellValue, getColumnCompare, isGroupRow, getRowLevelKey);
+	    };
+
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "IntegratedSorting",
+	      dependencies: pluginDependencies$7
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "rows",
+	      computed: rowsComputed
+	    }));
+	  };
+
+	  return IntegratedSortingBase;
+	}(react_7);
+	/** A plugin that performs built-in data sorting. */
+
+
+	var IntegratedSorting = IntegratedSortingBase;
 
 	var getTargetColumns = function (payload, columns) {
 	  return payload.filter(function (item) {
@@ -62797,7 +63127,7 @@
 
 
 	var PagingPanel = PagingPanelBase;
-	var defaultProps$m = {
+	var defaultProps$i = {
 	  draggingEnabled: false,
 	  onDragStart: function () {},
 	  onDragEnd: function () {}
@@ -62852,7 +63182,7 @@
 	    }, itemElement) : itemElement;
 	  };
 
-	  ItemLayout.defaultProps = defaultProps$m;
+	  ItemLayout.defaultProps = defaultProps$i;
 	  return ItemLayout;
 	}(react_7);
 
@@ -63495,6 +63825,66 @@
 
 
 	var TableTreeColumn = TableTreeColumnBase;
+
+	var SearchStateBase = /*#__PURE__*/function (_super) {
+	  __extends$2(SearchStateBase, _super);
+
+	  function SearchStateBase(props) {
+	    var _this = _super.call(this, props) || this;
+
+	    _this.state = {
+	      value: props.value || props.defaultValue
+	    };
+	    var stateHelper = createStateHelper(_this, {
+	      value: function () {
+	        var onValueChange = _this.props.onValueChange;
+	        return onValueChange;
+	      }
+	    });
+	    _this.changeValue = stateHelper.applyFieldReducer.bind(stateHelper, 'value', changeSearchValue);
+	    return _this;
+	  }
+
+	  SearchStateBase.getDerivedStateFromProps = function (nextProps, prevState) {
+	    var _a = nextProps.value,
+	        value = _a === void 0 ? prevState.value : _a;
+	    return {
+	      value: value
+	    };
+	  };
+
+	  SearchStateBase.prototype.render = function () {
+	    var value = this.state.value;
+
+	    var filterExpressionComputed = function (_a) {
+	      var filterExpression = _a.filterExpression,
+	          columns = _a.columns;
+	      return searchFilterExpression(value, columns, filterExpression);
+	    };
+
+	    return /*#__PURE__*/react_11(Plugin, {
+	      name: "SearchState"
+	    }, /*#__PURE__*/react_11(Getter, {
+	      name: "filterExpression",
+	      computed: filterExpressionComputed
+	    }), /*#__PURE__*/react_11(Getter, {
+	      name: "searchValue",
+	      value: value
+	    }), /*#__PURE__*/react_11(Action, {
+	      name: "changeSearchValue",
+	      action: this.changeValue
+	    }));
+	  };
+
+	  SearchStateBase.defaultProps = {
+	    defaultValue: ''
+	  };
+	  return SearchStateBase;
+	}(react_7);
+	/** A plugin that manages the search state. */
+
+
+	var SearchState = SearchStateBase;
 	var pluginDependencies$i = [{
 	  name: 'Toolbar'
 	}, {
@@ -65466,7 +65856,7 @@
 	  return target;
 	}
 
-	function _assertThisInitialized$3(self) {
+	function _assertThisInitialized$2(self) {
 	  if (self === void 0) {
 	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
 	  }
@@ -65479,7 +65869,7 @@
 	    return call;
 	  }
 
-	  return _assertThisInitialized$3(self);
+	  return _assertThisInitialized$2(self);
 	}
 
 	function _createSuper$2(Derived) {
@@ -65641,7 +66031,7 @@
 	    // So let's not change it for now. Maybe a better solution would be found.
 
 	    _this.contentRef = /*#__PURE__*/react_13();
-	    _this.handleClick = _this.handleClick.bind(_assertThisInitialized$3(_this));
+	    _this.handleClick = _this.handleClick.bind(_assertThisInitialized$2(_this));
 	    return _this;
 	  }
 
@@ -68398,72 +68788,78 @@
 	  // };
 	  const [columns] = react_27([{
 	    name: 'aoid',
-	    title: 'aoid'
+	    title: 'AOID'
 	  }, {
 	    name: 'ticker',
-	    title: 'ticker'
+	    title: 'TICKER'
 	  }, {
 	    name: 'account',
-	    title: 'account'
+	    title: 'ACCOUNT'
+	  }, {
+	    name: 'aoside',
+	    title: 'AOSIDE'
 	  }, {
 	    name: 'aotype',
-	    title: 'aotype'
+	    title: 'AOTYPE'
 	  }, {
 	    name: 'aostate',
-	    title: 'aostate'
-	  }, {
-	    name: 'start_time',
-	    title: 'start_time'
-	  }, {
-	    name: 'end_time',
-	    title: 'end_time'
+	    title: 'AOSTATE'
 	  }, {
 	    name: 'aosize',
-	    title: 'aosize'
-	  }, {
-	    name: 'entry_price',
-	    title: 'entry_price'
+	    title: 'AOSIZE'
 	  }, {
 	    name: 'avg_price',
-	    title: 'avg_price'
+	    title: 'AVG_PRICE'
 	  }, {
 	    name: 'qty_done',
-	    title: 'qty_done'
-	  }]);
-	  const [defaultColumnWidths] = react_27([// const [columnWidths, setColumnWidths] = useState([
-	  {
-	    columnName: 'aoid',
-	    width: 70
+	    title: 'QTY_DONE'
 	  }, {
-	    columnName: 'ticker',
+	    name: 'entry_price',
+	    title: 'ENTRY_PRICE'
+	  }, {
+	    name: 'start_time',
+	    title: 'START_TIME'
+	  }, {
+	    name: 'end_time',
+	    title: 'END_TIME'
+	  }]); // const [defaultColumnWidths] = useState([
+
+	  const [columnWidths, setColumnWidths] = react_27([{
+	    columnName: 'AOID',
 	    width: 90
 	  }, {
-	    columnName: 'account',
+	    columnName: 'TICKER',
+	    width: 90
+	  }, {
+	    columnName: 'ACCOUNT',
+	    width: 110
+	  }, {
+	    columnName: 'AOSIDE',
 	    width: 100
 	  }, {
-	    columnName: 'aotype',
-	    width: 90
+	    columnName: 'AOTYPE',
+	    width: 100
 	  }, {
-	    columnName: 'aostate',
+	    columnName: 'AOSTATE',
 	    width: 120
 	  }, {
-	    columnName: 'start_time',
-	    width: 150
-	  }, {
-	    columnName: 'end_time',
-	    width: 150
-	  }, {
-	    columnName: 'aosize',
+	    columnName: 'AOSIZE',
 	    width: 100
 	  }, {
-	    columnName: 'entry_price',
+	    columnName: 'AVG_PRICE',
 	    width: 130
 	  }, {
-	    columnName: 'avg_price',
+	    columnName: 'QTY_DONE',
 	    width: 130
 	  }, {
-	    columnName: 'qty_done',
-	    width: 130
+	    columnName: 'ENTRY_PRICE',
+	    width: 150
+	  }, {
+	    columnName: 'START_TIME',
+	    width: 150
+	  }, {
+	    columnName: 'END_TIME',
+	    width: 150
 	  }]); // console.log('debugger is props',props);
 	  // debugger;
 
@@ -68471,8 +68867,13 @@
 	    height,
 	    width
 	  } = useDimension();
-	  const mydim = height - props.height - 100;
-	  console.log('mydim is', mydim);
+	  const mydim = height - props.height - 100; // console.log('mydim is', mydim);
+
+	  const [searchValue, setSearchState] = react_27('');
+	  const [sorting, setSorting] = react_27([{
+	    columnName: 'ticker',
+	    direction: 'asc'
+	  }]);
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$2.main
 	  }, /*#__PURE__*/react.createElement(Button, {
@@ -68482,33 +68883,26 @@
 	    variant: "danger",
 	    onClick: props.cancelOrder,
 	    disabled: !props.flagSelection
-	  }, "Cancel Order(s)"), ' ', /*#__PURE__*/react.createElement("div", {
-	    style: {
-	      float: "right"
-	    }
-	  }, /*#__PURE__*/react.createElement(InputGroup, null, /*#__PURE__*/react.createElement(InputGroupAddon, {
-	    addonType: "prepend"
-	  }, /*#__PURE__*/react.createElement(InputGroupText, null, /*#__PURE__*/react.createElement(Input, {
-	    addon: true,
-	    type: "checkbox",
-	    onChange: props.setToggleSelectionGraph
-	  }))), /*#__PURE__*/react.createElement(Input, {
-	    placeholder: "show graph",
-	    disabled: true
-	  }))), /*#__PURE__*/react.createElement(Grid$2, {
+	  }, "Cancel Order(s)"), ' ', /*#__PURE__*/react.createElement(Grid$2, {
 	    rows: props.rows,
-	    columns: props.columns
-	  }, /*#__PURE__*/react.createElement(SelectionState, {
+	    columns: columns
+	  }, /*#__PURE__*/react.createElement(SortingState, {
+	    sorting: sorting,
+	    onSortingChange: setSorting
+	  }), /*#__PURE__*/react.createElement(IntegratedSorting, null), /*#__PURE__*/react.createElement(SearchState, {
+	    value: searchValue,
+	    onValueChange: setSearchState
+	  }), /*#__PURE__*/react.createElement(SelectionState, {
 	    selection: props.selection,
 	    onSelectionChange: props.setSelection
 	  }), /*#__PURE__*/react.createElement(CurrencyTypeProvider, {
 	    for: ['avg_price', 'entry_price']
-	  }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(VirtualTable, {
-	    columnExtensions: defaultColumnWidths,
+	  }), /*#__PURE__*/react.createElement(IntegratedSelection, null), /*#__PURE__*/react.createElement(VirtualTable // columnExtensions={defaultColumnWidths}
+	  , {
+	    columnExtensions: columnWidths,
 	    height: mydim.toString()
-	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, null), /*#__PURE__*/react.createElement(TableSelection$1, {
-	    showSelectAll: true,
-	    selectByRowClick: true
+	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, {
+	    showSortingControls: true
 	  }), /*#__PURE__*/react.createElement(TableFixedColumns$1, {
 	    leftColumns: ['start_time', 'stop_time']
 	  })));
@@ -68608,11 +69002,8 @@
 	  // setData=async()=> {
 	  async setData() {
 	    try {
-	      // debugger;
-	      // console.log(props);
 	      let arrObj = [];
 	      this.state.rows.forEach(function (item, i, arr) {
-	        // console.log( i + ": " + item + " (массив:" + arr + ")" );
 	        if (item.aostate === 'WORKING') {
 	          var now = new Date();
 	          console.log('дата', now);
@@ -68660,8 +69051,7 @@
 	        };
 	      }),
 	      rows: JSON.parse(df.dataframeJSON)
-	    });
-	    this.setData();
+	    }); // this.setData();
 
 	    if (this.state.toggleSelectionGraph === true) {
 	      // debugger;
@@ -68717,6 +69107,46 @@
 	  forwardRef: true
 	})(AlgoOrdersPanelContainer);
 
+	const getColor = amount => {
+	  if (amount < 0) {
+	    return '#fc7a76';
+	  }
+
+	  if (amount < 1000) {
+	    return '#ffb294';
+	  }
+
+	  if (amount < 1001) {
+	    return '#ffd59f';
+	  }
+
+	  return '#c3e2b7';
+	};
+
+	const HighlightedCell = ({
+	  tableColumn,
+	  value,
+	  children,
+	  style
+	}) => /*#__PURE__*/react_11("td", {
+	  style: {
+	    backgroundColor: getColor(value),
+	    textAlign: tableColumn.align,
+	    ...style
+	  }
+	}, children);
+	HighlightedCell.propTypes = {
+	  value: propTypes_9.isRequired,
+	  tableColumn: propTypes_4,
+	  style: propTypes_4,
+	  children: propTypes_3
+	};
+	HighlightedCell.defaultProps = {
+	  style: {},
+	  tableColumn: {},
+	  children: undefined
+	};
+
 	var css_248z$5 = ".positions-panel-module_main__3bRPm{\n  grid-area:pos;\n /* height: 100%; */\n /* width:100%; */\n  /* height: 100px; */ \n background-color:orange;\n}\n\n";
 	var style$3 = {"main":"positions-panel-module_main__3bRPm"};
 	styleInject(css_248z$5);
@@ -68727,6 +69157,7 @@
 	    rows.forEach(element => {
 	      sum = sum + getValue(element);
 	    });
+
 	    return sum;
 	  }
 
@@ -68751,6 +69182,43 @@
 	const CurrencyTypeProvider$1 = props => /*#__PURE__*/react.createElement(DataTypeProvider, _extends$1({
 	  formatterComponent: CurrencyFormatter$1
 	}, props));
+
+	const styles$1 = {
+	  tech: {
+	    backgroundColor: '#f5f5f5'
+	  },
+	  etf: {
+	    backgroundColor: '#f5f5f5'
+	  },
+	  consumer: {
+	    backgroundColor: '#f5f5f5'
+	  } // // health: {
+	  // tech: {
+	  //   backgroundColor: '#a2e2a4',
+	  // },
+	  // telecom: {
+	  //   backgroundColor: '#b3e5fc',
+	  // },
+	  // energy: {
+	  //   backgroundColor: '#ffcdd2',
+	  // },
+	  // insurance: {
+	  //   backgroundColor: '#f0f4c3',
+	  // },
+
+	};
+
+	const TableRow$1 = ({
+	  row,
+	  ...restProps
+	}) => /*#__PURE__*/react.createElement(Table$1$1.Row, _extends$1({}, restProps, {
+	  // eslint-disable-next-line no-alert
+	  // onClick={() => alert(JSON.stringify(row))}
+	  style: {
+	    cursor: 'pointer',
+	    ...styles$1[row.sector.toLowerCase()]
+	  }
+	}));
 
 	const PositionsPanel = props => {
 	  const [columns] = react_27([{
@@ -68803,24 +69271,31 @@
 	  const [groupSummaryItems] = react_27([{
 	    columnName: 'sector',
 	    type: 'count'
-	  }, // { columnName: 'pnl', type: 'sum' },
-	  {
-	    columnName: 'pnl',
-	    type: 'customsum'
 	  }, {
 	    columnName: 'pnl',
-	    type: 'sum',
-	    showInGroupFooter: false // columnName: 'pnl', type: 'customsum', showInGroupFooter: false,
-
+	    type: 'customsum',
+	    showInGroupFooter: false,
+	    alignByColumn: true
+	  }, {
+	    columnName: 't_pnl',
+	    type: 'customsum',
+	    showInGroupFooter: false,
+	    alignByColumn: true
 	  }, {
 	    columnName: 'ticker',
-	    type: 'count'
+	    type: 'count',
+	    showInGroupFooter: false
 	  }]);
 	  const {
 	    height,
 	    width
 	  } = useDimension();
 	  const mydimposition = height - (height - props.height) - 50;
+	  const [searchValue, setSearchState] = react_27('');
+	  const [sorting, setSorting] = react_27([{
+	    columnName: 'ticker',
+	    direction: 'asc'
+	  }]);
 	  return /*#__PURE__*/react.createElement("div", {
 	    className: style$3.main
 	  }, /*#__PURE__*/react.createElement("div", {
@@ -68828,27 +69303,38 @@
 	  }, /*#__PURE__*/react.createElement(Grid$2, {
 	    rows: props.rows,
 	    columns: columns
-	  }, /*#__PURE__*/react.createElement(DragDropProvider$2, null), /*#__PURE__*/react.createElement(CurrencyTypeProvider$1, {
+	  }, /*#__PURE__*/react.createElement(SortingState, {
+	    sorting: sorting,
+	    onSortingChange: setSorting
+	  }), /*#__PURE__*/react.createElement(IntegratedSorting, null), /*#__PURE__*/react.createElement(SearchState, {
+	    value: searchValue,
+	    onValueChange: setSearchState
+	  }), /*#__PURE__*/react.createElement(IntegratedFiltering, null), /*#__PURE__*/react.createElement(DragDropProvider$2, null), /*#__PURE__*/react.createElement(CurrencyTypeProvider$1, {
 	    for: ['avg_price', 'sod_price', 'last_price', 'pnl', 't_pnl']
 	  }), /*#__PURE__*/react.createElement(GroupingState, {
 	    grouping: grouping,
-	    onGroupingChange: setGrouping
+	    onGroupingChange: setGrouping // cellComponent={Cell}
+
 	  }), /*#__PURE__*/react.createElement(SummaryState, {
 	    totalItems: totalSummaryItems,
-	    groupItems: groupSummaryItems
+	    groupItems: groupSummaryItems // cellComponent={Cell}
+
 	  }), /*#__PURE__*/react.createElement(IntegratedGrouping, null), /*#__PURE__*/react.createElement(IntegratedSummary, {
 	    calculator: summaryCalculator
 	  }), /*#__PURE__*/react.createElement(VirtualTable, {
 	    height: mydimposition.toString(),
-	    columnExtensions: tableColumnExtensions
+	    columnExtensions: tableColumnExtensions,
+	    rowComponent: TableRow$1 // cellComponent={Cell}
+
 	  }), /*#__PURE__*/react.createElement(TableHeaderRow$1, {
-	    showGroupingControls: true
+	    showSortingControls: true // showGroupingControls
+
 	  }), /*#__PURE__*/react.createElement(TableSummaryRow$1, {
 	    messages: messages
 	  }), /*#__PURE__*/react.createElement(TableGroupRow$1, null), /*#__PURE__*/react.createElement(Toolbar$1$1, null), /*#__PURE__*/react.createElement(GroupingPanel$1 // showColumnsWhenGrouped
 	  , {
 	    showGroupingControls: true
-	  }))));
+	  }), /*#__PURE__*/react.createElement(SearchPanel$1, null))));
 	};
 
 	// import React from 'react';

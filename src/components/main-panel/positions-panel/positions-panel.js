@@ -94,7 +94,7 @@ const TableRow = ({ row, ...restProps }) => (
   <Table.Row
     {...restProps}
     // eslint-disable-next-line no-alert
-    onClick={() => alert(JSON.stringify(row))}
+    // onClick={() => alert(JSON.stringify(row))}
     style={{
       cursor: 'pointer',
       ...styles[row.sector.toLowerCase()],
@@ -205,7 +205,7 @@ export const PositionsPanel=(props)=>{
 		/>
 		<TableHeaderRow
 			showSortingControls
-		    showGroupingControls
+		    // showGroupingControls
 		/>
 		<TableSummaryRow
 		 messages={messages}

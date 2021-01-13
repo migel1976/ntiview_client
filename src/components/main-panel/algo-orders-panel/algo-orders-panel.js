@@ -56,31 +56,33 @@ export const AlgoOrdersPanel=(props)=>{
 	// 	this.props.setOrderShowModal(true);
 	// };
 	const [columns] = useState([
-		{name: 'aoid', title:'aoid'},
-		{name: 'ticker', title:'ticker'},
-		{name: 'account', title:'account'},
-		{name: 'aotype', title:'aotype'},
-		{name: 'aostate', title:'aostate'},
-		{name: 'start_time', title:'start_time'},
-		{name: 'end_time', title:'end_time'},
-		{name: 'aosize', title:'aosize'},
-		{name: 'entry_price', title:'entry_price'},
-		{name: 'avg_price', title:'avg_price'},
-		{name: 'qty_done', title:'qty_done'}
+		{name: 'aoid', title:'AOID'},
+		{name: 'ticker',title:'TICKER'},
+		{name: 'account',title:'ACCOUNT'},
+		{name: 'aoside',title:'AOSIDE'},
+		{name: 'aotype',title: 'AOTYPE'},
+		{name: 'aostate',title:'AOSTATE'},
+		{name: 'aosize',title:'AOSIZE'},
+		{name: 'avg_price',title:'AVG_PRICE'},
+		{name: 'qty_done',title:'QTY_DONE'},
+		{name: 'entry_price',title:'ENTRY_PRICE'},
+		{name: 'start_time',title:'START_TIME'},
+		{name: 'end_time',title:'END_TIME'},
 	  ]);
-	 const [defaultColumnWidths] = useState([
-	// const [columnWidths, setColumnWidths] = useState([
-		{ columnName: 'aoid', width:70},
-		{ columnName: 'ticker', width:90},
-		{ columnName: 'account', width:100},
-		{ columnName: 'aotype', width: 90},
-		{ columnName: 'aostate', width: 120},
-		{ columnName: 'start_time', width:150},
-		{ columnName: 'end_time', width:150},
-		{ columnName: 'aosize', width:100},
-		{ columnName: 'entry_price', width:130},
-		{ columnName: 'avg_price', width:130},
-		{ columnName: 'qty_done', width:130}
+	 // const [defaultColumnWidths] = useState([
+	const [columnWidths, setColumnWidths] = useState([
+		{ columnName: 'AOID', width:90},
+		{ columnName: 'TICKER', width:90},
+		{ columnName: 'ACCOUNT', width:110},
+		{ columnName: 'AOSIDE', width:100},
+		{ columnName: 'AOTYPE', width: 100},
+		{ columnName: 'AOSTATE', width: 120},
+		{ columnName: 'AOSIZE', width:100},
+		{ columnName: 'AVG_PRICE', width:130},
+		{ columnName: 'QTY_DONE', width:130},
+		{ columnName: 'ENTRY_PRICE', width:150},
+		{ columnName: 'START_TIME', width:150},
+		{ columnName: 'END_TIME', width:150},
 	  ]);
 	  // console.log('debugger is props',props);
 	  // debugger;
@@ -88,13 +90,13 @@ export const AlgoOrdersPanel=(props)=>{
 	  const mydim=height-props.height-100;
 	  // console.log('mydim is', mydim);
 	  const [searchValue, setSearchState] = useState('');
-	  // const [sorting, setSorting] = useState([{ columnName: 'ticker', direction: 'asc' }]);
+	  const [sorting, setSorting] = useState([{ columnName: 'ticker', direction: 'asc' }]);
 
 	return (
 	    <div className={style.main}>
 		<Button variant='primary' onClick={()=>props.setOrderShowModal(true)}>PLACE TEST ORDERS</Button>{' '}
 		<Button variant='danger' onClick={props.cancelOrder} disabled={!props.flagSelection}>Cancel Order(s)</Button>{' '}
-		 <div style={{float:"right"}}> 
+		 {/*<div style={{float:"right"}}> */}
 		 {/*<InputGroup>*/}
 			{/*<InputGroupAddon addonType="prepend">*/}
 			  {/*<InputGroupText>*/}
@@ -103,43 +105,46 @@ export const AlgoOrdersPanel=(props)=>{
 			{/*</InputGroupAddon>*/}
 			{/*<Input placeholder="show graph" disabled />*/}
 		  {/*</InputGroup>*/}
-		</div>
+		{/*</div>*/}
 
-		<Grid rows={props.rows} columns={props.columns}>
-		{/*<Grid rows={props.rows} columns={columns}>*/}
-		{/*<SortingState*/}
-			{/*sorting={sorting}*/}
-			{/*onSortingChange={setSorting}*/}
-        {/*/>*/}
-		{/*<IntegratedSorting />*/}
+		{/*<Grid rows={props.rows} columns={props.columns}>*/}
+		<Grid rows={props.rows} columns={columns}>
+		<SortingState
+			sorting={sorting}
+			onSortingChange={setSorting}
+		/>
+		<IntegratedSorting />
 		<SearchState
           value={searchValue}
           onValueChange={setSearchState}
         />
-		<FilteringState defaultFilters={[]} />
-        <IntegratedFiltering />
+		{/*<FilteringState defaultFilters={[]} />*/}
+        {/*<IntegratedFiltering />*/}
+
 		 <SelectionState
 			selection={props.selection}
 			onSelectionChange={props.setSelection}
 		  />
 		<CurrencyTypeProvider for={['avg_price','entry_price']} />
 		<IntegratedSelection />
-		{/*<Table />*/}
 		<VirtualTable 
-		   columnExtensions={defaultColumnWidths}
+		   // columnExtensions={defaultColumnWidths}
+		   columnExtensions={columnWidths}
 		   height={mydim.toString()}
 		/>
+
 		{/*<TableColumnResizing defaultColumnWidths={defaultColumnWidths} />*/}
 		{/*<TableColumnResizing*/}
-				  {/*// columnWidths={columnWidths}*/}
-				  {/*// onColumnWidthsChange={setColumnWidths}*/}
+				  {/*columnWidths={columnWidths}*/}
+				  {/*onColumnWidthsChange={setColumnWidths}*/}
 				  {/*// resizingMode={'nextColumn'}*/}
 				{/*/>*/}
+
 		<TableHeaderRow 
-			// showSortingControls
+			 showSortingControls
 		/>
-		<TableFilterRow />
-		<TableSelection showSelectAll selectByRowClick />
+		{/*<TableFilterRow />*/}
+		{/*<TableSelection showSelectAll selectByRowClick />*/}
 		<TableFixedColumns 
 		                  leftColumns={['start_time','stop_time']} 
 		/>
